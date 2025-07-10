@@ -1,0 +1,30 @@
+# Core dependencies
+psycopg2-binary>=2.9.10
+pgvector==0.4.1
+numpy>=2.3.1
+
+# Optional dependencies for embeddings
+# Uncomment these if you want to use real embedding models
+
+# For dense embeddings
+# sentence-transformers>=2.2.2
+
+# For sparse embeddings (SPLADE)
+# transformers>=4.30.0
+# torch>=2.0.0
+
+# API requests
+requests==2.32.4
+
+# Utilities
+python-dotenv>=1.1.1  # For environment variables
+
+# Notebook dependencies
+jupyter>=1.1.1
+notebook>=7.4.4
+ipywidgets>=8.1.7
+pandas>=2.3.1
+matplotlib>=3.10.3
+seaborn>=0.13.2
+plotly>=6.2.0
+scikit-learn>=1.7.0

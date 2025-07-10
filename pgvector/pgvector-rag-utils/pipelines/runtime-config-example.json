@@ -1,0 +1,28 @@
+{
+  "display_name": "PGVector Runtime",
+  "metadata": {
+    "runtime_type": "KUBEFLOW_PIPELINES",
+    "api_endpoint": "https://your-kubeflow-pipelines-api.apps.your-cluster.com",
+    "api_username": "",
+    "api_password": "",
+    "user_namespace": "your-namespace",
+    "engine": "Tekton",
+    "auth_type": "DEX_STATIC_PASSWORDS",
+    "cos_endpoint": "https://s3.your-cluster.com",
+    "cos_bucket": "pipeline-artifacts",
+    "cos_auth_type": "AWS_IAM_ROLES_FOR_SERVICE_ACCOUNTS",
+    "cos_region": "us-east-1",
+    "tags": [
+      {
+        "name": "platform",
+        "value": "openshift"
+      },
+      {
+        "name": "pipeline_defaults.runtime_image",
+        "value": "quay.io/modh/runtime-images:runtime-cuda-tensorflow-ubi9-python-3.9-2023b"
+      }
+    ]
+  },
+  "schema_name": "kfp",
+  "resource": "runtimes"
+}

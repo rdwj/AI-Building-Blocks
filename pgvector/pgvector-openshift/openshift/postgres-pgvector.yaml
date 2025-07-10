@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init
+  namespace: pgvector
+data:
+  init.sql: |
+    CREATE EXTENSION IF NOT EXISTS vector;
+    -- Create a sample table for embeddings
+    CREATE TABLE IF NOT EXISTS embeddings (
+        id SERIAL PRIMARY KEY,
+        content TEXT,
+        embedding vector(384)
+    );
+    -- Verify extension is loaded
+    DO $$ 
+    BEGIN 
+        RAISE NOTICE 'PGVector extension installed successfully'; 
+    END $$;
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-pgvector
+  namespace: pgvector
+spec:
+  selector:
+    matchLabels:
+      app: postgres-pgvector
+  template:
+    metadata:
+      labels:
+        app: postgres-pgvector
+    spec:
+      containers:
+      - name: postgres
+        image: pgvector/pgvector:pg15
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          value: vectoruser
+        - name: POSTGRES_PASSWORD
+          value: vectorpass
+        - name: POSTGRES_DB
+          value: vectordb
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        - name: init-script
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc
+      - name: init-script
+        configMap:
+          name: postgres-init
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-pgvector
+  namespace: pgvector
+spec:
+  selector:
+    app: postgres-pgvector
+  ports:
+  - port: 5432
+    targetPort: 5432
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: pgvector
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi

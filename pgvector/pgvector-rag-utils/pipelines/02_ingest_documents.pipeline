@@ -1,0 +1,200 @@
+{
+  "doc_type": "pipeline",
+  "version": "3.0",
+  "json_schema": "http://api.dataplatform.ibm.com/schemas/common-pipeline/pipeline-flow/pipeline-flow-v3-schema.json",
+  "id": "pgvector-ingestion-pipeline",
+  "primary_pipeline": "primary",
+  "pipelines": [
+    {
+      "id": "primary",
+      "nodes": [
+        {
+          "id": "prepare-environment",
+          "type": "execution_node",
+          "op": "execute-python-node",
+          "app_data": {
+            "component_parameters": {
+              "filename": "test_setup.py",
+              "runtime_image": "quay.io/modh/runtime-images:runtime-cuda-tensorflow-ubi9-python-3.9-2023b",
+              "cpu": 1,
+              "gpu": 0,
+              "memory": 1,
+              "env_vars": [
+                "DB_HOST",
+                "DB_PORT",
+                "DB_NAME",
+                "DB_USER",
+                "DB_PASSWORD"
+              ],
+              "include_subdirectories": false,
+              "outputs": [],
+              "dependencies": [
+                "psycopg2-binary",
+                "pgvector"
+              ]
+            },
+            "label": "Verify Environment",
+            "ui_data": {
+              "label": "Verify Environment",
+              "image": "/static/elyra/python.svg",
+              "x_pos": 50,
+              "y_pos": 50,
+              "description": "Verify database is ready"
+            }
+          },
+          "inputs": [
+            {
+              "id": "inPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Input Port"
+                }
+              }
+            }
+          ],
+          "outputs": [
+            {
+              "id": "outPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Output Port"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "ingest-documents",
+          "type": "execution_node",
+          "op": "execute-python-node",
+          "app_data": {
+            "component_parameters": {
+              "filename": "pipeline_scripts/02_ingest_documents.py",
+              "runtime_image": "quay.io/modh/runtime-images:runtime-cuda-tensorflow-ubi9-python-3.9-2023b",
+              "cpu": 2,
+              "gpu": 0,
+              "memory": 4,
+              "env_vars": [
+                "DB_HOST",
+                "DB_PORT",
+                "DB_NAME",
+                "DB_USER",
+                "DB_PASSWORD",
+                "NOMIC_EMBED_URL",
+                "NOMIC_EMBED_API_KEY",
+                "NOMIC_EMBED_MODEL_NAME",
+                "DOCLING_URL",
+                "DOCLING_API_KEY",
+                "PROJECT_ID=demo_project",
+                "PROJECT_NAME=Demo Project",
+                "DOCUMENTS_DIR=/mnt/data/documents"
+              ],
+              "include_subdirectories": true,
+              "outputs": [],
+              "dependencies": [
+                "psycopg2-binary",
+                "pgvector",
+                "numpy",
+                "requests"
+              ]
+            },
+            "label": "Ingest Documents",
+            "ui_data": {
+              "label": "Ingest Documents",
+              "image": "/static/elyra/python.svg",
+              "x_pos": 250,
+              "y_pos": 50,
+              "description": "Process and ingest documents into vector database"
+            }
+          },
+          "inputs": [
+            {
+              "id": "inPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Input Port"
+                }
+              },
+              "links": [
+                {
+                  "id": "link1",
+                  "node_id_ref": "prepare-environment",
+                  "port_id_ref": "outPort"
+                }
+              ]
+            }
+          ],
+          "outputs": [
+            {
+              "id": "outPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Output Port"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "app_data": {
+        "ui_data": {
+          "comments": [
+            {
+              "id": "comment1",
+              "x_pos": 50,
+              "y_pos": 150,
+              "width": 400,
+              "height": 100,
+              "content": "This pipeline processes documents from a directory and ingests them into the PGVector database. It uses Docling for document parsing and Nomic Embed for generating embeddings.",
+              "associated_id_refs": []
+            }
+          ]
+        },
+        "version": 8,
+        "runtime_config": "pgvector-runtime",
+        "properties": {
+          "name": "Document Ingestion Pipeline",
+          "runtime": "Generic",
+          "pipeline_parameters": [
+            {
+              "name": "PROJECT_ID",
+              "description": "Project ID for multi-tenancy",
+              "default_value": {
+                "type": "String",
+                "value": "demo_project"
+              },
+              "required": false
+            },
+            {
+              "name": "DOCUMENTS_DIR",
+              "description": "Directory containing documents to ingest",
+              "default_value": {
+                "type": "String",
+                "value": "/mnt/data/documents"
+              },
+              "required": true
+            }
+          ]
+        }
+      },
+      "runtime_ref": ""
+    }
+  ],
+  "schemas": []
+}
