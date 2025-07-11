@@ -50,7 +50,7 @@ from pgvector_rag import PGVectorRAG
 from pipeline_scripts.pipeline_utils import (
     get_env_vars, 
     get_db_connection_params,
-    get_embeddings
+    get_embeddings_with_sparse
 )
 
 logger = logging.getLogger(__name__)
@@ -91,8 +91,8 @@ def test_dense_search(rag: PGVectorRAG, project_id: str, queries: List[str], env
         start_time = time.time()
         
         # Get query embedding
-        embeddings = get_embeddings([query], env_vars)
-        query_embedding = embeddings[0]
+        embedding_result = get_embeddings_with_sparse([query], env_vars)[0]
+        query_embedding = embedding_result['dense']
         
         # Perform search
         search_results = rag.dense_search(
@@ -145,8 +145,8 @@ def test_filtered_search(rag: PGVectorRAG, project_id: str, env_vars: dict) -> D
     logger.info("Testing filtered search...")
     
     query = "test query for filtered search"
-    embeddings = get_embeddings([query], env_vars)
-    query_embedding = embeddings[0]
+    embedding_result = get_embeddings_with_sparse([query], env_vars)[0]
+    query_embedding = embedding_result['dense']
     
     # Test topic filter
     start_time = time.time()
@@ -221,8 +221,8 @@ def test_rag_generation(rag: PGVectorRAG, project_id: str, query: str, env_vars:
     logger.info("Testing RAG generation...")
     
     # Get query embedding
-    embeddings = get_embeddings([query], env_vars)
-    query_embedding = embeddings[0]
+    embedding_result = get_embeddings_with_sparse([query], env_vars)[0]
+    query_embedding = embedding_result['dense']
     
     # Retrieve relevant chunks
     search_results = rag.dense_search(
@@ -329,12 +329,12 @@ def test_performance_metrics(rag: PGVectorRAG, project_id: str, env_vars: dict) 
     
     latencies = []
     for query in test_queries:
-        embeddings = get_embeddings([query], env_vars)
+        embedding_result = get_embeddings_with_sparse([query], env_vars)[0]
         
         start_time = time.time()
         results = rag.dense_search(
             project_id=project_id,
-            query_embedding=embeddings[0],
+            query_embedding=embedding_result['dense'],
             limit=10
         )
         latency = time.time() - start_time

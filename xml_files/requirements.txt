@@ -1,0 +1,6 @@
+# No external dependencies required - uses only Python standard library
+# The analyzer is designed to work with Python 3.7+
+
+# Optional: For enhanced analysis (not required for basic functionality)
+# lxml>=4.6.0        # For faster XML parsing (optional)
+# click>=8.0.0       # For enhanced CLI (optional)

@@ -50,6 +50,45 @@ psql -h postgres-pgvector.pgvector.svc.cluster.local -U vectoruser -d vectordb
 pip install -r requirements.txt
 ```
 
+## Sparse Embedding Options
+
+The system supports **hybrid search** using both dense and sparse embeddings for better search quality:
+
+### 🔧 BM25/TF-IDF (Default)
+- **No additional dependencies required**
+- Classical sparse retrieval method
+- Good baseline performance
+- Automatically enabled
+
+### 🚀 SPLADE (Recommended for Production)
+- **Neural sparse embeddings** (state-of-the-art)
+- Better semantic understanding than BM25
+- Runs locally via FastEmbed library
+- **Easy to enable:**
+
+```bash
+# 1. Install FastEmbed
+pip install fastembed>=0.3.6
+
+# 2. Set environment variable
+echo "SPARSE_METHOD=splade" >> .env
+
+# 3. Restart your application - SPLADE is now used automatically!
+```
+
+### 🔄 Switching Between Methods
+
+```bash
+# Use BM25 (default, no extra dependencies)
+SPARSE_METHOD=bm25
+
+# Use SPLADE (requires fastembed)
+SPARSE_METHOD=splade
+SPLADE_MODEL=prithivida/Splade_PP_en_v1  # optional, this is default
+```
+
+**No code changes needed** - just environment variables! Both methods work with the same hybrid search functions.
+
 ## Quick Start
 
 ```python

@@ -192,6 +192,74 @@ def main():
             logger.info("  No project stats available")
 
 
+def demo_sparse_embedding_methods():
+    """
+    Demonstrate switching between BM25 and SPLADE sparse embeddings.
+    
+    This shows how easy it is to switch between different sparse embedding methods
+    using environment variables, without changing any code.
+    """
+    from pipeline_scripts.pipeline_utils import get_embeddings_with_sparse
+    
+    # Example environment variables (normally from .env file)
+    env_vars = {
+        "NOMIC_EMBED_URL": "your-nomic-url",
+        "NOMIC_EMBED_API_KEY": "your-api-key",
+        "NOMIC_EMBED_MODEL_NAME": "/mnt/models"
+    }
+    
+    sample_texts = [
+        "PostgreSQL is a powerful database system",
+        "Vector search enables semantic similarity",
+        "Hybrid search combines dense and sparse methods"
+    ]
+    
+    logger.info("\n" + "="*50)
+    logger.info("SPARSE EMBEDDING METHOD COMPARISON")
+    logger.info("="*50)
+    
+    # Method 1: BM25 (default, no additional dependencies)
+    logger.info("\n1. Using BM25/TF-IDF (default method):")
+    env_vars['SPARSE_METHOD'] = 'bm25'  # or just omit this variable
+    
+    try:
+        results_bm25 = get_embeddings_with_sparse(sample_texts, env_vars)
+        logger.info(f"   ✓ Successfully generated {len(results_bm25)} embeddings using BM25")
+        logger.info(f"   - Dense embedding shape: {results_bm25[0]['dense'].shape}")
+        logger.info(f"   - Sparse embedding (BM25) tokens: {len(results_bm25[0]['sparse'])}")
+        logger.info(f"   - Sample sparse vector: {dict(list(results_bm25[0]['sparse'].items())[:3])}...")
+    except Exception as e:
+        logger.error(f"   ✗ BM25 embedding failed: {e}")
+    
+    # Method 2: SPLADE (requires fastembed library)
+    logger.info("\n2. Using SPLADE via FastEmbed (better quality):")
+    env_vars['SPARSE_METHOD'] = 'splade'
+    env_vars['SPLADE_MODEL'] = 'prithivida/Splade_PP_en_v1'  # optional, this is default
+    
+    try:
+        results_splade = get_embeddings_with_sparse(sample_texts, env_vars)
+        logger.info(f"   ✓ Successfully generated {len(results_splade)} embeddings using SPLADE")
+        logger.info(f"   - Dense embedding shape: {results_splade[0]['dense'].shape}")
+        logger.info(f"   - Sparse embedding (SPLADE) tokens: {len(results_splade[0]['sparse'])}")
+        logger.info(f"   - Sample sparse vector: {dict(list(results_splade[0]['sparse'].items())[:3])}...")
+    except ImportError:
+        logger.warning("   ⚠ SPLADE requires fastembed library")
+        logger.info("   To enable SPLADE:")
+        logger.info("   1. Uncomment 'fastembed>=0.3.6' in requirements.txt")
+        logger.info("   2. Run: pip install fastembed")
+        logger.info("   3. Set SPARSE_METHOD=splade in your .env file")
+    except Exception as e:
+        logger.error(f"   ✗ SPLADE embedding failed: {e}")
+    
+    logger.info("\n" + "-"*50)
+    logger.info("SWITCHING METHODS:")
+    logger.info("- Set SPARSE_METHOD=bm25 for classical sparse retrieval (no extra deps)")
+    logger.info("- Set SPARSE_METHOD=splade for neural sparse retrieval (requires fastembed)")
+    logger.info("- Both methods work with the same hybrid search functions")
+    logger.info("- You can switch between methods without changing any code!")
+    logger.info("-"*50)
+
+
 def example_with_real_embeddings():
     """
     Example using real embedding models.
@@ -240,6 +308,9 @@ def example_with_real_embeddings():
 
 if __name__ == "__main__":
     main()
+    
+    # Uncomment to see comparison of BM25 vs SPLADE sparse embeddings
+    # demo_sparse_embedding_methods()
     
     # Uncomment to run with real embeddings
     # example_with_real_embeddings()

@@ -1,6 +1,34 @@
 """
 PGVector RAG System Python Client
 Compatible with PGVector 0.8.0
+
+SPARSE EMBEDDING SUPPORT:
+========================
+
+This client supports hybrid search using both dense and sparse vector embeddings.
+The pipeline scripts automatically generate both embedding types:
+
+1. **Dense Embeddings** (vector field)
+   - Generated via Nomic Embed API
+   - Provides semantic similarity search
+   - 384-dimensional vectors (default)
+
+2. **Sparse Embeddings** (sparsevec field)
+   - **BM25/TF-IDF** (Default): Classical sparse retrieval, no additional dependencies
+   - **SPLADE via FastEmbed** (Optional): Neural sparse embeddings, requires fastembed library
+   - Switch via SPARSE_METHOD environment variable: "bm25" or "splade"
+   - Provides lexical/keyword matching
+
+The hybrid_search_rrf() function combines both embedding types using
+Reciprocal Rank Fusion (RRF) for improved search quality.
+
+To switch from BM25 to SPLADE:
+1. Uncomment fastembed>=0.3.6 in requirements.txt
+2. Run: pip install fastembed
+3. Set environment variable: SPARSE_METHOD=splade
+4. Restart your application - SPLADE will be used automatically
+
+For best performance, use hybrid_search() for production queries.
 """
 
 import psycopg2

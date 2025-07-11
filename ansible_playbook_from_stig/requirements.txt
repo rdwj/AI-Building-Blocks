@@ -1,0 +1,15 @@
+# STIG to Ansible Playbook Generator Dependencies
+
+# Core dependencies
+requests>=2.28.0          # For LLM API calls
+PyYAML>=6.0               # For Ansible playbook generation
+python-dotenv>=0.19.0     # For .env file loading
+
+# Optional enhancements
+click>=8.0.0              # For enhanced CLI interface
+jinja2>=3.0.0             # For playbook templating
+ansible-core>=2.12.0      # For playbook validation (optional)
+
+# Development dependencies (optional)
+pytest>=7.0.0             # For testing
+black>=22.0.0             # For code formatting

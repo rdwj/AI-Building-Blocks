@@ -8,9 +8,10 @@ It performs the following operations:
 1. Discovers and processes documents in specified directories
 2. Extracts text content using Docling API for PDF/DOCX files
 3. Chunks text into manageable pieces for vector storage
-4. Generates embeddings using Nomic Embed API
-5. Stores document chunks with metadata in PGVector database
-6. Provides progress reporting and statistics
+4. Generates dense embeddings using Nomic Embed API
+5. Generates sparse embeddings using BM25/TF-IDF (with SPLADE option for future)
+6. Stores document chunks with both embedding types and metadata in PGVector database
+7. Provides progress reporting and statistics
 
 The script supports multiple document formats and processes them in batches
 for efficient database operations. It's designed to handle large document
@@ -51,7 +52,7 @@ from pgvector_rag import PGVectorRAG
 from pipeline_scripts.pipeline_utils import (
     get_env_vars, 
     get_db_connection_params,
-    get_embeddings,
+    get_embeddings_with_sparse,
     process_document_with_docling,
     chunk_text
 )
@@ -82,8 +83,8 @@ def process_documents_in_directory(directory_path: str, env_vars: dict, rag: PGV
         2. For PDF/DOCX: Use Docling API for text extraction
         3. For TXT/MD: Read files directly
         4. Chunk text into manageable pieces
-        5. Generate embeddings for each chunk
-        6. Store chunks with metadata in database
+        5. Generate dense embeddings (Nomic API) and sparse embeddings (BM25) for each chunk
+        6. Store chunks with both embedding types and metadata in database
     
     Side Effects:
         - Logs progress for each document processed
@@ -132,15 +133,16 @@ def process_documents_in_directory(directory_path: str, env_vars: dict, rag: PGV
                 # Process chunks in batches
                 batch_chunks = []
                 for idx, chunk in enumerate(chunks):
-                    # Get embedding
-                    embeddings = get_embeddings([chunk['text']], env_vars)
+                    # Get both dense and sparse embeddings
+                    embedding_result = get_embeddings_with_sparse([chunk['text']], env_vars)[0]
                     
                     batch_chunks.append({
                         'document_id': doc_id,
                         'document_name': file_path.name,
                         'chunk_text': chunk['text'],
                         'chunk_index': idx,
-                        'dense_embedding': embeddings[0],
+                        'dense_embedding': embedding_result['dense'],
+                        'sparse_embedding': embedding_result.get('sparse'),  # BM25 sparse embedding
                         'metadata': {
                             **metadata,
                             'file_path': str(file_path),
