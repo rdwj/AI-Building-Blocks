@@ -5,31 +5,31 @@
 ```mermaid
 graph TB
     %% Input Sources
-    subgraph "📁 XML Data Sources"
-        A1[Enterprise Systems<br/>• ServiceNow Tickets<br/>• Build Configurations<br/>• Security Reports]
-        A2[Development Assets<br/>• Maven POMs<br/>• Log4j Configs<br/>• Spring Beans]
-        A3[Content Systems<br/>• Documentation<br/>• API Definitions<br/>• Sitemaps]
+    subgraph sources["📁 XML Data Sources"]
+        A1["Enterprise Systems<br/>• ServiceNow Tickets<br/>• Build Configurations<br/>• Security Reports"]
+        A2["Development Assets<br/>• Maven POMs<br/>• Log4j Configs<br/>• Spring Beans"]
+        A3["Content Systems<br/>• Documentation<br/>• API Definitions<br/>• Sitemaps"]
     end
 
     %% XML Analysis Framework
-    subgraph "🔬 XML Analysis Framework"
-        B1[Document Analyzer<br/>29 Specialized Handlers]
-        B2[Smart Chunking<br/>• Hierarchical<br/>• Content-Aware<br/>• Token-Optimized]
-        B3[AI-Ready Output<br/>• Structured JSON<br/>• Context Metadata<br/>• Use Case Tags]
+    subgraph framework["🔬 XML Analysis Framework"]
+        B1["Document Analyzer<br/>29 Specialized Handlers"]
+        B2["Smart Chunking<br/>• Hierarchical<br/>• Content-Aware<br/>• Token-Optimized"]
+        B3["AI-Ready Output<br/>• Structured JSON<br/>• Context Metadata<br/>• Use Case Tags"]
     end
 
     %% AI Infrastructure
-    subgraph "🤖 AI Infrastructure Layer"
-        C1[Vector Store<br/>• Embeddings<br/>• Semantic Search<br/>• Similarity Matching]
-        C2[Graph Database<br/>• Relationships<br/>• Dependencies<br/>• Impact Analysis]
-        C3[LLM Agent<br/>• Analysis<br/>• Generation<br/>• Decision Making]
+    subgraph infrastructure["🤖 AI Infrastructure Layer"]
+        C1["Vector Store<br/>• Embeddings<br/>• Semantic Search<br/>• Similarity Matching"]
+        C2["Graph Database<br/>• Relationships<br/>• Dependencies<br/>• Impact Analysis"]
+        C3["LLM Agent<br/>• Analysis<br/>• Generation<br/>• Decision Making"]
     end
 
     %% AI Applications
-    subgraph "🎯 AI Applications"
-        D1[Security Intelligence<br/>• Vulnerability Detection<br/>• Compliance Monitoring<br/>• Risk Assessment]
-        D2[DevOps Automation<br/>• Config Optimization<br/>• Dependency Analysis<br/>• Build Intelligence]
-        D3[Knowledge Management<br/>• Documentation Search<br/>• Code Understanding<br/>• Technical Insights]
+    subgraph applications["🎯 AI Applications"]
+        D1["Security Intelligence<br/>• Vulnerability Detection<br/>• Compliance Monitoring<br/>• Risk Assessment"]
+        D2["DevOps Automation<br/>• Config Optimization<br/>• Dependency Analysis<br/>• Build Intelligence"]
+        D3["Knowledge Management<br/>• Documentation Search<br/>• Code Understanding<br/>• Technical Insights"]
     end
 
     %% Data Flow
@@ -67,13 +67,13 @@ graph TB
     %% Styling
     classDef xmlFramework fill:#e1f5fe,stroke:#01579b,stroke-width:2px
     classDef aiInfra fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    classDef applications fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
-    classDef sources fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef appStyle fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef sourceStyle fill:#fff3e0,stroke:#e65100,stroke-width:2px
 
     class B1,B2,B3 xmlFramework
     class C1,C2,C3 aiInfra
-    class D1,D2,D3 applications
-    class A1,A2,A3 sources
+    class D1,D2,D3 appStyle
+    class A1,A2,A3 sourceStyle
 ```
 
 ## 🔄 Detailed Integration Workflows
