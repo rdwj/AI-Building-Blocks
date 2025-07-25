@@ -118,10 +118,7 @@ temp/
 .DS_Store
 
 # Test output directories
-chunking_test_results_*/
-end_to_end_results_*/
-test_results_*/
-analysis_output_*/
+test_outputs/
 
 # Generated test files (keep directory structure, ignore contents)
 *.json
