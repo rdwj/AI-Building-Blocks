@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).parent / "src"))
 def test_import():
     """Test if we can import the analyzer"""
     try:
-        from xml_specialized_handlers import XMLDocumentAnalyzer
+        from core.analyzer import XMLDocumentAnalyzer
         print("✅ Successfully imported XMLDocumentAnalyzer")
         return XMLDocumentAnalyzer
     except Exception as e:

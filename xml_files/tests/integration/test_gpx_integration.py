@@ -14,7 +14,7 @@ def test_gpx_integration():
     """Test GPX handler integration with main analyzer"""
     
     try:
-        from xml_specialized_handlers import XMLDocumentAnalyzer
+        from core.analyzer import XMLDocumentAnalyzer
         print("✅ XMLDocumentAnalyzer imported successfully")
     except ImportError as e:
         print(f"❌ Failed to import XMLDocumentAnalyzer: {e}")

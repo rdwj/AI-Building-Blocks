@@ -18,7 +18,7 @@ def test_integration():
     
     try:
         # Import main analyzer
-        from xml_specialized_handlers import XMLDocumentAnalyzer
+        from core.analyzer import XMLDocumentAnalyzer
         
         # Create analyzer (should load Ant handler from registry)
         analyzer = XMLDocumentAnalyzer()

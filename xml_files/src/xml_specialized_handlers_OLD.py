@@ -557,13 +557,83 @@ class XMLDocumentAnalyzer:
     """Main analyzer that uses specialized handlers"""
     
     def __init__(self):
-        # Register all handlers
-        self.handlers: List[Type[XMLHandler]] = [
+        # Import and register all available handlers
+        from handlers.scap_handler import SCAPHandler
+        from handlers.servicenow_handler import ServiceNowHandler
+        from handlers.rss_handler import RSSHandler
+        from handlers.svg_handler import SVGHandler
+        from handlers.maven_pom_handler import MavenPOMHandler
+        from handlers.ant_build_handler import AntBuildHandler
+        from handlers.log4j_config_handler import Log4jConfigHandler
+        from handlers.spring_config_handler import SpringConfigHandler
+        from handlers.docbook_handler import DocBookHandler
+        from handlers.xsd_handler import XSDSchemaHandler
+        from handlers.wsdl_handler import WSDLHandler
+        from handlers.wadl_handler import WADLHandler
+        from handlers.sitemap_handler import SitemapHandler
+        from handlers.hibernate_handler import HibernateHandler
+        from handlers.ivy_handler import IvyHandler
+        from handlers.bpmn_handler import BPMNHandler
+        from handlers.saml_handler import SAMLHandler
+        from handlers.soap_envelope_handler import SOAPEnvelopeHandler
+        from handlers.test_report_handler import TestReportHandler
+        from handlers.xliff_handler import XLIFFHandler
+        from handlers.xhtml_handler import XHTMLHandler
+        from handlers.properties_xml_handler import PropertiesXMLHandler
+        from handlers.openapi_xml_handler import OpenAPIXMLHandler
+        from handlers.struts_config_handler import StrutsConfigHandler
+        from handlers.enterprise_config_handler import EnterpriseConfigHandler
+        from handlers.gpx_handler import GPXHandler
+        from handlers.kml_handler import KMLHandler
+        from handlers.graphml_handler import GraphMLHandler
+        from handlers.generic_xml_handler import GenericXMLHandler
+        
+        # Register all handlers (order matters - more specific first)
+        self.handlers: List[XMLHandler] = [
+            # Document-specific handlers
+            ServiceNowHandler(),
             SCAPHandler(),
+            
+            # Build and configuration
+            MavenPOMHandler(),
+            AntBuildHandler(),
+            Log4jConfigHandler(),
+            SpringConfigHandler(),
+            HibernateHandler(),
+            IvyHandler(),
+            StrutsConfigHandler(),
+            EnterpriseConfigHandler(),
+            PropertiesXMLHandler(),
+            
+            # Web services and APIs
+            WSDLHandler(),
+            WADLHandler(),
+            SOAPEnvelopeHandler(),
+            SAMLHandler(),
+            OpenAPIXMLHandler(),
+            
+            # Documentation and content
+            DocBookHandler(),
             RSSHandler(),
+            SitemapHandler(),
+            XLIFFHandler(),
+            XHTMLHandler(),
+            
+            # Graphics and visualization
             SVGHandler(),
-            # Add more handlers here as needed
-            GenericXMLHandler()  # Always last as fallback
+            BPMNHandler(),
+            GraphMLHandler(),
+            
+            # Geospatial
+            GPXHandler(),
+            KMLHandler(),
+            
+            # Schema and metadata
+            XSDSchemaHandler(),
+            TestReportHandler(),
+            
+            # Always last as fallback
+            GenericXMLHandler()
         ]
     
     def analyze_document(self, file_path: str) -> Dict[str, Any]:

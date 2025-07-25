@@ -16,7 +16,7 @@ import traceback
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 try:
-    from xml_specialized_handlers import XMLDocumentAnalyzer
+    from core.analyzer import XMLDocumentAnalyzer
     from xml_schema_analyzer_fixed import XMLSchemaAnalyzer
 except ImportError as e:
     print(f"❌ Failed to import required modules: {e}")

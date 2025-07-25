@@ -34,7 +34,7 @@ def test_all_sample_data():
     """Test all XML files in sample_data directory"""
     
     try:
-        from xml_specialized_handlers import XMLDocumentAnalyzer
+        from core.analyzer import XMLDocumentAnalyzer
         print("✅ XMLDocumentAnalyzer imported successfully")
     except ImportError as e:
         print(f"❌ Failed to import XMLDocumentAnalyzer: {e}")

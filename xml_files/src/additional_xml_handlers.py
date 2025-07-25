@@ -6,7 +6,7 @@ This module extends the specialized handler system with more document types
 commonly found in enterprise environments.
 """
 
-from xml_specialized_handlers import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
+from core.analyzer import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
 import xml.etree.ElementTree as ET
 from typing import Dict, List, Optional, Any, Tuple
 import re

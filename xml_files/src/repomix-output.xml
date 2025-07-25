@@ -86,7 +86,7 @@ import os
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from xml_specialized_handlers import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
+from core.analyzer import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
 
 
 class BPMNHandler(XMLHandler):
@@ -807,7 +807,7 @@ import os
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from xml_specialized_handlers import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
+from core.analyzer import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
 
 
 class EnterpriseConfigHandler(XMLHandler):
@@ -1869,7 +1869,7 @@ import os
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from xml_specialized_handlers import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
+from core.analyzer import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
 
 
 class OpenAPIXMLHandler(XMLHandler):
@@ -2563,7 +2563,7 @@ from datetime import datetime
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from xml_specialized_handlers import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
+from core.analyzer import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
 
 
 class PropertiesXMLHandler(XMLHandler):
@@ -3199,7 +3199,7 @@ from datetime import datetime
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from xml_specialized_handlers import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
+from core.analyzer import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
 
 
 class TestReportHandler(XMLHandler):
@@ -3810,7 +3810,7 @@ import os
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from xml_specialized_handlers import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
+from core.analyzer import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
 
 
 class WSDLHandler(XMLHandler):
@@ -4475,7 +4475,7 @@ import os
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from xml_specialized_handlers import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
+from core.analyzer import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
 
 
 class XSDSchemaHandler(XMLHandler):
@@ -4947,7 +4947,7 @@ This module extends the specialized handler system with more document types
 commonly found in enterprise environments.
 """
 
-from xml_specialized_handlers import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
+from core.analyzer import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
 import xml.etree.ElementTree as ET
 from typing import Dict, List, Optional, Any, Tuple
 import re
@@ -6031,7 +6031,7 @@ This module extends the specialized handler system with more document types
 commonly found in enterprise environments.
 """
 
-from xml_specialized_handlers import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
+from core.analyzer import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
 import xml.etree.ElementTree as ET
 from typing import Dict, List, Optional, Any, Tuple
 import re
@@ -10443,7 +10443,7 @@ class ChunkingOrchestrator:
 # Example usage
 if __name__ == "__main__":
     # Example: Using the chunking orchestrator
-    from xml_specialized_handlers import XMLDocumentAnalyzer
+    from core.analyzer import XMLDocumentAnalyzer
     
     # Analyze document first
     analyzer = XMLDocumentAnalyzer()
@@ -10484,7 +10484,7 @@ from typing import Dict, Any
 # Add src directory to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from xml_specialized_handlers import XMLDocumentAnalyzer
+from core.analyzer import XMLDocumentAnalyzer
 from xml_chunking_strategy import ChunkingOrchestrator, ChunkingConfig
 from xml_schema_analyzer_fixed import XMLSchemaAnalyzer
 

@@ -16,7 +16,7 @@ import os
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from xml_specialized_handlers import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
+from core.analyzer import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
 
 
 class SCAPHandler(XMLHandler):
@@ -24,45 +24,82 @@ class SCAPHandler(XMLHandler):
     
     def can_handle(self, root: ET.Element, namespaces: Dict[str, str]) -> Tuple[bool, float]:
         # Check for SCAP-specific namespaces and elements
-        scap_indicators = [
+        scap_namespace_patterns = [
             'http://scap.nist.gov/schema/',
+            'http://checklists.nist.gov/xccdf/',
+            'http://oval.mitre.org/XMLSchema/',
             'asset-report-collection',
-            'data-stream-collection',
-            'xccdf',
-            'oval'
+            'data-stream-collection'
+        ]
+        
+        scap_element_indicators = [
+            'Benchmark',
+            'TestResult', 
+            'Profile',
+            'asset-report-collection',
+            'oval_definitions'
         ]
         
         score = 0.0
-        if any(uri in str(namespaces.values()) for uri in scap_indicators[:1]):
-            score += 0.5
-        if root.tag.endswith('asset-report-collection'):
+        
+        # Check namespaces
+        namespace_text = str(namespaces.values()).lower() + str(root.tag).lower()
+        for pattern in scap_namespace_patterns:
+            if pattern.lower() in namespace_text:
+                score += 0.4
+                break
+        
+        # Check root element
+        root_tag = root.tag.split('}')[-1] if '}' in root.tag else root.tag
+        if root_tag in scap_element_indicators:
+            score += 0.4
+        
+        # Check for XCCDF specific elements
+        if 'xccdf' in namespace_text:
             score += 0.3
-        if 'xccdf' in str(namespaces.values()).lower():
-            score += 0.2
+        
+        # Check for OVAL specific elements  
+        if 'oval' in namespace_text:
+            score += 0.3
             
-        return score > 0.5, score
+        return score >= 0.6, score
     
     def detect_type(self, root: ET.Element, namespaces: Dict[str, str]) -> DocumentTypeInfo:
         version = None
         schema_uri = None
+        doc_type = "SCAP Security Report"
         
-        # Extract version from namespaces
+        # Check all namespaces for SCAP-related URIs
         for prefix, uri in namespaces.items():
-            if 'scap.nist.gov' in uri:
+            if 'scap.nist.gov' in uri or 'checklists.nist.gov/xccdf' in uri or 'oval.mitre.org' in uri:
                 schema_uri = uri
                 # Extract version from URI if present
-                version_match = re.search(r'/(\d+\.\d+)/?$', uri)
+                version_match = re.search(r'/(\d+\.\d+)/?', uri)
                 if version_match:
                     version = version_match.group(1)
         
+        # Check root element namespace and tag
+        root_tag = root.tag.split('}')[-1] if '}' in root.tag else root.tag
+        root_ns = root.tag.split('}')[0][1:] if '}' in root.tag else ""
+        
+        # Determine specific SCAP document type
+        if 'xccdf' in root_ns.lower() or root_tag == 'Benchmark':
+            doc_type = "SCAP/XCCDF Document"
+        elif 'oval' in root_ns.lower():
+            doc_type = "SCAP/OVAL Document"  
+        elif root_ns.endswith('XMLSchema'):
+            doc_type = "SCAP/XSD Schema"
+        
         return DocumentTypeInfo(
-            type_name="SCAP Security Report",
+            type_name=doc_type,
             confidence=0.9,
             version=version,
-            schema_uri=schema_uri,
+            schema_uri=schema_uri or root_ns,
             metadata={
                 "standard": "NIST SCAP",
-                "category": "security_compliance"
+                "category": "security_compliance",
+                "root_element": root_tag,
+                "namespace": root_ns
             }
         )
     

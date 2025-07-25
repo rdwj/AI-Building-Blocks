@@ -21,7 +21,7 @@ def test_imports():
         return False
     
     try:
-        from xml_specialized_handlers import XMLDocumentAnalyzer
+        from core.analyzer import XMLDocumentAnalyzer
         print("✅ xml_specialized_handlers imported successfully")
     except ImportError as e:
         print(f"❌ Failed to import xml_specialized_handlers: {e}")
@@ -57,7 +57,7 @@ def test_basic_functionality():
     test_path.write_text(test_xml)
     
     try:
-        from xml_specialized_handlers import XMLDocumentAnalyzer
+        from core.analyzer import XMLDocumentAnalyzer
         
         analyzer = XMLDocumentAnalyzer()
         result = analyzer.analyze_document(str(test_path))
@@ -103,7 +103,7 @@ def test_handler_detection():
         }
     ]
     
-    from xml_specialized_handlers import XMLDocumentAnalyzer
+    from core.analyzer import XMLDocumentAnalyzer
     analyzer = XMLDocumentAnalyzer()
     
     all_passed = True

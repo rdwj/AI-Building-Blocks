@@ -14,7 +14,7 @@ def test_xliff_integration():
     
     try:
         from xml_schema_analyzer_fixed import XMLSchemaAnalyzer
-        from xml_specialized_handlers import XMLDocumentAnalyzer
+        from core.analyzer import XMLDocumentAnalyzer
         print("✅ Core modules imported successfully")
     except ImportError as e:
         print(f"❌ Failed to import core modules: {e}")

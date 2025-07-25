@@ -16,7 +16,7 @@ sys.path.append(str(Path(__file__).parent / "src"))
 
 try:
     from xml_schema_analyzer_fixed import XMLSchemaAnalyzer
-    from xml_specialized_handlers import XMLDocumentAnalyzer
+    from core.analyzer import XMLDocumentAnalyzer
     from xml_chunking_strategy import ChunkingOrchestrator, ChunkingConfig
 except ImportError as e:
     print(f"Error: Could not import required modules: {e}")

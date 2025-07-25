@@ -14,7 +14,7 @@ from typing import Dict, Any
 # Add src directory to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from xml_specialized_handlers import XMLDocumentAnalyzer
+from core.analyzer import XMLDocumentAnalyzer
 from xml_chunking_strategy import ChunkingOrchestrator, ChunkingConfig
 from xml_schema_analyzer_fixed import XMLSchemaAnalyzer
 

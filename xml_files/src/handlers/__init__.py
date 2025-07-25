@@ -33,6 +33,9 @@ from .struts_config_handler import StrutsConfigHandler
 from .graphml_handler import GraphMLHandler
 from .xliff_handler import XLIFFHandler
 
+# IT Service Management
+from .servicenow_handler import ServiceNowHandler
+
 # Existing handlers (already in individual files)
 from .bpmn_handler import BPMNHandler
 from .enterprise_config_handler import EnterpriseConfigHandler
@@ -60,6 +63,9 @@ ALL_HANDLERS = [
     EnterpriseConfigHandler,
     PropertiesXMLHandler,
     HibernateHandler,
+    
+    # IT Service Management
+    ServiceNowHandler,
     
     # Business process and workflow
     BPMNHandler,
@@ -109,6 +115,7 @@ HANDLER_CATEGORIES = {
     'web_services': [WSDLHandler, OpenAPIXMLHandler, SOAPEnvelopeHandler, WADLHandler],
     'business_process': [BPMNHandler],
     'enterprise_config': [EnterpriseConfigHandler, PropertiesXMLHandler, HibernateHandler],
+    'it_service_management': [ServiceNowHandler],
     'content': [RSSHandler, DocBookHandler, SitemapHandler],
     'web_content': [XHTMLHandler],
     'geographic': [KMLHandler, GPXHandler],
@@ -152,9 +159,5 @@ __all__ = [
     'TestReportHandler',
     'WSDLHandler',
     'XSDSchemaHandler',
-    # TODO: Add when created:
-    # 'Log4jConfigHandler',
-    # 'SVGHandler', 
-    # 'DocBookHandler',
-    # 'SitemapHandler',
+    'ServiceNowHandler',
 ]

@@ -86,16 +86,26 @@ class HierarchicalChunking(XMLChunkingStrategy):
         
         # Check if this element is a semantic boundary
         if self._is_semantic_boundary(element):
-            # Create a chunk for this entire element
-            content = ET.tostring(element, encoding='unicode')
-            tokens = self.estimate_tokens(content)
+            # For hierarchical chunking, always look for smaller boundaries first
+            child_boundaries = []
+            for child in element:
+                if self._is_semantic_boundary(child):
+                    child_boundaries.append(child)
             
-            if tokens <= self.config.max_chunk_size:
-                # Element fits in one chunk
-                yield self._create_chunk(element, current_path, start_index, content)
+            # If we have semantic boundary children, chunk them individually
+            if child_boundaries and element.tag.split('}')[-1] not in ['Rule']:  # Don't subdivide Rules
+                yield from self._process_children(element, current_path, start_index)
             else:
-                # Element too large, need to split children
-                yield from self._split_large_element(element, current_path, start_index)
+                # No boundary children or this is a leaf boundary - create chunk
+                content = ET.tostring(element, encoding='unicode')
+                tokens = self.estimate_tokens(content)
+                
+                if tokens <= self.config.max_chunk_size:
+                    # Element fits in one chunk
+                    yield self._create_chunk(element, current_path, start_index, content)
+                else:
+                    # Element too large, need to split children
+                    yield from self._split_large_element(element, current_path, start_index)
         else:
             # Not a boundary, continue processing children
             yield from self._process_children(element, current_path, start_index)
@@ -203,6 +213,9 @@ class HierarchicalChunking(XMLChunkingStrategy):
         """Get semantic boundaries based on document type"""
         boundaries = {
             "SCAP Security Report": ["Rule", "Group", "Benchmark"],
+            "SCAP/XSD Schema": ["complexType", "element", "simpleType", "group", "attributeGroup"],
+            "SCAP/XCCDF Document": ["Rule", "Group", "Benchmark", "Profile"],
+            "ServiceNow Export": ["incident", "sys_journal_field", "sys_attachment"],
             "RSS/Atom Feed": ["item", "entry"],
             "Maven POM": ["dependency", "plugin", "profile"],
             "Spring Configuration": ["bean", "component-scan"],
@@ -210,7 +223,9 @@ class HierarchicalChunking(XMLChunkingStrategy):
             "Log4j Configuration": ["appender", "logger"]
         }
         
-        return boundaries.get(doc_type, ["section", "record", "item", "entry"])
+        # Fallback with more common XML elements
+        default_boundaries = ["section", "record", "item", "entry", "rule", "group", "element", "component"]
+        return boundaries.get(doc_type, default_boundaries)
 
 class SlidingWindowChunking(XMLChunkingStrategy):
     """Chunks using a sliding window approach with overlap"""
@@ -637,6 +652,9 @@ class ChunkingOrchestrator:
         # Strategy selection based on document type
         strategy_map = {
             'SCAP Security Report': 'hierarchical',
+            'SCAP/XSD Schema': 'hierarchical',
+            'SCAP/XCCDF Document': 'hierarchical',
+            'ServiceNow Export': 'sliding_window',  # Conversation-heavy format
             'RSS/Atom Feed': 'hierarchical',
             'Maven POM': 'hierarchical',
             'Spring Configuration': 'hierarchical',
@@ -690,7 +708,7 @@ class ChunkingOrchestrator:
 # Example usage
 if __name__ == "__main__":
     # Example: Using the chunking orchestrator
-    from xml_specialized_handlers import XMLDocumentAnalyzer
+    from core.analyzer import XMLDocumentAnalyzer
     
     # Analyze document first
     analyzer = XMLDocumentAnalyzer()

@@ -123,7 +123,7 @@ Update imports in main analyzer files to use the new registry:
 
 **Before:**
 ```python
-from xml_specialized_handlers import SCAPHandler, RSSHandler, SVGHandler, GenericXMLHandler
+from core.analyzer import SCAPHandler, RSSHandler, SVGHandler, GenericXMLHandler
 from additional_xml_handlers import MavenPOMHandler, Log4jConfigHandler, SpringConfigHandler, DocBookHandler, SitemapHandler
 ```
 
@@ -297,7 +297,7 @@ import os
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from xml_specialized_handlers import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
+from core.analyzer import XMLHandler, DocumentTypeInfo, SpecializedAnalysis
 
 class [HandlerName](XMLHandler):
     """Handler for [document type] files"""
