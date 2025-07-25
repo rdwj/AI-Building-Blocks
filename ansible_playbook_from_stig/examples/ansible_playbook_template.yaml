@@ -1,0 +1,374 @@
+---
+# Comprehensive Ansible Playbook YAML Template
+# This template includes all major keywords and structures for validation
+# Optional sections are commented with # OPTIONAL
+# Required sections are marked with # REQUIRED
+
+# PLAYBOOK LEVEL (List of plays)
+- name: "Example Play Name"  # OPTIONAL - Play identifier
+  hosts: "all"  # REQUIRED - Target hosts (string, list, or pattern)
+  
+  # CONNECTION AND AUTHENTICATION
+  remote_user: "ansible"  # OPTIONAL - Remote user for connections
+  port: 22  # OPTIONAL - SSH port override
+  connection: "ssh"  # OPTIONAL - Connection plugin (ssh, local, etc.)
+  
+  # PRIVILEGE ESCALATION
+  become: true  # OPTIONAL - Enable privilege escalation (boolean)
+  become_method: "sudo"  # OPTIONAL - Method (sudo, su, doas, etc.)
+  become_user: "root"  # OPTIONAL - Target user for escalation
+  become_exe: "/usr/bin/sudo"  # OPTIONAL - Path to escalation executable
+  become_flags: "-H -S -n"  # OPTIONAL - Flags for escalation command
+  
+  # EXECUTION CONTROL
+  gather_facts: true  # OPTIONAL - Run setup module (boolean)
+  gather_subset: "all"  # OPTIONAL - Fact gathering subset
+  gather_timeout: 10  # OPTIONAL - Fact gathering timeout (seconds)
+  fact_path: "/tmp/facts.d"  # OPTIONAL - Custom facts directory
+  
+  serial: 1  # OPTIONAL - Batch size (number, percentage, or list)
+  order: "inventory"  # OPTIONAL - Host ordering (inventory, sorted, reverse_sorted, etc.)
+  throttle: 5  # OPTIONAL - Concurrent task limit
+  max_fail_percentage: 0  # OPTIONAL - Max failure percentage before abort
+  
+  # ERROR HANDLING
+  any_errors_fatal: false  # OPTIONAL - Stop all hosts on any error (boolean)
+  ignore_errors: false  # OPTIONAL - Continue on task failures (boolean)
+  ignore_unreachable: false  # OPTIONAL - Continue on unreachable hosts (boolean)
+  force_handlers: false  # OPTIONAL - Run handlers even after failures (boolean)
+  
+  # EXECUTION MODES
+  check_mode: false  # OPTIONAL - Run in check mode (boolean)
+  diff: false  # OPTIONAL - Show differences (boolean)
+  
+  # DEBUGGING
+  debugger: "never"  # OPTIONAL - Debugger activation (never, always, on_failed, etc.)
+  
+  # COLLECTIONS AND MODULES
+  collections:  # OPTIONAL - Collection search list
+    - "community.general"
+    - "ansible.posix"
+  
+  module_defaults:  # OPTIONAL - Default module parameters
+    file:
+      owner: "root"
+      group: "root"
+    service:
+      state: "started"
+  
+  # VARIABLES
+  vars:  # OPTIONAL - Play variables (dictionary)
+    play_var1: "value1"
+    play_var2: 
+      nested_key: "nested_value"
+    play_var3: 
+      - "list_item1"
+      - "list_item2"
+  
+  vars_files:  # OPTIONAL - External variable files (list)
+    - "vars/main.yml"
+    - "vars/{{ ansible_os_family }}.yml"
+  
+  vars_prompt:  # OPTIONAL - Interactive variable prompts (list)
+    - name: "username"
+      prompt: "Enter username"
+      private: false
+    - name: "password"
+      prompt: "Enter password"
+      private: true
+      encrypt: "sha512_crypt"
+      confirm: true
+  
+  # ENVIRONMENT VARIABLES
+  environment:  # OPTIONAL - Environment variables (dictionary)
+    PATH: "/custom/path:{{ ansible_env.PATH }}"
+    HTTP_PROXY: "http://proxy.example.com:8080"
+    CUSTOM_VAR: "{{ some_variable }}"
+  
+  # TAGGING
+  tags:  # OPTIONAL - Play tags (string or list)
+    - "web"
+    - "production"
+  
+  # TASK SECTIONS
+  pre_tasks:  # OPTIONAL - Tasks before roles (list)
+    - name: "Pre-task example"
+      debug:
+        msg: "Running before roles"
+      tags: ["pre"]
+  
+  roles:  # OPTIONAL - Role list
+    - role: "common"
+      vars:
+        role_var: "value"
+      tags: ["common"]
+      when: "ansible_os_family == 'RedHat'"
+    
+    - name: "webserver"  # Role with explicit name
+      role: "nginx"
+      become: true
+      vars:
+        nginx_port: 80
+  
+  tasks:  # OPTIONAL - Main task list
+    - name: "Example task with all common keywords"  # OPTIONAL - Task name
+      action: "debug"  # Task action (module name or action plugin)
+      args:  # OPTIONAL - Module arguments (dictionary)
+        msg: "Hello World"
+        var: "ansible_hostname"
+      
+      # EXECUTION CONTROL
+      when: "ansible_os_family == 'RedHat'"  # OPTIONAL - Conditional execution
+      changed_when: "result.stdout != ''"  # OPTIONAL - Custom changed condition
+      failed_when: "result.rc != 0"  # OPTIONAL - Custom failure condition
+      
+      # LOOPS
+      loop:  # OPTIONAL - Loop items (list)
+        - "item1"
+        - "item2"
+        - "item3"
+      loop_control:  # OPTIONAL - Loop control options
+        loop_var: "outer_item"  # Custom loop variable name
+        index_var: "loop_index"  # Index variable name
+        label: "{{ outer_item.name }}"  # Display label
+        pause: 1  # Pause between iterations
+      
+      # Alternative loop syntax (legacy, but still valid)
+      # with_items: "{{ some_list }}"
+      # with_dict: "{{ some_dict }}"
+      # with_file: "{{ file_list }}"
+      
+      # ASYNC EXECUTION
+      async: 60  # OPTIONAL - Async timeout (seconds)
+      poll: 5  # OPTIONAL - Polling interval (seconds)
+      
+      # RETRIES
+      retries: 3  # OPTIONAL - Retry count
+      delay: 5  # OPTIONAL - Delay between retries (seconds)
+      until: "result.attempts < 3"  # OPTIONAL - Retry until condition
+      
+      # DELEGATION
+      delegate_to: "localhost"  # OPTIONAL - Delegate to specific host
+      delegate_facts: false  # OPTIONAL - Apply facts to delegated host
+      local_action: "debug msg='Local task'"  # OPTIONAL - Shorthand for delegate_to: localhost
+      run_once: false  # OPTIONAL - Run only once across all hosts
+      
+      # PRIVILEGE ESCALATION (inherits from play, can override)
+      become: true
+      become_method: "sudo"
+      become_user: "root"
+      
+      # CONNECTION OVERRIDES
+      connection: "ssh"
+      remote_user: "deploy"
+      port: 2222
+      
+      # ERROR HANDLING
+      ignore_errors: false
+      ignore_unreachable: false
+      any_errors_fatal: false
+      
+      # EXECUTION MODES
+      check_mode: false
+      diff: true
+      
+      # DEBUGGING
+      debugger: "on_failed"
+      
+      # VARIABLES AND ENVIRONMENT
+      vars:  # OPTIONAL - Task-specific variables
+        task_var: "value"
+      environment:  # OPTIONAL - Task environment variables
+        TASK_ENV: "value"
+      
+      # NOTIFICATIONS
+      notify:  # OPTIONAL - Handler notifications (string or list)
+        - "restart service"
+        - "reload config"
+      
+      # REGISTRATION
+      register: "task_result"  # OPTIONAL - Save result to variable
+      
+      # TAGGING
+      tags:  # OPTIONAL - Task tags
+        - "config"
+        - "never"  # Special tag to skip by default
+      
+      # MISC
+      no_log: false  # OPTIONAL - Suppress logging (boolean)
+      throttle: 2  # OPTIONAL - Task-level throttling
+      timeout: 30  # OPTIONAL - Task timeout (seconds)
+      
+      # MODULE DEFAULTS (can be set at task level)
+      module_defaults:
+        file:
+          mode: "0644"
+    
+    # BLOCK STRUCTURE EXAMPLE
+    - name: "Block example with error handling"
+      block:  # REQUIRED for block - Main tasks
+        - name: "Task that might fail"
+          command: "/bin/false"
+          register: "block_result"
+        
+        - name: "Another task in block"
+          debug:
+            msg: "This runs if previous task succeeds"
+      
+      rescue:  # OPTIONAL - Error handling tasks
+        - name: "Handle the error"
+          debug:
+            msg: "An error occurred: {{ ansible_failed_result.msg }}"
+      
+      always:  # OPTIONAL - Always run these tasks
+        - name: "Cleanup task"
+          debug:
+            msg: "This always runs"
+      
+      # Block-level keywords (same as task keywords)
+      when: "some_condition"
+      become: true
+      tags: ["error-handling"]
+    
+    # INCLUDE/IMPORT EXAMPLES
+    - name: "Include tasks from file"
+      include_tasks: "subtasks.yml"
+      vars:
+        included_var: "value"
+      when: "include_condition"
+      tags: ["included"]
+    
+    - name: "Import tasks from file"
+      import_tasks: "static_tasks.yml"
+      vars:
+        imported_var: "value"
+      tags: ["imported"]
+    
+    - name: "Include role"
+      include_role:
+        name: "dynamic_role"
+        tasks_from: "specific_tasks.yml"
+      vars:
+        role_var: "value"
+    
+    - name: "Import role"
+      import_role:
+        name: "static_role"
+      vars:
+        role_var: "value"
+  
+  post_tasks:  # OPTIONAL - Tasks after roles (list)
+    - name: "Post-task example"
+      debug:
+        msg: "Running after roles and tasks"
+      tags: ["post"]
+  
+  handlers:  # OPTIONAL - Handler definitions (list)
+    - name: "restart service"  # Handler name for notifications
+      service:
+        name: "apache2"
+        state: "restarted"
+      listen: "restart web service"  # OPTIONAL - Handler alias
+      
+    - name: "reload config"
+      command: "/usr/bin/reload-config"
+      notify: "validate config"  # Handlers can notify other handlers
+    
+    - name: "validate config"
+      command: "/usr/bin/validate-config"
+
+# ADDITIONAL PLAYS (playbooks can have multiple plays)
+- name: "Second play example"
+  hosts: "database"
+  become: true
+  
+  tasks:
+    - name: "Database task"
+      debug:
+        msg: "Configuring database servers"
+
+# ADVANCED FEATURES EXAMPLES
+
+# CONDITIONAL PLAYS
+- name: "Conditional play"
+  hosts: "web"
+  gather_facts: false
+  
+  tasks:
+    - name: "Only run on RedHat systems"
+      debug:
+        msg: "This is a RedHat system"
+      when: "ansible_os_family == 'RedHat'"
+
+# VARIABLE PRECEDENCE EXAMPLES
+- name: "Variable precedence demonstration"
+  hosts: "localhost"
+  vars:
+    common_var: "play_value"
+  vars_files:
+    - "group_vars/all.yml"
+  
+  tasks:
+    - name: "Show variable value"
+      debug:
+        var: "common_var"
+      vars:
+        common_var: "task_value"  # Highest precedence
+
+# ERROR HANDLING STRATEGIES
+- name: "Error handling strategies"
+  hosts: "all"
+  any_errors_fatal: false
+  max_fail_percentage: 20
+  
+  tasks:
+    - name: "Task with custom failure condition"
+      shell: "exit 0"
+      register: "result"
+      failed_when: "result.rc != 0 or 'error' in result.stdout"
+      changed_when: false
+    
+    - name: "Task that ignores errors"
+      command: "/bin/false"
+      ignore_errors: true
+    
+    - name: "Rescue block example"
+      block:
+        - command: "risky_command"
+      rescue:
+        - debug: msg="Handled error gracefully"
+
+# TEMPLATE AND FILE OPERATIONS
+- name: "File operations"
+  hosts: "all"
+  
+  tasks:
+    - name: "Template file"
+      template:
+        src: "config.j2"
+        dest: "/etc/myapp/config.conf"
+        owner: "root"
+        group: "root"
+        mode: "0644"
+        backup: true
+      notify: "restart myapp"
+    
+    - name: "Copy file"
+      copy:
+        src: "files/script.sh"
+        dest: "/usr/local/bin/script.sh"
+        mode: "0755"
+    
+    - name: "Create directory"
+      file:
+        path: "/opt/myapp"
+        state: "directory"
+        mode: "0755"
+  
+  handlers:
+    - name: "restart myapp"
+      service:
+        name: "myapp"
+        state: "restarted"
+
+...  # Optional YAML document end marker

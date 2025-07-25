@@ -1,0 +1,73 @@
+---
+# STIG Compliance Remediation Playbook
+# Generated automatically on 2025-07-14 11:41:03
+# DO NOT EDIT MANUALLY - Regenerate from STIG targets
+
+- name: STIG Compliance Remediation Playbook
+  hosts: all
+  become: true
+  gather_facts: true
+  vars:
+    stig_remediation_date: '2025-07-14T11:41:03.271289'
+    total_remediations: 5
+  tasks:
+  - name: Display STIG remediation information
+    debug:
+      msg:
+      - Starting STIG compliance remediation
+      - 'Total remediations: {{ total_remediations }}'
+      - 'Generated on: {{ stig_remediation_date }}'
+    tags:
+    - info
+  - name: === Unknown ===
+    debug:
+      msg: Starting unknown remediation
+    tags:
+    - unknown
+    - info
+  - name: 'CCE-83691-6: Prefer to use a 64-bit Operating System when supported'
+    command:
+      value: unknown
+    tags:
+    - stig
+    - security
+    - unknown
+    - severity_medium
+    - cce_83691_6
+  - name: 'CCE-27209-6: Verify and Correct File Permissions with RPM'
+    unknown:
+      value: unknown
+    tags:
+    - stig
+    - security
+    - unknown
+    - severity_high
+    - cce_27209_6
+  - name: 'CCE-27078-5: Disable Prelinking'
+    unknown:
+      value: unknown
+    tags:
+    - stig
+    - security
+    - unknown
+    - severity_medium
+    - cce_27078_5
+  - name: 'CCE-27157-7: Verify File Hashes with RPM'
+    unknown:
+      value: unknown
+    tags:
+    - stig
+    - security
+    - unknown
+    - severity_high
+    - cce_27157_7
+  - name: 'CCE-80545-7: Verify and Correct Ownership with RPM'
+    unknown:
+      value: unknown
+    tags:
+    - stig
+    - security
+    - unknown
+    - severity_high
+    - cce_80545_7
+  handlers: []

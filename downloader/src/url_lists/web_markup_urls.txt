@@ -1,0 +1,47 @@
+# Web and Markup Formats
+# Format: TYPE|URL|FILENAME
+# ✅ All URLs from public repositories and standards organizations
+
+# === HTML DOCUMENTS ===
+HTML|https://html5test.com/|html5-test-page.html
+HTML|https://httpbin.org/html|httpbin-sample.html
+HTML|https://raw.githubusercontent.com/h5bp/html5-boilerplate/main/src/index.html|html5-boilerplate.html
+HTML|https://raw.githubusercontent.com/microsoft/vscode/main/src/vs/workbench/contrib/welcome/browser/welcomePage.html|vscode-welcome-page.html
+
+# === CSS STYLESHEETS ===
+CSS|https://raw.githubusercontent.com/necolas/normalize.css/master/normalize.css|normalize-css.css
+CSS|https://raw.githubusercontent.com/twbs/bootstrap/main/dist/css/bootstrap.css|bootstrap-framework.css
+CSS|https://raw.githubusercontent.com/tailwindlabs/tailwindcss/master/src/index.css|tailwind-base.css
+
+# === MARKDOWN DOCUMENTATION ===
+MARKDOWN|https://raw.githubusercontent.com/github/docs/main/README.md|github-docs-readme.md
+MARKDOWN|https://raw.githubusercontent.com/microsoft/vscode/main/CONTRIBUTING.md|vscode-contributing.md
+MARKDOWN|https://raw.githubusercontent.com/torvalds/linux/master/Documentation/process/howto.rst|linux-kernel-howto.md
+MARKDOWN|https://raw.githubusercontent.com/nodejs/node/main/README.md|nodejs-readme.md
+
+# === ASCIIDOC DOCUMENTATION ===
+ASCIIDOC|https://raw.githubusercontent.com/asciidoctor/asciidoctor/main/README.adoc|asciidoctor-readme.adoc
+ASCIIDOC|https://raw.githubusercontent.com/spring-projects/spring-boot/main/README.adoc|spring-boot-readme.adoc
+
+# === RESTRUCTURED TEXT ===
+RESTRUCTURED|https://raw.githubusercontent.com/python/cpython/main/README.rst|cpython-readme.rst
+RESTRUCTURED|https://raw.githubusercontent.com/django/django/main/README.rst|django-readme.rst
+
+# === LATEX DOCUMENTS ===
+LATEX|https://raw.githubusercontent.com/latex3/latex2e/main/base/latex.ltx|latex-base.tex
+LATEX|https://raw.githubusercontent.com/posquit0/Awesome-CV/master/awesome-cv.cls|awesome-cv-template.tex
+
+# === BIBTEX BIBLIOGRAPHY ===
+BIBTEX|https://raw.githubusercontent.com/JabRef/jabref/main/src/test/resources/testbib/complex.bib|jabref-complex.bib
+
+# === RSS/ATOM FEEDS ===
+RSS|https://github.blog/feed/|github-blog-feed.rss
+ATOM|https://github.com/blog.atom|github-blog-atom.atom
+
+# === SVG GRAPHICS ===
+SVG|https://raw.githubusercontent.com/twbs/icons/main/icons/github.svg|bootstrap-github-icon.svg
+SVG|https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/python.svg|simple-icons-python.svg
+SVG|https://raw.githubusercontent.com/feathericons/feather/master/icons/home.svg|feather-home-icon.svg
+
+# === SITEMAP FILES ===
+SITEMAP|https://raw.githubusercontent.com/google/search-samples/master/recipe-app-website/sitemap.xml|google-recipe-sitemap.xml

@@ -1,0 +1,39 @@
+# Data Exchange Formats - JSON, CSV, YAML, etc.
+# Format: TYPE|URL|FILENAME
+# ✅ All URLs from public repositories and open data sources
+
+# === JSON DATA ===
+JSON|https://raw.githubusercontent.com/jdorfman/awesome-json-datasets/master/package.json|awesome-json-package.json
+JSON|https://raw.githubusercontent.com/github/gitignore/main/package.json|github-gitignore-package.json
+JSON|https://jsonplaceholder.typicode.com/posts/1|jsonplaceholder-post.json
+JSON|https://raw.githubusercontent.com/mdn/content/main/package.json|mdn-content-package.json
+JSON|https://api.github.com/repos/microsoft/vscode|github-vscode-repo.json
+
+# === CSV DATA ===
+# Public datasets (robots.txt compliant)
+CSV|https://raw.githubusercontent.com/datasets/population/master/data/population.csv|world-population-data.csv
+CSV|https://people.sc.fsu.edu/~jburkardt/data/csv/cities.csv|us-cities-data.csv
+CSV|https://raw.githubusercontent.com/datasets/co2-ppm/master/data/co2-mm-mlo.csv|co2-atmospheric-data.csv
+CSV|https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv|covid19-us-states.csv
+
+# === YAML CONFIGURATION ===
+YAML|https://raw.githubusercontent.com/docker/compose/main/docker-compose.yml|docker-compose-sample.yml
+YAML|https://raw.githubusercontent.com/kubernetes/examples/master/nginx-app.yaml|kubernetes-nginx-app.yaml
+YAML|https://raw.githubusercontent.com/github/super-linter/main/.github/workflows/ci.yml|github-actions-ci.yml
+YAML|https://raw.githubusercontent.com/ansible/ansible/devel/examples/playbooks/LAMP_haproxy/site.yml|ansible-lamp-playbook.yml
+
+# === TOML CONFIGURATION ===
+TOML|https://raw.githubusercontent.com/rust-lang/cargo/master/Cargo.toml|cargo-package.toml
+TOML|https://raw.githubusercontent.com/pypa/pip/main/pyproject.toml|pip-pyproject.toml
+TOML|https://raw.githubusercontent.com/python-poetry/poetry/master/pyproject.toml|poetry-pyproject.toml
+
+# === TSV DATA ===
+TSV|https://raw.githubusercontent.com/datasets/gdp/master/data/gdp.csv|gdp-data.tsv
+
+# === JSONL/NDJSON (JSON Lines) ===
+JSONL|https://raw.githubusercontent.com/nytimes/covid-19-data/master/mask-use/mask-use-by-county.csv|covid-mask-usage.jsonl
+
+# === PARQUET FILES ===
+# Note: These are examples from Apache projects (public domain)
+PARQUET|https://github.com/apache/parquet-testing/raw/master/data/alltypes_plain.parquet|parquet-alltypes-plain.parquet
+PARQUET|https://github.com/apache/parquet-testing/raw/master/data/nation.plain.parquet|parquet-nation-plain.parquet

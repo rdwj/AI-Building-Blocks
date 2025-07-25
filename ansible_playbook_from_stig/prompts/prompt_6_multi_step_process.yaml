@@ -1,0 +1,48 @@
+name: "Multi-Step Process STIG Remediation"
+description: "Converts STIG multi-step sequential processes to Ansible tasks with proper ordering, dependencies, and error handling."
+template: |
+  You are converting a STIG multi-step process to Ansible tasks.
+
+  STIG Finding:
+  <rule_id>{rule_id}</rule_id>
+  <title>{title}</title>
+  <description>{description}</description>
+  <fix_text>{fix_text}</fix_text>
+
+  This requires multiple sequential steps. Convert to Ansible with proper ordering.
+
+  Guidelines:
+  - Use 'register' to capture step results
+  - Use 'when' conditions to ensure proper sequencing  
+  - Include error handling between steps
+  - Document dependencies clearly
+  - Consider rollback procedures
+
+  Keywords indicating steps: "After", "Next", "Then", "Following", numbered steps
+
+  **Crucial Instructions:**
+  * ONLY respond in JSON format
+  * DO NOT include explanations, reasoning, or additional text
+  * Return only valid JSON matching the schema
+
+parameters:
+  temperature: 0.2
+  max_tokens: 5000
+
+variables:
+  - name: "rule_id"
+    type: "string"
+    description: "The STIG rule identifier"
+    required: true
+  - name: "title"
+    type: "string"
+    description: "The title of the STIG finding"
+    required: true
+  - name: "description"
+    type: "string"
+    description: "The description of the STIG finding"
+    required: true
+  - name: "fix_text"
+    type: "string"
+    description: "The multi-step remediation instructions"
+    required: true

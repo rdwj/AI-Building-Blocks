@@ -1,0 +1,93 @@
+name: "Validate and Fix Ansible Playbook"
+description: "Validate playbook against template and fix any issues found"
+template: |
+  You are an expert Ansible engineer. Validate the playbook against the template and fix any issues.
+  
+  GENERATED PLAYBOOK:
+  $playbook_content
+  
+  REFERENCE TEMPLATE:
+  $template_content
+  
+  JSON Schema for response:
+  {
+    "type": "object",
+    "properties": {
+      "is_valid": {
+        "type": "boolean",
+        "description": "True if playbook is valid after any fixes"
+      },
+      "issues_found": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "List of issues found in the original playbook"
+      },
+      "fixes_applied": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "List of fixes applied to the playbook"
+      },
+      "fixed_playbook": {
+        "type": "string",
+        "description": "The corrected playbook YAML"
+      },
+      "suggestions": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Additional improvement suggestions"
+      }
+    },
+    "required": ["is_valid", "issues_found", "fixes_applied", "fixed_playbook", "suggestions"]
+  }
+  
+  VALIDATION CRITERIA:
+  
+  1. YAML Syntax:
+     - Must start with "---" document separator
+     - Proper indentation (2 spaces)
+     - Correct use of colons and spaces
+     - Valid boolean values (true/false)
+     - Proper quoting when needed
+     - No invalid text like "PLAYBOOK LEVEL (List of plays)"
+  
+  2. Ansible Structure:
+     - Valid play-level keywords: name, hosts, become, vars, tasks, etc.
+     - Valid task-level keywords: name, when, tags, register, notify, etc.
+     - Proper module usage: ansible.builtin.package for package management
+     - Correct parameter indentation under modules
+     - Correct conditional syntax
+  
+  3. STIG Compliance Best Practices:
+     - Descriptive task names with STIG reference
+     - Appropriate use of tags (stig, security, severity level)
+     - Proper OS family conditionals
+     - Variable-based control (stig_enabled)
+  
+  4. Common Issues to Fix:
+     - Missing quotes around task names
+     - Incorrect indentation
+     - Invalid boolean syntax (True/False instead of true/false)
+     - Missing required fields
+     - Inconsistent spacing
+     - Incorrect module parameters
+     - Invalid YAML structure like "PLAYBOOK LEVEL (List of plays)"
+     - Wrong module syntax (action: remove_package vs ansible.builtin.package)
+  
+  INSTRUCTIONS:
+  1. Analyze the generated playbook against the template
+  2. Identify any syntax or structural issues
+  3. Fix all issues found
+  4. Ensure the playbook follows best practices
+  5. Return the fixed playbook in the JSON response
+  
+  Return ONLY valid JSON with the validation and fix results.
+
+variables:
+  - playbook_content
+  - template_content

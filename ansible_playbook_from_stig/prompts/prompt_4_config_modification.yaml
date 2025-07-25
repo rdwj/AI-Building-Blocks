@@ -1,0 +1,54 @@
+name: "Configuration Modification STIG Remediation"
+description: "Converts complex STIG configuration file modifications to appropriate Ansible tasks with proper module selection."
+template: |
+  You are converting complex STIG configuration changes to Ansible tasks.
+
+  STIG Finding:
+  <rule_id>{rule_id}</rule_id>
+  <title>{title}</title>
+  <description>{description}</description>
+  <fix_text>{fix_text}</fix_text>
+
+  This involves complex configuration file modifications. Convert to Ansible.
+
+  Module Selection:
+  - Simple line changes: "lineinfile" 
+  - Multi-line blocks: "blockinfile"
+  - Pattern replacement: "replace"
+  - Complex parsing: "template" with jinja2
+  - AIDE config: "replace" with regex
+
+  Common Config Files:
+  - /etc/aide.conf = AIDE configuration
+  - /etc/pam.d/* = PAM authentication
+  - /etc/sysconfig/* = System configuration
+  - /etc/security/* = Security settings
+
+  Always set backup_required=true for critical configs.
+
+  **Crucial Instructions:**
+  * ONLY respond in JSON format
+  * DO NOT include explanations, reasoning, or additional text
+  * Return only valid JSON matching the schema
+
+parameters:
+  - temperature: 0.2
+  - max_tokens: 5000
+
+variables:
+  - name: "rule_id"
+    type: "string"
+    description: "The STIG rule identifier"
+    required: true
+  - name: "title"
+    type: "string"
+    description: "The title of the STIG finding"
+    required: true
+  - name: "description"
+    type: "string"
+    description: "The description of the STIG finding"
+    required: true
+  - name: "fix_text"
+    type: "string"
+    description: "The configuration modification instructions"
+    required: true

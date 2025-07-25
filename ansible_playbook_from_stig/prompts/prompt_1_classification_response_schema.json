@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "enum": [
+        "SHELL_SCRIPT",
+        "PACKAGE_VERIFICATION",
+        "CONFIG_MODIFICATION",
+        "BOOT_CONFIGURATION", 
+        "MULTI_STEP_PROCESS",
+        "CRON_SCHEDULING",
+        "UNKNOWN"
+      ]
+    }
+  },
+  "required": ["category"]
+}

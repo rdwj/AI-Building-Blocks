@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "properties": {
+    "target_type": {
+      "type": "string",
+      "enum": ["boot_configuration"]
+    },
+    "target_name": {
+      "type": "string",
+      "description": "Boot modification name or identifier"
+    },
+    "ansible_module": {
+      "type": "string",
+      "description": "Ansible module to use (typically 'block' for multi-step boot changes)"
+    },
+    "ansible_params": {
+      "type": "object",
+      "description": "Parameters for the Ansible module including tasks array for block"
+    },
+    "requires_reboot": {
+      "type": "boolean",
+      "description": "Whether the changes require a system reboot (always true for boot changes)"
+    },
+    "critical_warning": {
+      "type": "string",
+      "description": "Warning message about the critical nature of boot configuration changes"
+    }
+  },
+  "required": ["target_type", "target_name", "ansible_module", "ansible_params", "requires_reboot", "critical_warning"]
+}

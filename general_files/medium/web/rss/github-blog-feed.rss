@@ -1,0 +1,2978 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>The GitHub Blog</title>
+	<atom:link href="https://github.blog/feed/" rel="self" type="application/rss+xml" />
+	<link>https://github.blog/</link>
+	<description>Updates, ideas, and inspiration from GitHub to help developers build and design software.</description>
+	<lastBuildDate>Wed, 23 Jul 2025 15:10:43 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.8.2</generator>
+
+<image>
+	<url>https://github.blog/wp-content/uploads/2019/01/cropped-github-favicon-512.png?fit=32%2C32</url>
+	<title>The GitHub Blog</title>
+	<link>https://github.blog/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+<site xmlns="com-wordpress:feed-additions:1">153214340</site>	<item>
+		<title>Solving the inference problem for open source AI projects with GitHub Models</title>
+		<link>https://github.blog/ai-and-ml/llms/solving-the-inference-problem-for-open-source-ai-projects-with-github-models/</link>
+		
+		<dc:creator><![CDATA[Sean Goedecke]]></dc:creator>
+		<pubDate>Wed, 23 Jul 2025 16:00:00 +0000</pubDate>
+				<category><![CDATA[AI & ML]]></category>
+		<category><![CDATA[LLMs]]></category>
+		<category><![CDATA[AI models]]></category>
+		<category><![CDATA[CI/CD]]></category>
+		<category><![CDATA[GitHub Models]]></category>
+		<guid isPermaLink="false">https://github.blog/?p=89716</guid>
+
+					<description><![CDATA[<p>How using GitHub’s free inference API can make your AI-powered open source software more accessible.</p>
+<p>The post <a href="https://github.blog/ai-and-ml/llms/solving-the-inference-problem-for-open-source-ai-projects-with-github-models/">Solving the inference problem for open source AI projects with GitHub Models</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><p>AI features can make an open source project shine. At least, until setup asks for a paid inference API key.&nbsp; Requiring contributors or even casual users to bring their own large language model (LLM) key stops adoption in its tracks:</p>
+
+
+
+<pre class="wp-block-code language-javascript"><code>$ my-cool-ai-tool
+Error: OPENAI_API_KEY not found</code></pre>
+
+
+
+<p>Developers may not want to buy a paid plan just to try out your tool, and self hosting a model can be too heavy for laptops or GitHub Actions runners.&nbsp;</p>
+
+
+
+<p>GitHub Models solves that friction with a free, OpenAI-compatible inference API that every GitHub account can use with no new keys, consoles, or SDKs required. In this article, we&rsquo;ll show you how to drop it into your project, run it in CI/CD, and scale when your community takes off.</p>
+
+
+
+<p>Let&rsquo;s jump in.</p>
+
+
+
+<h2 class="wp-block-heading" id="h-the-hidden-cost-of-just-add-ai">The hidden cost of &ldquo;just add AI&rdquo;</h2>
+
+
+
+<p>AI features feel ubiquitous today, but getting them running locally is still a challenge for a few reasons:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Paid APIs: </strong>The simplest path is to ask users for an OpenAI or Anthropic key. That&rsquo;s a non-starter for many hobbyists and students because paid APIs are too expensive.</li>
+
+
+
+<li><strong>Local models: </strong>Running a 2 B-parameter LLM can work for lightweight tasks, but anything that requires more intelligence will quickly blow past typical laptop memory &mdash; let alone the 14 GB container that backs a GitHub Actions runner.</li>
+
+
+
+<li><strong>Docker images and weights: </strong>You can bundle a model with your app, but distributing multi-gigabyte weights balloons install size and slows CI.</li>
+</ul>
+
+
+
+<p>Every additional requirement filters out potential users and contributors. What you need is an inference endpoint that&rsquo;s:</p>
+
+
+
+<ol class="wp-block-list">
+<li>Free for public projects</li>
+
+
+
+<li>Compatible with existing OpenAI SDKs</li>
+
+
+
+<li>Available wherever your code runs, like your laptop, server, or Actions runner</li>
+</ol>
+
+
+
+<p>That&rsquo;s what GitHub Models provides.</p>
+
+
+
+<h3 class="wp-block-heading" id="h-github-models-in-a-nutshell">GitHub Models in a nutshell</h3>
+
+
+
+<ul class="wp-block-list">
+<li><strong>What it is: </strong>A REST endpoint that speaks the chat/completions spec you already know.</li>
+
+
+
+<li><strong>What you get: </strong>A curated set of models (GPT-4o, DeepSeek-R1, Llama 3, and more) hosted by GitHub.</li>
+
+
+
+<li><strong>Who can call it: </strong>Anyone with a GitHub Personal Access Token (PAT), or a repository&rsquo;s built-in GITHUB_TOKEN when you opt-in via permissions.</li>
+
+
+
+<li><strong>How much it costs:</strong> Free tier for all personal accounts and OSS orgs; metered paid tier unlocks higher throughput and larger context windows.</li>
+</ul>
+
+
+
+<p>Because the API mirrors OpenAI&rsquo;s, any client that accepts a baseURL will work without code changes. This includes OpenAI-JS, OpenAI Python, LangChain, llamacpp, or your own curl script.</p>
+
+
+
+<h2 class="wp-block-heading" id="h-how-to-get-started-with-github-models">How to get started with GitHub Models</h2>
+
+
+
+<p>Since GitHub Models is compatible with the OpenAI <code>chat/completions</code> API, almost every inference SDK can use it. To get started, you can use the OpenAI SDK:</p>
+
+
+
+<pre class="wp-block-code langauge-javascript"><code>import OpenAI from "openai";
+
+const openai = new OpenAI({
+  baseURL: "https://models.github.ai/inference/chat/completions",
+  apiKey: process.env.GITHUB_TOKEN  // or any PAT with models:read
+});
+
+const res = await openai.chat.completions.create({
+  model: "openai/gpt-4o",
+  messages: [{ role: "user", content: "Hi!" }]
+});
+console.log(res.choices[0].message.content);</code></pre>
+
+
+
+<p>If you write your AI open source software with GitHub Models as an inference provider, all GitHub users will be able to get up and running with it just by supplying a GitHub Personal Access Token (PAT).</p>
+
+
+
+<p>And if your software runs in GitHub Actions, your users won&rsquo;t even need to supply a PAT. By requesting the <code>models: read</code> permission in your workflow file, the built-in GitHub token will have permissions to make inference requests to GitHub Models. This means you can build a whole array of AI-powered Actions that can be shared and installed with a single click. For instance:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Code review or PR triage bots</li>
+
+
+
+<li>Smart issue tagging workflows</li>
+
+
+
+<li>Weekly repository activity report generators</li>
+
+
+
+<li>And anything else that a GitHub Action can do</li>
+</ul>
+
+
+
+<p>Plus, using GitHub Models makes it easy for your users to set up AI inference. And that has another positive effect: it&rsquo;s easier for your <em>contributors</em> to set up AI inference as well. When anyone with a GitHub account can run your code end to end, you&rsquo;ll be able to get contributions from the whole range of GitHub users, not just the ones with an OpenAI key.</p>
+
+
+
+<h3 class="wp-block-heading" id="h-zero-configuration-ci-with-github-actions">Zero-configuration CI with GitHub Actions</h3>
+
+
+
+<p>Publishing an Action that relies on AI used to require users to add their inference API key as a GitHub Actions secret. Now you can ship a one-click install:</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code>yaml 
+
+# .github/workflows/triage.yml
+permissions:
+  contents: read
+  issues: write
+  models: read   # &#128072; unlocks GitHub Models for the GITHUB_TOKEN
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Smart issue triage
+        run: node scripts/triage.js</code></pre>
+
+
+
+<p>The runner&rsquo;s <code>GITHUB_TOKEN</code> carries the <code>models:read</code> scope, so your Action can call any model without extra setup. This makes it well suited for:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Automated pull request summaries</li>
+
+
+
+<li>Issue deduplication and tagging</li>
+
+
+
+<li>Weekly repository digests</li>
+
+
+
+<li>Anything else you can script in an Action</li>
+</ul>
+
+
+
+<h2 class="wp-block-heading" id="scaling-when-your-project-takes-off">Scaling when your project takes off</h2>
+
+
+
+<p>The GitHub Models inference API is free for everyone. But if you or your users want to do more inference than the free rate limits allow, you can turn on <a href="https://docs.github.com/en/billing/managing-billing-for-your-products/about-billing-for-github-models">paid inference</a> in your settings for significantly larger context windows and higher requests-per-minute.&nbsp;</p>
+
+
+
+<p>When your community grows, so will traffic. So it&rsquo;s important to consider the following:&nbsp;</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Requests per minute (RPM)</strong>: While the free tier offers default limits, the paid tier offers multiples higher.</li>
+
+
+
+<li><strong>Context window</strong>: Free tier tops out at standard model limits; paid enables 128k tokens on supported models.</li>
+
+
+
+<li><strong>Latency</strong>: The paid tier runs in its own separate deployment, so you&rsquo;re not in the same queue as free tier users.</li>
+</ul>
+
+
+
+<p>To get started, you can enable paid usage in <strong>Settings &gt; Models </strong>for your org or enterprise. Your existing clients and tokens will keep working (but they&rsquo;ll be faster and support bigger contexts).</p>
+
+
+
+<h2 class="wp-block-heading" id="take-this-with-you">Take this with you</h2>
+
+
+
+<p>LLMs are transforming how developers build and ship software, but requiring users to supply their own paid API key can be a barrier to entry. The magic only happens when the first <code>npm install</code>, <code>cargo run</code>, or <code>go test</code> just works.</p>
+
+
+
+<p>If you maintain an AI-powered open source codebase, you should consider adding GitHub Models as a default inference provider. Your users already have free AI inference via GitHub, so there&rsquo;s little downside to letting them use it with your code. That&rsquo;s doubly true if your project is able to run in GitHub Actions. The best API key is no API key!</p>
+
+
+
+<p>By making high-quality inference a free default for every developer on GitHub, GitHub Models gets rid of the biggest blocker to OSS AI adoption. And that opens the door to more contributions, faster onboarding, and happier users.</p>
+
+
+
+<p>Want to give it a try? <strong>Check out the</strong><a href="https://docs.github.com/en/github-models"><strong> GitHub Models documentation</strong></a><strong> or jump straight into the</strong><a href="https://docs.github.com/en/github-models/reference"><strong> API reference</strong></a> and start shipping AI features that just work today.</p>
+
+
+
+<div class="wp-block-group post-content-cta has-global-padding is-layout-constrained wp-block-group-is-layout-constrained">
+<p>Want to give it a try? <strong>Check out the</strong><a href="https://docs.github.com/en/github-models"><strong> GitHub Models documentation</strong></a><strong> or jump straight into the</strong><a href="https://docs.github.com/en/github-models/reference"><strong> API reference</strong></a> and start shipping AI features that just work today.</p>
+</div>
+</body></html>
+<p>The post <a href="https://github.blog/ai-and-ml/llms/solving-the-inference-problem-for-open-source-ai-projects-with-github-models/">Solving the inference problem for open source AI projects with GitHub Models</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></content:encoded>
+					
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">89716</post-id>	</item>
+		<item>
+		<title>We need a European Sovereign Tech Fund</title>
+		<link>https://github.blog/open-source/maintainers/we-need-a-european-sovereign-tech-fund/</link>
+		
+		<dc:creator><![CDATA[Felix Reda]]></dc:creator>
+		<pubDate>Wed, 23 Jul 2025 07:01:00 +0000</pubDate>
+				<category><![CDATA[Maintainers]]></category>
+		<category><![CDATA[News & insights]]></category>
+		<category><![CDATA[Open Source]]></category>
+		<category><![CDATA[Policy]]></category>
+		<category><![CDATA[funding]]></category>
+		<category><![CDATA[open source]]></category>
+		<category><![CDATA[policy]]></category>
+		<category><![CDATA[supply chain security]]></category>
+		<guid isPermaLink="false">https://github.blog/?p=89660</guid>
+
+					<description><![CDATA[<p>Open source software is critical infrastructure, but it’s underfunded. With a new feasibility study, GitHub’s developer policy team is building a coalition of policymakers and industry to close the maintenance funding gap.</p>
+<p>The post <a href="https://github.blog/open-source/maintainers/we-need-a-european-sovereign-tech-fund/">We need a European Sovereign Tech Fund</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><p>Open source software <a href="https://github.blog/open-source/social-impact/software-as-a-public-good/">is open digital infrastructure</a> that our economies and societies rely on. Nevertheless, open source maintenance continues to be underfunded, especially when compared to physical infrastructure like roads or bridges. So we ask: how can the public sector better support open source maintenance?&nbsp;</p>
+
+
+
+<p>As part of our efforts to support developers, GitHub&rsquo;s developer policy team has commissioned a study from <a href="https://openforumeurope.org/">Open Forum Europe</a>, <a href="https://www.isi.fraunhofer.de/en.html">Fraunhofer ISI</a> and the <a href="https://www.eui.eu/en/home">European University Institute</a> that explores how one of the open source world&rsquo;s most successful government programs, the German <a href="https://www.sovereign.tech/">Sovereign Tech Agency</a>, can be scaled up to the European Union level. <a href="http://eu-stf.openforumeurope.org/">That study</a> was published today. Here&rsquo;s what it says and what you can do to help make the EU Sovereign Tech Fund (EU-STF) a reality.</p>
+
+
+
+<h2 class="wp-block-heading" id="h-the-maintenance-challenge">The maintenance challenge</h2>
+
+
+
+<p>There is a profound mismatch between the importance of open source maintenance and the public attention it receives. The demand-side value of open source software to the global economy is <a href="https://www.hbs.edu/ris/Publication%20Files/24-038_51f8444f-502c-4139-8bf2-56eb4b65c58a.pdf">estimated at $8.8 trillion</a>, and the European Commission&rsquo;s own research shows that OSS contributes a <a href="https://op.europa.eu/en/publication-detail/-/publication/29effe73-2c2c-11ec-bd8e-01aa75ed71a1/language-en">minimum of &euro;65-95 billion</a> to the EU economy annually. Basic open source technologies, such as libraries, programming languages, or software development tools, are used in all sectors of the economy, society, and public administrations.</p>
+
+
+
+<figure class="wp-block-table"><table class="has-fixed-layout"><thead><tr><th>Open source is everywhere</th><th>Open source is valuable</th><th>Open source is underfinanced</th></tr></thead><tbody><tr><td>96% of all code bases contain OSS</td><td>$8.8T demand-side value to global economy</td><td>1/3 of OSS maintainers are unpaid</td></tr><tr><td>77% of a given code base is OSS</td><td>&euro;65-95M minimum contribution to annual EU GDP</td><td>1/3 are the only maintainer of their OSS project</td></tr></tbody></table></figure>
+
+
+
+<p>The flip side of everybody benefiting from this open digital infrastructure is that too few feel responsible for paying the tab. The Sovereign Tech Agency&rsquo;s <a href="https://www.sovereign.tech/news/what-open-source-maintainers-shared-with-us">survey of over 500 OSS maintainers</a> showed that a third of them are not paid at all for their maintenance work, but would like to be. Another third earns some income from OSS maintenance, but is not able to make a living off this work. Perhaps even more alarmingly, a third of respondents are solo maintainers, and almost three quarters of surveyed projects are maintained by three people or fewer. As prominent security incidents such as the xz backdoor or the Log4Shell vulnerability have shown in recent years, it can mean serious risks for the OSS community&rsquo;s health and the security of our global software ecosystem if too much is put on the shoulders of small, overworked, and underappreciated teams.</p>
+
+
+
+<p>At GitHub, we are helping address this open source sustainability challenge through <a href="https://github.com/sponsors">GitHub Sponsors</a>, the <a href="https://resources.github.com/github-secure-open-source-fund/">GitHub Secure Open Source Fund</a>, free security tooling for maintainers, and other initiatives. Yet we recognize that there is a significant gap between the immense public value of open source software and the funding that is available to maintain it, a gap that this research is seeking to address.</p>
+
+
+
+<h2 class="wp-block-heading" id="h-designing-an-impactful-fund">Designing an impactful fund</h2>
+
+
+
+<p>Building on the success story of the German Sovereign Tech Agency, which has invested over &euro;23 million in 60 OSS projects in its first two years of operation (2022-2024), the EU-STF should have five main areas of activity:</p>
+
+
+
+<ol class="wp-block-list">
+<li>Identifying the EU&rsquo;s most critical open source dependencies,</li>
+
+
+
+<li>Investments in maintenance,</li>
+
+
+
+<li>Investments in security,</li>
+
+
+
+<li>Investments in improvement,</li>
+
+
+
+<li>Strengthening the open source ecosystem.</li>
+</ol>
+
+
+
+<p>The study proposes two alternative institutional setups for the EU-STF: either the creation of a centralized EU institution (the moonshot model), or a consortium of EU member states that provide the initial funding and apply for additional resources from the EU budget (the pragmatic model). In both cases, to make the fund a success, the minimum contribution from the upcoming EU multiannual budget should be no less than &euro;350 million. This would not be enough to meet the open source maintenance need, but it could form the basis for leveraging industry and national government co-financing that would make a lasting impact.</p>
+
+
+
+<p>Equipped with the learnings from the German Sovereign Tech Agency and other government open source programs, such as the US Open Technology Fund or the EU&rsquo;s Next Generation Internet initiative, the study identified seven design criteria that the EU-STF must meet:</p>
+
+
+
+<ol class="wp-block-list">
+<li><strong>Pooled financing</strong>. To address the maintenance funding gap, industry, national governments and the EU should all be able to put money into the same pot. It is not in the interest of overworked open source maintainers to have to research and apply to dozens of separate funds, all with slightly different funding criteria. That&rsquo;s why GitHub&rsquo;s Secure Open Source Fund pools funding from many industry partners into one coherent program. The EU-STF should follow the same logic and be capable of collecting contributions from industry, national governments and the EU budget alike.</li>
+
+
+
+<li><strong>Low bureaucracy</strong>. If you&rsquo;re one of those aforementioned unpaid solo maintainers, the last thing you need is to sink several days of work into a complicated application process with an uncertain outcome that many EU funding programs are unfortunately known for. The EU-STF should combine a lightweight application process along with its own research to identify and proactively contact critical OSS infrastructure projects. Funding recipients should have limited reporting requirements to make sure that they can spend their time on improving the health of their OSS projects, not jumping through administrative hoops.</li>
+
+
+
+<li><strong>Political independence</strong>. Public funding programs often follow technological trends, such as blockchain, quantum computing or AI. Open source maintenance often gets overlooked, because it is neither a new development nor limited to a particular economic sector: it is foundational to all of them. An EU-STF has to be politically independent enough to shield it from frequent pivots to new, politically salient topics, and instead keep it focused on the mission of securing and maintaining our public software infrastructure.</li>
+
+
+
+<li><strong>Flexible funding</strong>. There is no one-size-fits-all model for open source maintenance. Many maintainers are <a href="https://opensourcefundingsurvey2024.com/">hired by companies</a> to work on OSS as part of their day jobs. Others maintain projects in their free time. Some critical OSS projects are governed by a foundation or other nonprofit, yet others are made up of a loose collective of individuals scattered across the globe. The EU-STF should be able to fund individuals, nonprofits or companies in all of those cases for their OSS maintenance work. Living in the EU should not be a requirement for receiving funding, just like the German Sovereign Tech Agency does not restrict funding to Germans. To benefit the EU economy and society, software doesn&rsquo;t have to be Made in the EU, as long as it is Made Open Source.</li>
+
+
+
+<li><strong>Community focus</strong>. A fund that is solely run by career public servants is going to struggle to develop the expertise and build the trust with the open source ecosystem that are necessary to make a positive impact on open source sustainability. The EU-STF should collaborate with the open source community to co-define funding priorities and design the funding process.</li>
+
+
+
+<li><strong>Strategic alignment</strong>. To be attractive enough to the European Union to justify spending a budget of a minimum of &euro;350 million on open source sustainability, the EU-STF has to demonstrate a positive impact on the EU&rsquo;s strategic goals. The study lays out in detail how open source maintenance funding contributes to economic competitiveness, digital sovereignty (that is, the ability of individuals, companies and the state to use and design technology according to their own needs), and cybersecurity, for example by helping companies comply with their supply chain security obligations for open source components under the <a href="https://github.blog/open-source/maintainers/what-the-eus-new-software-legislation-means-for-developers/">Cyber Resilience Act</a>.</li>
+
+
+
+<li><strong>Transparency</strong>. As with any case of spending taxpayer money, the EU-STF must meet the highest standards of transparency in governance and funding decisions, to ensure that it can earn the trust not just of the open source community, but also of the policymakers who approve its budget.</li>
+</ol>
+
+
+
+<h2 class="wp-block-heading" id="h-making-the-eu-sovereign-tech-fund-a-reality">Making the EU Sovereign Tech Fund a reality</h2>
+
+
+
+<p>Right now, the European Union is ramping up the negotiations on its new multi-year budget for the period of 2028-2035, the <a href="https://commission.europa.eu/strategy-and-policy/eu-budget/long-term-eu-budget/eu-budget-2028-2034_en">Multiannual Financial Framework</a>. GitHub&rsquo;s developer policy team is presenting the findings of the study to EU legislators and mobilizing the support of industry partners to demonstrate the need for a novel instrument that allows the public and private sectors to work together on securing our open source infrastructure. We are delighted to partner with Mercedes-Benz, who contributed a foreword to the study and have been vocal supporters of the idea of an EU Sovereign Tech Fund from its inception.</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p>Without sustainable funding and support, it is entirely foreseeable that ever more open source software projects will not receive the diligence and scrutiny appropriate for software of such criticality.</p>
+<cite>Magnus &Ouml;stberg, Chief Software Officer, Mercedes-Benz AG; Markus Rettstatt, Vice President Software Defined Car, Tech Innovation GmbH</cite></blockquote>
+
+
+
+<p>The <a href="https://commission.europa.eu/strategy-and-policy/eu-budget/long-term-eu-budget/eu-budget-2028-2034_en#legal-documents">first legislative proposals</a> for the EU budget have just hit the desks of the European Parliament and the national governments in the Council of Ministers. Whether you are an individual, a member of an open source organization, or a company representative, you can voice your support for the creation of the EU-STF to the European Commission, your elected representatives in the European Parliament, and your national government. If you&rsquo;re at EU Open Source Summit Europe on August 26, you can <a href="https://osseu2025.sched.com/event/25Vqa/securing-europes-open-source-infrastructure-a-technical-case-for-an-eu-wide-sovereign-tech-fund-nick-gates-openforum-europe-felix-reda-github">join us for a presentation of the study and community discussion</a>.</p>
+
+
+
+<div class="wp-block-group post-content-cta has-global-padding is-layout-constrained wp-block-group-is-layout-constrained">
+<p><strong>Explore</strong> <a href="https://github.blog/open-source/">open source blog posts &gt;</a></p>
+</div>
+</body></html>
+<p>The post <a href="https://github.blog/open-source/maintainers/we-need-a-european-sovereign-tech-fund/">We need a European Sovereign Tech Fund</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></content:encoded>
+					
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">89660</post-id>	</item>
+		<item>
+		<title>Debugging UI with AI: GitHub Copilot agent mode meets MCP servers</title>
+		<link>https://github.blog/ai-and-ml/github-copilot/debugging-ui-with-ai-github-copilot-agent-mode-meets-mcp-servers/</link>
+		
+		<dc:creator><![CDATA[Chris Reddington]]></dc:creator>
+		<pubDate>Tue, 22 Jul 2025 21:58:35 +0000</pubDate>
+				<category><![CDATA[AI & ML]]></category>
+		<category><![CDATA[GitHub Copilot]]></category>
+		<category><![CDATA[agent mode]]></category>
+		<category><![CDATA[agentic AI]]></category>
+		<category><![CDATA[MCP]]></category>
+		<category><![CDATA[Rubber Duck Thursdays]]></category>
+		<guid isPermaLink="false">https://github.blog/?p=89676</guid>
+
+					<description><![CDATA[<p>Explore how I use agentic tools like GitHub Copilot agent mode and the Playwright MCP server to accelerate troubleshooting and debugging of UI issues, while revisiting the importance of clear requirements.</p>
+<p>The post <a href="https://github.blog/ai-and-ml/github-copilot/debugging-ui-with-ai-github-copilot-agent-mode-meets-mcp-servers/">Debugging UI with AI: GitHub Copilot agent mode meets MCP servers</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><p>If you&rsquo;ve ever dusted off an old project and thought, &ldquo;How did I leave things in such a mess?&rdquo;, you&rsquo;re in good company.</p>
+
+
+
+<p>On my latest <strong>Rubber Duck Thursdays</strong> stream, I dove back into my OctoArcade Next.js app, only to rediscover a host of UI gremlins. So, we experimented with something that felt like magic: letting GitHub Copilot agent mode, paired with Playwright MCP server, identify and fix UI bugs. Along the way, I learned (again) how crucial it is to provide AI tools like Copilot with clear, detailed requirements.&nbsp;</p>
+
+
+
+<p>Let&rsquo;s walk through how I used these agentic tools to debug, test, and (mostly) solve some tricky layout issues, while covering practical tips for anyone looking to leverage Copilot&rsquo;s agent workflows in real-world projects.</p>
+
+
+
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe title="Rubber Duck Thursdays - Copilot agent mode, coding agent and MCP servers" width="500" height="281" src="https://www.youtube.com/embed/n2Np16Grulo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div></figure>
+
+
+
+<aside data-color-mode="light" data-dark-theme="dark" data-light-theme="light_dimmed" class="wp-block-group post-aside--large p-4 p-md-6 is-style-light-dimmed has-global-padding is-layout-constrained wp-block-group-is-layout-constrained is-style-light-dimmed--1" style="border-top-width:4px">
+<h3 class="wp-block-heading h5-mktg gh-aside-title is-typography-preset-h5" id="h-useful-links" style="margin-top:0">&#128161; Useful Links</h3>
+
+
+
+<ul class="wp-block-list">
+<li><a href="https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode">Use agent mode in VS Code</a></li>
+
+
+
+<li><a href="https://code.visualstudio.com/docs/copilot/chat/mcp-servers">Use MCP servers in VS Code</a></li>
+
+
+
+<li><a href="https://github.com/microsoft/playwright-mcp">Playwright MCP</a></li>
+</ul>
+</aside>
+
+
+
+<h2 class="wp-block-heading" id="h-the-setup-revisiting-octoarcade-and-its-bugs">The setup: Revisiting OctoArcade (and its bugs)</h2>
+
+
+
+<p>I started by firing up OctoArcade, my collection of GitHub-themed mini-games built with Next.js and TypeScript. Within minutes, I realized I had been introducing a new game to the app, but hadn&rsquo;t quite gotten around to fixing some bugs.</p>
+
+
+
+<p>Here&rsquo;s what we accomplished in one stream session:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Problem:</strong> Navigation header overlapping game content across all games</li>
+
+
+
+<li><strong>Solution:</strong> Copilot agent mode and Playwright MCP server identified the issue through visual inspection, and implemented a global header fix</li>
+
+
+
+<li><strong>Bonus:</strong> Fixed some additional UI issues (unintended gaps between the game canvas and footer) discovered during testing</li>
+
+
+
+<li><strong>Result:</strong> Hands-off debugging that solved problems I&rsquo;d stepped away from, and had previously spent some cycles on fixing</li>
+</ul>
+
+
+
+<p>Let me walk you through how this worked and what you can learn for your own debugging workflows.</p>
+
+
+
+<h2 class="wp-block-heading" id="h-making-sure-copilot-custom-instructions-are-set-up">Making sure Copilot custom instructions are set up</h2>
+
+
+
+<p>With my environment set up in VS Code Insiders, I checked that my <a href="https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot">Copilot custom instruction files</a> (<code>.github/copilot-instructions.md</code>, <code>*.instructions.md</code> files) were up to date. This is usually my first step before using any agentic features, as these instructions provide important context on my expectations, coding styles, and working practices &mdash; influencing how Copilot responds and interacts with my codebase.</p>
+
+
+
+<p>In my last blog post, we spent time exploring recommended practices when setting up Copilot custom instructions. We also covered how the <code>copilot-setup-steps.yml</code> sets up a developer environment when using Copilot coding agent. Take a look at <a href="https://github.blog/ai-and-ml/github-copilot/from-chaos-to-clarity-using-github-copilot-agents-to-improve-developer-workflows/">that blog post on using GitHub&#8239;Copilot coding agents to refactor and automate developer workflows</a> to learn more.</p>
+
+
+
+<aside data-color-mode="light" data-dark-theme="dark" data-light-theme="light_dimmed" class="wp-block-group post-aside--large p-4 p-md-6 is-style-light-dimmed has-global-padding is-layout-constrained wp-block-group-is-layout-constrained is-style-light-dimmed--2" style="border-top-width:4px">
+<h3 class="wp-block-heading h5-mktg gh-aside-title is-typography-preset-h5" id="h-did-you-know" style="margin-top:0">&#128161; Did you know?</h3>
+
+
+
+<p>Learn more about instruction files:</p>
+
+
+
+<ul class="wp-block-list">
+<li><a href="https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot?tool=vscode">Adding repository custom instructions for GitHub Copilot</a> (with instructions for different editors)</li>
+
+
+
+<li><a href="https://docs.github.com/en/copilot/how-tos/agents/copilot-coding-agent/best-practices-for-using-copilot-to-work-on-tasks#adding-custom-instructions-to-your-repository">Adding custom instructions to your repository</a> is my go-to reference, as I personally find the structure of the file very helpful</li>
+
+
+
+<li><a href="https://github.com/github/awesome-copilot">github/awesome-copilot</a> has a collection of community contributed instructions, reusable prompts, chat modes and more</li>
+</ul>
+</aside>
+
+
+
+<p>Always keep your Copilot custom instructions current (including descriptions of your repository structure, common steps like building and testing, and any expectations before making commits). Copilot agents depend on this context to deliver relevant changes. When I think my instructions file is out of date, I typically prompt Copilot in agent mode with a prompt along the lines of:</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code>Based on the #codebase, please can you update the custom instructions file for accuracy? Please make sure to keep the structure (i.e. headings etc.) as-is. Thanks!</code></pre>
+
+
+
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe title="Keeping Copilot Instruction files up to date" width="500" height="281" src="https://www.youtube.com/embed/SwpFAxCtdbU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div></figure>
+
+
+
+<p>In some of my instruction files, I&rsquo;ve even instructed Copilot to keep key documentation (<code>README</code>, <code>.github/copilot-instructions.md</code>, etc.) up to date when it makes significant changes (like refactoring files or adding new features).</p>
+
+
+
+<h2 class="wp-block-heading" id="h-agentic-debugging-ui-troubleshooting-with-playwright-mcp">Agentic debugging: UI troubleshooting with Playwright MCP</h2>
+
+
+
+<p><a href="https://github.com/microsoft/playwright">Playwright MCP server</a> is a powerful tool for end-to-end testing and UI automation. Since it&rsquo;s an MCP server, you can access it through your favorite AI tools that support the Model Context Protocol, like Copilot agent mode and Copilot coding agent! In agent mode, Copilot can use Playwright&rsquo;s structured tools to:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Load web pages</li>
+
+
+
+<li>Simulate user actions (clicks, navigation)</li>
+
+
+
+<li>Inspect rendered layouts without needing vision models</li>
+</ul>
+
+
+
+<p>This means you can ask Copilot to &ldquo;see&rdquo; what a human would, spot layout issues, and even propose CSS or component fixes. To get started with Playwright, it&rsquo;s as easy as adding the below to your MCP configuration:</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code>{
+
+&nbsp;&nbsp;"mcpServers": {
+
+&nbsp;&nbsp;&nbsp;&nbsp;"playwright": {
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"command": "npx",
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"args": ["@playwright/mcp@latest"]
+
+&nbsp;&nbsp;&nbsp;&nbsp;}
+
+&nbsp;&nbsp;}
+
+}</code></pre>
+
+
+
+<p>Once you have started the MCP server, you should see that Copilot now has access to a suite of new tools for browser interaction like:</p>
+
+
+
+<ul class="wp-block-list">
+<li><code>browser_snapshot</code> &ndash; Capture accessibility snapshots of pages</li>
+
+
+
+<li><code>browser_navigate</code> &ndash; Navigate to URLs</li>
+
+
+
+<li><code>browser_click</code>, <code>browser_type</code>, <code>browser_hover</code> &ndash; Interact with elements</li>
+
+
+
+<li><code>browser_resize</code> &ndash; Test different viewport sizes</li>
+
+
+
+<li><code>browser_take_screenshot</code> &ndash; Visual documentation</li>
+
+
+
+<li>And many more: You can find the full list in the <a href="https://github.com/microsoft/playwright-mcp?tab=readme-ov-file#tools">tools section of Playwright MCP server&rsquo;s README</a></li>
+</ul>
+
+
+
+<p>With access to a new set of tools to solve the UI challenges, it was time to point Copilot at the problem. Meaning, I now had the task of clearly defining the requirements in my initial prompt&hellip;easier said than done.</p>
+
+
+
+<h2 class="wp-block-heading" id="h-the-debugging-journey-real-time-fixes-and-lessons-learned">The debugging journey: Real-time fixes and lessons learned</h2>
+
+
+
+<h3 class="wp-block-heading" id="h-1-describe-the-problem-and-let-agent-mode-work">1. Describe the problem and let agent mode work</h3>
+
+
+
+<p>I noticed that, in several pages, the main content was tucked behind the navigation bar. This was particularly noticeable on any pages that rendered games. On some pages (like OctoPong), I saw inconsistent spacing between game elements and the footer.</p>
+
+
+
+<p>To get Copilot agent mode started, I aimed to be as explicit as possible in my prompts:</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code>I have spotted that there is a bit of a UI error. It seems like the main content of any page "starts" behind the navigation bar. This is more evident on the games like octosnap, octopong and octobrickbreaker.
+
+Can you take a look at the site using Playwright (you'll need to spin up an instance of the server), take a look at the pages, and then investigate? Thanks!</code></pre>
+
+
+
+<p>It loaded up the pages to configure each game, but didn&rsquo;t try loading the games themselves (so missed some context). I followed up in a separate prompt:</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code>Sorry, I wanted you to take a look when a game is actually loaded too. Can you play the game Octopong and Octosnap &ndash; I think it&rsquo;s very visible in those? Do that before you build a plan.</code></pre>
+
+
+
+<p><strong>Lesson:</strong> <a href="https://github.blog/ai-and-ml/github-copilot/beyond-prompt-crafting-how-to-be-a-better-partner-for-your-ai-pair-programmer/">The more context and specifics you provide, the better Copilot performs</a>, just like a teammate.&nbsp;</p>
+
+
+
+<p>After spinning up Playwright MCP, I watched Copilot:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Launch a browser</li>
+
+
+
+<li>Navigate through the app&rsquo;s pages</li>
+
+
+
+<li>Diagnose where and why content was hidden or misaligned</li>
+</ul>
+
+
+
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe title="Using Playwright MCP Server with Copilot agent mode" width="500" height="281" src="https://www.youtube.com/embed/nfDa0QObQhs?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div></figure>
+
+
+
+<p>Ultimately, we had to evolve the way that we were rendering the navigation bar. The current implementation had a separate navigation bar (DynamicHeader component) on each of the game pages with its own local state, overlaying the &ldquo;main&rdquo; navigation bar. Instead, Copilot suggested using the navigation bar from the root layout and passing the relevant context up, so that only one component is updated and the root layout gets updated as needed..</p>
+
+
+
+<p><strong>Hands-off debugging:</strong> At this stage, I was literally hands off, watching as Copilot tried fixes, reran the app, and checked the results visually. As it implemented the new approach with a new header-context file, Copilot recognized linting errors, and iteratively fixed them.</p>
+
+
+
+<h3 class="wp-block-heading" id="h-2-iterating-on-ui-requirements">2. Iterating on UI requirements</h3>
+
+
+
+<p>Fixing bugs is rarely one-and-done. I noticed another bug, specifically for OctoPong. There was a small gap between the game board and the footer, which didn&rsquo;t show up clearly on the livestream, but was noticeable on my own screen. Fortunately as developers, we&rsquo;re used to small iterative and incremental improvements.</p>
+
+
+
+<p>So once again, I turned to Copilot. However, as I iterated, Copilot would make changes, but they didn&rsquo;t fully achieve what I needed. The problem wasn&rsquo;t Copilot though; it was me and my unclear requirements.</p>
+
+
+
+<figure class="wp-block-table"><table class="has-fixed-layout"><thead><tr><th><strong>Prompt</strong></th><th><strong>Result</strong></th><th><strong>Reflection</strong></th></tr></thead><tbody><tr><td>I&rsquo;ve noticed a minor UI bug on the Octopong game page (this only happens when the game is actually live). There is a small space between the game itself and the footer. I want the game to extend all the way to the footer (not necessarily push the footer beyond the fold though). Can you use the Playwright MCP server to explore what&rsquo;s going on, build a structured plan / todo list to resolve the actions? Thanks</td><td>It achieved what I had asked, but the pong paddles no longer displayed (which was a side effect of the container now being 0 height). Through no fault of Copilot, I hadn&rsquo;t asked for the game components (e.g. Paddle/Ball) to be visible in the game area. The game was still playing (in a 0 height container), but the key components were not visible to me as the player.</td><td>&ndash; Good clarity on tools to use.<br><br>&ndash; Good clarity on asking for a plan (as Copilot asked me to review/approve before making the changes).<br><br>&ndash; Lack of clarity on the full requirements (i.e. having the game components be visible and working).</td></tr><tr><td>Just to jump in, can you test again? It looks like the paddles and the ball are now missing as a result of the change?</td><td>The game began working again, however it introduced the gap that we early sought to resolve.</td><td>&ndash; Solved the immediate challenge of making game components visible.<br><br>&ndash; Lack of clarity that the earlier requirements were still required.</td></tr><tr><td>Can you check the game once again? The spacing issues are still there.<br><br>The requirements are:<br><br>1. The game is playable (i.e. balls and paddles are visible and one paddle is usable for the player).<br>2. The game area covers the &ldquo;full space&rdquo; between header and footer.<br><br>I think the space problem is back. You must meet both requirements please, thanks.</td><td>Once again, Copilot fulfilled the requirements! But this time, the game extended beyond the viewport, and so a user would have to scroll to move the paddle to prevent the ball scoring against them (which is not an ideal experience!).</td><td>&ndash; Solved all of the requirements we outlined<br><br>&ndash; Lack of clarity in the actual requirements (that the game should not extend beyond the viewport).</td></tr><tr><td>Thanks! Sorry, I forgot to give you a third requirement. Your solution makes the game extend beyond the fold,&nbsp; which makes the user have to &ldquo;scroll&rdquo; to play the game.<br><br>These are the requirements you must meet:<br><br>1. The game is fully functional (paddles/ball working and visible).<br>2. There is no space between the game and the footer.<br>3. The game must not extend beyond the fold (i.e. the user must not have to scroll to see any part of the game board. So the game board at maximum must end at the bottom of the screen). The footer can be below the fold.<br><br>Please feel free to reword/rewrite my requirements, as I struggled to define&nbsp; them. Make sure you confirm with me the requirements are accurate.</td><td>Success! After we prompted Copilot with our full requirements, it was able to think through and iteratively approach the problem to get to the working layout.</td><td>&ndash; A full set of requirements solved all of the requirements we outlined.<br><br>&ndash; While there were some minor issues in the mobile view, (a small gap between the navigation bar and game), other pages hadn&rsquo;t yet been optimised for mobile. Since this isn&rsquo;t a priority, it can be a task for later.&nbsp;</td></tr></tbody></table></figure>
+
+
+
+<p>Each prompt brought incremental improvements, but also new side effects (like games extending past the viewport or missing paddles in Pong).</p>
+
+
+
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe loading="lazy" title="Clear requirements are important when prompting Copilot" width="500" height="281" src="https://www.youtube.com/embed/XAY6kaWebz4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div></figure>
+
+
+
+<p><strong>Key insight:</strong>&nbsp;Context is important, and making sure that we clearly articulate our requirements is a key part of that. The biggest challenge wasn&rsquo;t technical, but precisely describing what I wanted. Getting the requirements right took several attempts&hellip;And lots of feedback from our viewers in the livestream chat.&nbsp;</p>
+
+
+
+<h2 class="wp-block-heading" id="h-practical-tips-working-with-copilot-agent-mode-and-mcp-servers">Practical tips: Working with Copilot agent mode and MCP servers</h2>
+
+
+
+<p>Here&rsquo;s what I learned (or relearned) during this session:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Keep Copilot custom instructions up to date:</strong> The agent relies on these files for repo context and best practices.</li>
+
+
+
+<li><strong>Give Copilot more power with MCP:</strong> Playwright MCP enables true end-to-end testing and UI inspection, making it invaluable for debugging complex web apps.</li>
+
+
+
+<li><strong>Be explicit with requirements:</strong> Like any collaborator, Copilot only knows what you tell it. List out your must-haves, expected behaviors, and edge cases.</li>
+
+
+
+<li><strong>Iterate in small steps:</strong> Commit changes frequently. It&rsquo;s easier to roll back and diagnose issues when your history is granular.</li>
+</ul>
+
+
+
+<h2 class="wp-block-heading" id="h-conclusion-progress-not-perfection">Conclusion: Progress, not perfection</h2>
+
+
+
+<p>This live debugging session reminded me of two things:</p>
+
+
+
+<ol class="wp-block-list">
+<li><strong>Agentic tools like Copilot and Playwright MCP can genuinely accelerate troubleshooting</strong>. Especially when you provide the right context.</li>
+
+
+
+<li><strong>Describing requirements is hard</strong>. And that&rsquo;s okay! Iteration, feedback, and even a few missteps are part of the process (both in terms of learning, and solving bugs).</li>
+</ol>
+
+
+
+<p>If you&rsquo;re navigating similar challenges, dive in, experiment, and remember: progress beats perfection.</p>
+
+
+
+<ol class="wp-block-list">
+<li><a href="https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot"><strong>Update Copilot custom instructions files</strong></a> for your repo. If you&rsquo;re using Copilot coding agent, make sure to <a href="https://docs.github.com/en/copilot/how-tos/agents/copilot-coding-agent/customizing-the-development-environment-for-copilot-coding-agent?versionId=free-pro-team%40latest&amp;productId=copilot&amp;restPage=how-tos%2Ccustom-instructions%2Cadding-repository-custom-instructions-for-github-copilot">configure the <code>copilot-setup-steps.yml</code></a>.</li>
+
+
+
+<li><a href="https://github.com/microsoft/playwright-mcp?tab=readme-ov-file#getting-started"><strong>Install and start the Playwright MCP server</strong></a> in VS Code to provide Copilot access to a browser for UI testing.</li>
+
+
+
+<li><strong>Describe your bug or feature clearly</strong> in a new chat with Copilot agent mode.</li>
+
+
+
+<li><strong>Let Copilot propose and apply fixes</strong>. But always review code changes and test results.</li>
+
+
+
+<li><strong>Iterate on requirements</strong> based on what you see. Clarify as needed. Make sure you&rsquo;re being clear in your requirements too.</li>
+
+
+
+<li><strong>Commit frequently!</strong> Work in a branch and save your progress at each step.</li>
+</ol>
+
+
+
+<p>Are you using the Playwright MCP server for UI testing? Or maybe you have another favorite MCP server? Let us know &mdash; we&rsquo;d love to hear how you&rsquo;re using Copilot agent mode and MCP servers as part of your development workflow!<br><br>In the meantime, mark your calendars for our <a href="https://gh.io/rubberduckthursdays">next <strong>Rubber Duck Thursdays</strong> stream</a>, subscribe to us on <a href="https://www.youtube.com/@github">YouTube</a>, and check out <a href="https://skills.github.com">skills.github.com</a> for interactive GitHub learning. See you next time!</p>
+
+
+
+<div class="wp-block-group post-content-cta has-global-padding is-layout-constrained wp-block-group-is-layout-constrained">
+<p>Learn how to set Copilot coding agent up for success with <a href="https://github.blog/ai-and-ml/github-copilot/from-chaos-to-clarity-using-github-copilot-agents-to-improve-developer-workflows/">custom instruction and Copilot setup steps &gt;</a></p>
+</div>
+</body></html>
+<p>The post <a href="https://github.blog/ai-and-ml/github-copilot/debugging-ui-with-ai-github-copilot-agent-mode-meets-mcp-servers/">Debugging UI with AI: GitHub Copilot agent mode meets MCP servers</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></content:encoded>
+					
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">89676</post-id>	</item>
+		<item>
+		<title>GitHub Availability Report: June 2025</title>
+		<link>https://github.blog/news-insights/company-news/github-availability-report-june-2025/</link>
+		
+		<dc:creator><![CDATA[Jakub Oleksy]]></dc:creator>
+		<pubDate>Wed, 16 Jul 2025 21:06:17 +0000</pubDate>
+				<category><![CDATA[Company news]]></category>
+		<category><![CDATA[News & insights]]></category>
+		<category><![CDATA[GitHub Availability Report]]></category>
+		<guid isPermaLink="false">https://github.blog/?p=89594</guid>
+
+					<description><![CDATA[<p>In June, we experienced three incidents that resulted in degraded performance across GitHub services.</p>
+<p>The post <a href="https://github.blog/news-insights/company-news/github-availability-report-june-2025/">GitHub Availability Report: June 2025</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p>In June, we experienced three incidents that resulted in degraded performance across GitHub services.</p>
+
+
+
+<p><strong>June 5 17:47 UTC (lasting 1 hour and 33 minutes)</strong></p>
+
+
+
+<p>On June 5, 2025, between 17:47 UTC and 19:20 UTC, the Actions service was degraded, leading to run start delays and intermittent job failures. During this period, 47.2% of runs had delayed starts of 14 minutes on average, and 21.0% of runs failed. The impact extended beyond Actions itself; 60% of Copilot Coding Agent sessions were cancelled, and all Pages sites using branch-based builds failed to deploy (though Pages serving remained unaffected). The issue was caused by a spike in load between internal Actions services exposing a misconfiguration that caused throttling of requests in the critical path of run starts. We mitigated the incident by correcting the service configuration to prevent throttling and have updated our deployment process to ensure the correct configuration is preserved moving forward.</p>
+
+
+
+<p><strong>June 12 17:55 UTC (lasting 3 hours and 12 minutes)</strong></p>
+
+
+
+<p>On June 12, 2025, between 17:55 UTC and 21:07 UTC, the GitHub Copilot service was degraded and experienced unavailability for Gemini models and reduced availability for Claude models. Users experienced significantly elevated error rates for chat completions, slow response times, timeouts, and chat functionality interruptions across VS Code, JetBrains IDEs, and GitHub Copilot Chat. This was due to an outage affecting one of our model providers.</p>
+
+
+
+<p>We mitigated the incident by temporarily disabling the affected provider endpoints to reduce user impact.</p>
+
+
+
+<p>We are working to update our incident response playbooks for infrastructure provider outages and improve our monitoring and alerting systems to reduce our time to detection and mitigation of issues like this one in the future.</p>
+
+
+
+<p><strong>June 17 19:32 UTC (lasting 31 minutes)</strong></p>
+
+
+
+<p>On June 17, 2025, between 19:32 UTC and 20:03 UTC, an internal routing policy deployment to a subset of network devices caused reachability issues for certain network address blocks within our datacenters. Authenticated users of the github.com UI experienced 3-4% error rates for the duration of the incident. Authenticated callers of the API experienced 40% error rates. Unauthenticated requests to the UI and API experienced nearly 100% error rates. Actions experienced 2.5% of runs being delayed for an average of 8 minutes and 3% of runs failing. Large File Storage (LFS) requests experienced 1% errors. At 19:54 UTC, the deployment was rolled back, and network availability for the affected systems was restored. At 20:03 UTC, we fully restored normal operations. To prevent similar issues, we are expanding our validation process for routing policy changes.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<p>Please follow our <a href="https://www.githubstatus.com/">status page</a> for real-time updates on status changes and post-incident recaps. To learn more about what we’re working on, check out the <a href="https://github.blog/category/engineering/">GitHub Engineering Blog</a>.</p>
+<p>The post <a href="https://github.blog/news-insights/company-news/github-availability-report-june-2025/">GitHub Availability Report: June 2025</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></content:encoded>
+					
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">89594</post-id>	</item>
+		<item>
+		<title>How to catch GitHub Actions workflow injections before attackers do</title>
+		<link>https://github.blog/security/vulnerability-research/how-to-catch-github-actions-workflow-injections-before-attackers-do/</link>
+		
+		<dc:creator><![CDATA[Dylan Birtolo]]></dc:creator>
+		<pubDate>Wed, 16 Jul 2025 16:00:00 +0000</pubDate>
+				<category><![CDATA[Security]]></category>
+		<category><![CDATA[Vulnerability research]]></category>
+		<category><![CDATA[code scanning]]></category>
+		<category><![CDATA[CodeQL]]></category>
+		<guid isPermaLink="false">https://github.blog/?p=89525</guid>
+
+					<description><![CDATA[<p>Strengthen your repositories against actions workflow injections — one of the most common vulnerabilities.</p>
+<p>The post <a href="https://github.blog/security/vulnerability-research/how-to-catch-github-actions-workflow-injections-before-attackers-do/">How to catch GitHub Actions workflow injections before attackers do</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><p>You already know that security is important to keep in mind when creating code and maintaining projects. Odds are, you also know that it&rsquo;s much easier to think about security from the ground up rather than trying to squeeze it in at the end of a project.</p>
+
+
+
+<p>But did you know that GitHub Actions injections are one of the most common vulnerabilities in projects stored in GitHub repositories? Thankfully, this is a relatively easy vulnerability to address, and GitHub has some tools to make it even easier.</p>
+
+
+
+<figure class="wp-block-image size-full"><img data-recalc-dims="1" loading="lazy" decoding="async" width="768" height="768" src="https://github.blog/wp-content/uploads/2025/07/vulnerabilities.png?resize=768%2C768" alt="A bar chart detailing the most common vulnerabilities found by CodeQL in 2024. In order from most to least, they are: injection, broken access control, insecure design, cryptographic failures, identification and authentication failures, security misconfigurations, software and data integrity failures, security logging and monitoring failures, server side request forgery, and vulnerable and outdated components." class="wp-image-89527" srcset="https://github.blog/wp-content/uploads/2025/07/vulnerabilities.png?w=768 768w, https://github.blog/wp-content/uploads/2025/07/vulnerabilities.png?w=150 150w, https://github.blog/wp-content/uploads/2025/07/vulnerabilities.png?w=300 300w, https://github.blog/wp-content/uploads/2025/07/vulnerabilities.png?w=600 600w, https://github.blog/wp-content/uploads/2025/07/vulnerabilities.png?w=400 400w, https://github.blog/wp-content/uploads/2025/07/vulnerabilities.png?w=200 200w, https://github.blog/wp-content/uploads/2025/07/vulnerabilities.png?w=90 90w, https://github.blog/wp-content/uploads/2025/07/vulnerabilities.png?w=116 116w" sizes="auto, (max-width: 768px) 100vw, 768px" /><figcaption class="wp-element-caption"><em>From the 2024 Octoverse report detailing the most common types of OWASP-classified vulnerabilities identified by CodeQL in 2024. Our latest data shows a similar trend, highlighting the continued risks of injection attacks despite continued warnings for several decades.</em></figcaption></figure>
+
+
+
+<h2 class="wp-block-heading" id="h-embracing-a-security-mindset">Embracing a security mindset</h2>
+
+
+
+<p>The truth is that security is not something that is ever &ldquo;done.&rdquo; It&rsquo;s a continuous process, one that you need to keep focusing on to help keep your code safe and secure. While automated tools are a huge help, they&rsquo;re not an all-in-one, fire-and-forget solution.</p>
+
+
+
+<p>This is why it&rsquo;s important to understand the causes behind security vulnerabilities as well as how to address them. No tool will be 100% effective, but by increasing your understanding and deepening your knowledge, you will be better able to respond to threats.&nbsp;</p>
+
+
+
+<p>With that in mind, let&rsquo;s talk about one of the most common vulnerabilities found in GitHub repositories.</p>
+
+
+
+<h2 class="wp-block-heading" id="h-explaining-actions-workflow-injections">Explaining actions workflow injections</h2>
+
+
+
+<p>So what exactly is a GitHub Actions workflow injection? This is when a malicious attacker is able to submit a command that is run by a <a href="https://docs.github.com/actions/writing-workflows/about-workflows">workflow</a> in your repository. This can happen when an attacker controls the data, such as when they create an issue title or a branch name, and you execute that untrusted input. For example, you might execute it in the run portion of your workflow.</p>
+
+
+
+<p>One of the most common causes of this is with the <code>${{}}</code> syntax in your code. In the preprocessing step, this syntax will automatically expand. That expansion may alter your code by inserting new commands. Then, when the system executes the code, these malicious commands are executed too.</p>
+
+
+
+<p>Consider the following workflow as an example:</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code>- name: print title
+  run: echo "${{ github.event.issue.title }}"</code></pre>
+
+
+
+<p>Let&rsquo;s assume that this workflow is triggered whenever a user creates an issue. Then an attacker can create an issue with malicious code in the title, and the code will be executed when this workflow runs. The attacker only needs to do a small amount of trickery such as adding backtick characters to the title: <code>touch pwned.txt</code>. Furthermore, this code will run using the permissions granted to the workflow, permissions the attacker is otherwise unlikely to have.</p>
+
+
+
+<p>This is the root of the actions workflow injection. The biggest issues with actions workflow injections are awareness that this is a problem and finding all the instances that could lead to this vulnerability.</p>
+
+
+
+<h2 class="wp-block-heading" id="how-to-proactively-protect-your-code">How to proactively protect your code</h2>
+
+
+
+<p>As stated earlier, it&rsquo;s easier to prevent a vulnerability from appearing than it is to catch it after the fact. To that end, there are a few things that you should keep in mind while writing your code to help protect yourself from actions workflow injections.</p>
+
+
+
+<p>While these are valuable tips, remember that even if you follow all of these guidelines, it doesn&rsquo;t guarantee that you&rsquo;re completely protected.</p>
+
+
+
+<h3 class="wp-block-heading" id="use-environment-variables">Use environment variables</h3>
+
+
+
+<p>Remember that the actions workflow injections happen as a result of expanding what should be treated as untrusted input. When it is inserted into your workflow, if it contains malicious code, it changes the intended behavior. Then when the workflow triggers and executes, the attacker&rsquo;s code runs.<br>One solution is to avoid using the <code>${{}}</code> syntax in workflow sections like <code>run</code>. Instead, expand the untrusted data into an environment variable and then use the environment variable when you are running the workflow. If you consider our example above, this would change to the following.</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code>- name: print title
+  env:
+    TITLE: ${{ github.event.issue.title }}
+  run: echo "$TITLE"</code></pre>
+
+
+
+<p>This won&rsquo;t make the input trusted, but it will help to protect you from some of the ways attackers could take advantage of this vulnerability. We encourage you to do this, but still remember that this data is untrusted and could be a potential risk.</p>
+
+
+
+<h3 class="wp-block-heading" id="the-principle-of-least-privilege-is-your-best-friend">The principle of least privilege is your best friend</h3>
+
+
+
+<p>When an actions workflow injection triggers, it runs with the permissions granted to the workflow. You can specify what permissions workflows have by <a href="https://docs.github.com/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token#defining-access-for-the-github_token-permissions">setting the permissions for the workflow&rsquo;s GITHUB_TOKEN</a>. For this reason, it&rsquo;s important to make sure that your workflows are only running with the lowest privilege levels they need in order to perform duties. Otherwise, you might be giving an attacker permissions you didn&rsquo;t intend if they manage to inject their code into your workflow.</p>
+
+
+
+<h3 class="wp-block-heading" id="be-cautious-with-pull_request_target">Be cautious with <code>pull_request_target</code></h3>
+
+
+
+<p>The impact is usually much more devastating when injection happens in a workflow that is triggered on <code>pull_request_target</code> than on <code>pull_request</code>. There is a significant difference between the <code>pull_request</code> and <code>pull_request_target</code> workflow triggers.</p>
+
+
+
+<p>The <code>pull_request</code> workflow trigger prevents write permissions and secrets access on the target repository by default when it&rsquo;s triggered from a fork. Note that when the workflow is triggered from a branch in the same repository, it has access to secrets and potentially has write permissions. It does this in order to help prevent unauthorized access and protect your repository.</p>
+
+
+
+<p>By contrast, the <code>pull_request_target</code> workflow trigger gives the workflow writer the ability to release some of the restrictions. While this is important for some scenarios, it does mean that by using <code>pull_request_target</code> instead of <code>pull_request</code>, you are potentially putting your repository at a greater risk.</p>
+
+
+
+<p>This means you should be using the <code>pull_request</code> trigger unless you have a very specific need to use <code>pull_request_target</code>. And if you are using the latter, you want to take extra care with the workflow given the additional permissions.</p>
+
+
+
+<h2 class="wp-block-heading" id="the-problems-not-just-on-main">The problem&rsquo;s not just on main</h2>
+
+
+
+<p>It&rsquo;s not uncommon to create several branches while developing your code, often for various features or bug fixes. This is a normal part of the software development cycle. And sometimes we&rsquo;re not the best at remembering to close and delete those branches after merging or after we&rsquo;ve finished working with them. Unfortunately, these branches are still a potential vulnerability if you&rsquo;re using the <code>pull_request_target</code> trigger.</p>
+
+
+
+<p>An attacker can target a workflow that runs on a pull request in a branch, and still take advantage of this exploit. This means that you can&rsquo;t just assume your repository is safe because the workflows against your <code>main</code> branch are secure. You need to review all of the branches that are publicly visible in your repository.</p>
+
+
+
+<h2 class="wp-block-heading" id="what-codeql-brings-to-the-table">What CodeQL brings to the table</h2>
+
+
+
+<p><a href="https://codeql.github.com/">CodeQL</a> is GitHub&rsquo;s code analysis tool that provides automated security checks against your code. The specific feature of CodeQL that is most relevant here is <a href="https://docs.github.com/code-security/code-scanning/introduction-to-code-scanning/about-code-scanning-with-codeql">the code scanning feature</a>, which can provide feedback on your code and help identify potential security vulnerabilities. We recently <a href="https://github.blog/changelog/2025-04-22-github-actions-workflow-security-analysis-with-codeql-is-now-generally-available/">made the ability to scan GitHub Actions workflow files generally available</a>, and you can use this feature to look for several types of vulnerabilities, such as potential actions workflow injection risks.&nbsp;</p>
+
+
+
+<p>One of the reasons CodeQL is so good at finding where untrusted data might be used is because of taint tracking. We <a href="https://github.blog/security/application-security/how-to-secure-your-github-actions-workflows-with-codeql/#taint-tracking-is-key">added taint tracking to CodeQL</a> for actions late last year. With taint tracking, CodeQL tracks where untrusted data flows through your code and identifies potential risks that might not be as obvious as the previous examples.</p>
+
+
+
+<p>Enabling CodeQL to scan your actions workflows is as easy as <a href="https://docs.github.com/code-security/code-scanning/enabling-code-scanning/configuring-default-setup-for-code-scanning">enabling CodeQL code scanning with the default setup</a>, which automatically includes analyzing actions workflows and will run on any <a href="https://docs.github.com/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches">protected branch</a>. You can then check for the code scanning results to identify potential risks and start fixing them.&nbsp;</p>
+
+
+
+<p>If you&rsquo;re already using <a href="https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/configuring-advanced-setup-for-code-scanning">the advanced setup for CodeQL</a>, you can add support for scanning your actions workflows by adding the <code>actions</code> language to the target languages. These scans will be performed going forward and help to identify these vulnerabilities.</p>
+
+
+
+<p>While we won&rsquo;t get into it in this blog, it&rsquo;s important to know that CodeQL code scanning runs several queries&mdash;it&rsquo;s not just good at finding actions workflow injections. We encourage you to give it a try and see what it can find.&nbsp;</p>
+
+
+
+<p>While CodeQL is a very effective tool&mdash;and it is really good at finding this specific vulnerability&mdash;it&rsquo;s still not going to be 100% effective. Remember that no tool is perfect, and you should focus on keeping a security mindset and taking a critical idea to your own code. By keeping this in the forefront of your thoughts, you will be able to develop more secure code and help prevent these vulnerabilities from ever appearing in the first place.&nbsp;</p>
+
+
+
+<h2 class="wp-block-heading" id="future-steps">Future steps</h2>
+
+
+
+<p>Actions workflow injections are known to be one of the most prevalent vulnerabilities in repositories available on GitHub. However, they are relatively easy to address. The biggest issues with eliminating this vulnerability are simply being aware that they&rsquo;re a problem and discovering the possible weak spots in your code.</p>
+
+
+
+<p>Now that you&rsquo;re aware of the issue, and have CodeQL on your side as a useful tool, you should be able to start looking for and fixing these vulnerabilities in your own code. And if you keep the proactive measures in mind, you&rsquo;ll be in a better position to prevent them from occurring in future code you write.</p>
+
+
+
+<p>If you&rsquo;d like to learn more about actions workflow injections, we previously published <a href="https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/">a four-part series about keeping your actions workflows secure</a>. The <a href="https://securitylab.github.com/resources/github-actions-untrusted-input/">second part</a> is specifically about actions workflow injections, but we encourage you to give the entire series a read.</p>
+
+
+
+<div class="wp-block-group post-content-cta has-global-padding is-layout-constrained wp-block-group-is-layout-constrained">
+<p><strong>Need some help searching through your code to look for potential vulnerabilities?</strong> <a href="https://docs.github.com/code-security/code-scanning/enabling-code-scanning/configuring-default-setup-for-code-scanning">Set up code scanning</a> in your project today.</p>
+</div>
+
+
+
+<p></p>
+</body></html>
+<p>The post <a href="https://github.blog/security/vulnerability-research/how-to-catch-github-actions-workflow-injections-before-attackers-do/">How to catch GitHub Actions workflow injections before attackers do</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></content:encoded>
+					
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">89525</post-id>	</item>
+		<item>
+		<title>For the Love of Code: a summer hackathon for joyful, ridiculous, and wildly creative projects</title>
+		<link>https://github.blog/open-source/for-the-love-of-code-2025/</link>
+		
+		<dc:creator><![CDATA[Lee Reilly]]></dc:creator>
+		<pubDate>Wed, 16 Jul 2025 15:00:00 +0000</pubDate>
+				<category><![CDATA[GitHub Copilot]]></category>
+		<category><![CDATA[Open Source]]></category>
+		<category><![CDATA[hackathon]]></category>
+		<guid isPermaLink="false">https://github.blog/?p=87995</guid>
+
+					<description><![CDATA[<p>That idea you've been sitting on? The domain you bought at 2AM? A silly or serious side project? This summer, we invite you to build it — for the joy, for the vibes, For the Love of Code 🧡</p>
+<p>The post <a href="https://github.blog/open-source/for-the-love-of-code-2025/">For the Love of Code: a summer hackathon for joyful, ridiculous, and wildly creative projects</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p>Code isn’t just for solving problems. It’s also for exploring ideas, expressing creativity, and building something just because it sparks joy.</p>
+
+
+
+<p><strong>For the Love of Code</strong> is a global, summer-long hackathon for developers of all experience levels to build the project they’ve been thinking about but haven’t had a reason to start. Whether it’s a web app, CLI tool, game, AI exploration, or a creative experiment, this is your invitation to build for the fun of it — solo, with friends, or alongside GitHub Copilot.</p>
+
+
+
+<h2 class="wp-block-heading" id="h-when">When</h2>
+
+
+
+<p><strong>For the Love of Code will run from July 16 to September 22, 2025.</strong></p>
+
+
+
+<p class="is-typography-preset-h2">What you could win</p>
+
+
+
+<ul class="wp-block-list">
+<li>Internet immortality: Top entries will be featured on the GitHub blog</li>
+
+
+
+<li>12 months of GitHub Copilot Pro+ for winners in each category</li>
+
+
+
+<li>Glory, vibes, and an excellent excuse to finally build that thing</li>
+</ul>
+
+
+
+<p>The real prize is working on something you love.</p>
+
+
+
+<h2 class="wp-block-heading is-typography-preset-h2">What can you build?</h2>
+
+
+
+<p>Anything you want! We’ll be picking winners in six highly scientific categories. Each one is outlined below with inspiration to spark ideas and <a href="https://xkcd.com/356/">nerd-snipe</a> you into action <img src="https://s.w.org/images/core/emoji/16.0.1/72x72/1f3af.png" alt="🎯" class="wp-smiley" style="height: 1em; max-height: 1em;" /></p>
+
+
+
+<p class="is-typography-preset-h3">Category 1: Buttons, beeps, and blinkenlights</p>
+
+
+
+<p><img decoding="async" style="width: 150px;float: right;margin-left: 10px" src="https://github.blog/wp-content/uploads/2025/07/1-beeps.png" alt="An illustration of a retro computer screen with Mona walking across">If it lights up, makes noise, or looks like it escaped from a 1998 RadioShack, it belongs here. Hardware hacks (real or simulated) that blink, beep, buzz, or surprise. Think interactive, physical, tactile, and just a little chaotic. Examples:</p>
+
+
+
+<ul class="wp-block-list">
+<li>A traffic light that displays your build status</li>
+
+
+
+<li>A soldered-together sidekick that yells “LGTM!” every time your tests pass</li>
+
+
+
+<li><a href="https://github.com/HarryHighPants/esp32-git-contributions-epd"><strike>An e-ink screen displaying your contribution graph</strike></a> &#8211; oops, this has already shipped!</li>
+
+
+
+<li><a href="https://github.com/hasibzunair/boss-detector"><strike>A hack to make your screen display actual work when the webcam detects your boss approaching</strike></a></li>
+
+
+
+<li><a href="https://github.com/veggiedefender/open-and-shut"><strike>A laptop opening and closing-powered morse code generator</strike></a></li>
+
+
+
+<li><a href="https://github.com/orhun/tuitar"><strike>A Rust project that visualizes guitar notes on an ESP32 T-Display ♩ ♪ ♫ ♬</strike></a></li>
+</ul>
+
+
+
+<p class="is-typography-preset-h3">Category 2: Agents of change</p>
+
+
+
+<p><img decoding="async" style="width: 150px;float: right;margin-left: 10px" src="https://github.blog/wp-content/uploads/2025/07/2-agents.png" alt="An illustration GitHub Copilot with one of their eyes replaced with a heart">AI-powered experiences, agents, or old-fashioned bots that help, hinder, or hilariously misunderstand you. Whether it&#8217;s helping automate workflows, critiquing your code like a judgmental coworker, or pretending to be your sentient toaster, this is your playground for all things assistant-y and absurd. Examples:</p>
+
+
+
+<ul class="wp-block-list">
+<li>An LLM-powered changelog writer that wildly over-dramatizes every update. “Fixed minor bug” → “Vanquished a lurking menace that corrupted the sacred login flow.”</li>
+
+
+
+<li>An agent that reviews PRs like a sarcastic senior dev, an overly nice intern, or a concerned parent: “Are you sure this function needs to be this recursive?”</li>
+
+
+
+<li><a href="https://github.com/Nutlope/billsplit"><s>An AI-assisted app to help split your restaurant bills</s></a></li>
+
+
+
+<li><a href="https://github.com/MetzinAround/shania"><s>A Shania Twain Slack or Discord bot to inspire</s></a><em>&nbsp;(Editor’s note: That don’t impress me much!)</em></li>
+</ul>
+
+
+
+<p class="is-typography-preset-h3">Category 3: Terminal talent</p>
+
+
+
+<p><img decoding="async" style="width: 150px;float: right;margin-left: 10px" src="https://github.blog/wp-content/uploads/2025/07/3-cli.png" alt="An illustration of a terminal with a familiar duck character">Command-line tools, extensions, and TUI projects that are clever, useful, or just plain fun. Serious utilities with personality, beautifully crafted interfaces, or quirky scripts that make your terminal feel more alive all belong here. If it runs in the shell and makes you smile, it belongs here. Examples:</p>
+
+
+
+<ul class="wp-block-list">
+<li>A command-line karaoke machine.</li>
+
+
+
+<li>A GitHub CLI extension that gives your daily horoscope and outlook based on issues and pull requests.</li>
+
+
+
+<li>An interactive tool to automate that one thing that you’ve been meaning to automate for years.</li>
+
+
+
+<li><a href="https://github.com/jmhobbs/terminal-parrot"><s>An animated party parrot for your terminal</s></a></li>
+
+
+
+<li><a href="https://github.com/cjlangan/MechSim"><s>A mechanical keyboard sound simulator</s></a></li>
+</ul>
+
+
+
+<p class="is-typography-preset-h3">Category 4: Game on</p>
+
+
+
+<p><img decoding="async" style="width: 150px;float: right;margin-left: 10px" src="https://github.blog/wp-content/uploads/2025/07/4-game.png" alt="An illustration of a blocktacular arcade cabinet of some sort... that kinda resembles Hubot">Code is your controller. Build something playable, puzzling, or just plain fun. This category is for interactive experiences of all kinds, like prototyping a game idea, remixing mechanics, or mashing up genres. Think nostalgic, clever, or completely original. Fun first, functional close behind. Examples:</p>
+
+
+
+<ul class="wp-block-list">
+<li>A retro-style arcade game inspired by the classics you grew up playing.</li>
+
+
+
+<li>An adventure game with AI-generated plot twists, NPCs, and side quests.</li>
+
+
+
+<li><a href="https://github.itch.io/dodled-jump"><s>A vibe-coded vertical jumper built with and featuring your favorite Copilot.</s></a></li>
+
+
+
+<li><a href="https://github.itch.io/flappy-mona"><s>Yet another Flappy Bird clone, but with Octocats</s></a></li>
+
+
+
+<li><a href="https://github.com/sergiubucur/falling-through-code"><s>A vertical scroller where you fall through real lines of GitHub code</s></a></li>
+</ul>
+
+
+
+<p class="is-typography-preset-h3">Category 5: World wide wonders</p>
+
+
+
+<p><img decoding="async" style="width: 150px;float: right;margin-left: 10px" src="https://github.blog/wp-content/uploads/2025/07/5.png" alt="An illustration of browser window with one of Mona's arms coming through">Any web project that makes people smile, think, learn, or click “view source” belongs here. Whether it&#8217;s your first HTML experiment, a polished tool you’ve been meaning to ship, or a playful side project that does something surprisingly useful, this is your space. Educational, delightful, impressive, or just plain fun, all kinds of web builds are welcome. Examples:</p>
+
+
+
+<ul class="wp-block-list">
+<li>A web app that takes a GitHub username and roasts them based on their contributions, commit messages, and questionable emoji use <img src="https://s.w.org/images/core/emoji/16.0.1/72x72/1fa84.png" alt="🪄" class="wp-smiley" style="height: 1em; max-height: 1em;" /> <img src="https://s.w.org/images/core/emoji/16.0.1/72x72/1f4df.png" alt="📟" class="wp-smiley" style="height: 1em; max-height: 1em;" /> <img src="https://s.w.org/images/core/emoji/16.0.1/72x72/1f9b4.png" alt="🦴" class="wp-smiley" style="height: 1em; max-height: 1em;" />&nbsp;<img src="https://s.w.org/images/core/emoji/16.0.1/72x72/1f4be.png" alt="💾" class="wp-smiley" style="height: 1em; max-height: 1em;" /> <img src="https://s.w.org/images/core/emoji/16.0.1/72x72/1fae0.png" alt="🫠" class="wp-smiley" style="height: 1em; max-height: 1em;" />.</li>
+
+
+
+<li>A nostalgic 90s-style site that loads like it’s on dial-up, complete with pixel art loading bars, pop-up ads, a guestbook, and that dancing baby GIF.</li>
+
+
+
+<li><a href="https://github.com/rauchg/doom-captcha"><s>A CAPTCHA that requires you to kill baddies in Doom</s></a></li>
+
+
+
+<li><a href="https://github.com/ChrisPirillo/alien-computer"><s>An an interactive, randomized retro sci-fi dashboard with an alien aesthetic</s></a><s> Qapla&#8217;</s></li>
+</ul>
+
+
+
+<p class="is-typography-preset-h3">Category 6: Everything but the kitchen sink</p>
+
+
+
+<p><img decoding="async" style="width: 150px;float: right;margin-left: 10px" src="https://github.blog/wp-content/uploads/2025/07/6-wildcard.png" alt="An illustration of a retro computer screen featuring a joker card">Too niche? Too specific? Hard to categorize? Perfect. This is your wild card category for all the creative projects that don’t fit neatly anywhere else. Think extensions, plugins, tools, GitHub Actions, or prototypes that turned into something unexpectedly useful. Practical, playful, or just uniquely yours, we want to see it all. Examples:</p>
+
+
+
+<ul class="wp-block-list">
+<li>A Git hook that plays sitcom laugh tracks when you commit.&nbsp;</li>
+
+
+
+<li>A VS Code extension that gives your functions Yelp-style reviews.</li>
+
+
+
+<li>A GitHub Action that refuses to deploy if your team hasn’t merged a PR with a positive emoji in the title that week.</li>
+
+
+
+<li>A rewrite of something in Rust for the sake of it.</li>
+
+
+
+<li><strike><a href="https://github.com/tonybaloney/vscode-pets">A VS Code extension to bring pets into your editor</a></strike></li>
+
+
+
+<li>YOUR AMAZING IDEA GOES HERE!</li>
+</ul>
+
+
+
+<p>Make it wildly useful, or just plain weird. As long as it brings you joy.</p>
+
+
+
+<aside data-color-mode="light" data-dark-theme="dark" data-light-theme="light_dimmed" class="wp-block-group post-aside--large p-4 p-md-6 is-style-light-dimmed has-global-padding is-layout-constrained wp-block-group-is-layout-constrained is-style-light-dimmed--3" style="border-top-width:4px">
+<h2 class="wp-block-heading h5-mktg gh-aside-title is-typography-preset-h5" id="h-not-sure-where-to-start-ask-github-copilot" style="margin-top:0">Not sure where to start? Ask GitHub Copilot!</h2>
+
+
+
+<p>You don’t have to build alone.</p>
+
+
+
+<p>GitHub Copilot isn’t just for autocomplete, it’s a creative partner that can riff with you, brainstorm ideas, explain what your code is actually doing, and more. Ask it things like:</p>
+
+
+
+<p><em>“Give me five fun and creative coding projects I can complete in a weekend.”</em></p>
+
+
+
+<p><em>“Help me create a Git hook that plays sitcom laugh tracks when you commit.”</em></p>
+
+
+
+<p>And if you want to take it further…</p>
+
+
+
+<p>We may feature standout projects that make especially creative use of Copilot, including Agent mode. It’s not required for participation, but we’ll definitely be keeping an eye out.</p>
+
+
+
+<p>Copilot can’t wait to get started with you! &lt;3</p>
+
+
+
+<figure class="wp-block-image size-full is-resized"><img data-recalc-dims="1" loading="lazy" decoding="async" width="500" height="631" src="https://github.blog/wp-content/uploads/2025/05/leereilly-copilot.gif?resize=500%2C631" alt="An excited GitHub Copilot jumping." class="wp-image-89327" style="width:100px" /></figure>
+
+
+
+<p class="is-typography-preset-subtitle"></p>
+</aside>
+
+
+
+<p class="is-typography-preset-h2">Who can participate?</p>
+
+
+
+<p>Students, maintainers, weekend tinkerers, creative coders, <s>salty</s> seasoned pros, and curious beginners. Solo or squad. First-timer or frequent flyer. If you write code…or want to… it’s for you.</p>
+
+
+
+<p class="is-typography-preset-h2">How to join</p>
+
+
+
+<ol class="wp-block-list">
+<li>Spend an afternoon or the whole summer. Build something joyful: solo, with friends, or with Copilot.</li>
+
+
+
+<li>Push your code to a public GitHub repository by 11:59 p.m. Anywhere on Earth (AoE)* on September 22, 2025*.</li>
+
+
+
+<li>Submit your entries via the <a href="https://gh.io/ftloc-submit">official submission form</a>.</li>
+</ol>
+
+
+
+<p>* <em>Editor’s note: We suspect Lee picked this deadline to avoid doing time zone math, and so he’d never have to explain daylight saving time again. Respect.</em></p>
+
+
+
+<p>Tag your progress with <code>#ForTheLoveOfCode</code> and we’ll feature our favorites on social and <a href="https://github.com/explore">GitHub Explore</a> page!</p>
+
+
+
+<h2 class="wp-block-heading is-typography-preset-h2">Rules</h2>
+
+
+
+<p>The short and sweet version:</p>
+
+
+
+<ul class="wp-block-list">
+<li>The use of open source is encouraged!</li>
+
+
+
+<li>The use of GitHub Copilot is encouraged, but optional.</li>
+
+
+
+<li>Submit up to 42 projects. (Don’t ask why. You know why.)</li>
+
+
+
+<li>Your project must be in a public GitHub repo with a clear README.</li>
+</ul>
+
+
+
+<p>Please see complete <a href="https://github.blog/wp-content/uploads/2025/07/ftloctcs.pdf">terms and conditions</a>.</p>
+
+
+
+<p>We know… “terms and conditions” sounds like the least fun part of a joyful code challenge. But if you’re submitting a project or hoping for a prize, take a second to read the <a href="https://github.blog/wp-content/uploads/2025/07/ftloctcs.pdf">official rules</a>. Future-you will thank you.<br><br>We’re building a space that’s creative, collaborative, and welcoming to all. Please be excellent to each other. See our <a href="https://docs.github.com/en/site-policy/github-terms/github-community-code-of-conduct">Code of Conduct</a>.</p>
+
+
+
+<p class="is-typography-preset-h2">Judging</p>
+
+
+
+<p>A panel of <a href="https://stars.github.com/">GitHub Stars</a>, <a href="https://github.com/education/students">Campus Experts</a>, and staff will evaluate entries based on joyfulness, execution, technical difficulty, ingenuity, and relevance to the category. Bonus points (figuratively) for unexpected use of GitHub Copilot.</p>
+
+
+
+<p>We’ll pick three winners from each category and announce the winners by October 22, 2025 on the GitHub blog. But honestly? If it makes you smile, you’ve already won.<br></p>
+
+
+
+<aside data-color-mode="light" data-dark-theme="dark" data-light-theme="light_dimmed" class="wp-block-group post-aside--large p-4 p-md-6 is-style-light-dimmed has-global-padding is-layout-constrained wp-block-group-is-layout-constrained is-style-light-dimmed--4" style="border-top-width:4px">
+<h2 class="wp-block-heading">New to Git, GitHub, and/or GitHub Copilot?</h2>
+
+
+
+<p>For the Love of Code is the perfect opportunity to check them out (version control pun intended)!</p>
+
+
+
+<ul class="wp-block-list">
+<li><a href="https://git-scm.com/doc">Git Documentation</a>: Learn everything about version control and how to get started.</li>
+
+
+
+<li><a href="https://docs.github.com/en">GitHub Docs</a>: Explore tutorials and FAQs about GitHub.</li>
+
+
+
+<li><a href="https://github.com/features/copilot">GitHub Copilot</a>: Find out more about AI that builds with you and loves code as much as you.</li>
+
+
+
+<li><a href="https://github.com/orgs/community/discussions/">GitHub Community Forum</a>: This is a great place to ask questions and share answers.</li>
+</ul>
+</aside>
+
+
+
+<p class="is-typography-preset-h2">Frequently asked questions</p>
+
+
+
+<details>
+  <summary><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/1f4a1.png" alt="💡" class="wp-smiley" style="height: 1em; max-height: 1em;" /> General participation</summary>
+  <ul>
+    <li><strong>Can I work with a team?</strong><br>Yes! Solo or squad… your choice. GitHub Copilot makes a great pair (or peer) programmer. Limit your team to no more than 10 people.</li>
+    <li><strong>How many times can I enter?</strong><br>Up to 42 times. Don’t ask why. You know why.</li>
+    <li><strong>Who can participate?</strong><br>Anyone 13 years of age or older with a GitHub account except where prohibited by law. See official rules for regional restrictions.</li>
+    <li><strong>How much time should I spend?</strong><br>As much or as little as you like. Vibe code your project in an afternoon, build over a weekend, or stretch it out across the summer.</li>
+    <li><strong>I’m new to GitHub/Git/Copilot. Can I still join?</strong><br>Absolutely. This is a great excuse to dive in! We’ve linked beginner-friendly docs and tutorials to help you get started.</li>
+    <li><strong>Can I edit my project after the deadline?</strong><br>You can keep working on your repo forever — but for judging, we’ll look at the state of your project as of 11:59 p.m. AoE on September 22. If you want to keep improving it afterward, go for it! Just be sure the version you want judged is in place by the deadline.</li>
+    <li><strong>I submitted the form but made a typo. Can I fix it?</strong><br>Yes! You can submit the form again with corrected info. We’ll just review the latest one. No need to email us in a panic.</li>
+  </ul>
+</details>
+
+<details>
+  <summary><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/1f6e0.png" alt="🛠" class="wp-smiley" style="height: 1em; max-height: 1em;" /> Projects and tools</summary>
+  <ul>
+    <li><strong>Can I reuse an old idea or prototype?</strong><br>Yes, as long as your project is built (or rebuilt) during the hackathon window. Forking, remixing, and using boilerplate is encouraged.</li>
+    <li><strong>Can I use paid tools, licensed software, or APIs?</strong><br>Yes! Just note any dependencies or subscriptions in your README. Do not commit sensitive info like API keys.</li>
+    <li><strong>Can I use GitHub Copilot?</strong><br>Yes! Copilot is optional, but encouraged. It’s great for riffing, prototyping, debugging, or naming your weird project.</li>
+    <li><strong>Can I submit something that’s not a traditional software project?</strong><br>Sure! If it involves code — hardware hacks, interactive art, generative anything — it counts. Just host it (or as much as you can) in a public GitHub repo.</li>
+  </ul>
+</details>
+
+<details>
+  <summary><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/1f680.png" alt="🚀" class="wp-smiley" style="height: 1em; max-height: 1em;" /> Submission and deadlines</summary>
+  <ul>
+    <li><strong>Is there anything I shouldn’t build?</strong><br>Keep it respectful, safe, and fun. No NSFW content, hateful speech, or projects that violate GitHub’s Code of Conduct. Weird is good. Harmful isn’t.</li>
+    <li><strong>When is the deadline?</strong><br>All entries must be submitted by 11:59 p.m. (anywhere on Earth, or UTC−12) on September 22, 2025 (“Entry Period”). Submissions accepted until it’s no longer September 22 anywhere on the planet. Off-planet submissions discouraged.</li>
+    <li><strong>Do I need to share the source code?</strong><br>Yes. Submissions must be in a public GitHub repo. You can license your work however you like (see Choose a License).</li>
+    <li><strong>What should I include in my README?</strong><br>Mention any tools, dependencies, paid services, or setup instructions. The better your README, the better we can appreciate your work! Please consider applying the <a href="https://github.com/topics/fortheloveofcode">#ForTheLoveOfCode Topic</a> to your repo and adding screenshots, too.</li>
+  </ul>
+</details>
+
+<details>
+  <summary><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/1f3c6.png" alt="🏆" class="wp-smiley" style="height: 1em; max-height: 1em;" /> Judging and prizes</summary>
+  <ul>
+    <li><strong>Who’s judging this?</strong><br>A panel of GitHub Stars, Campus Experts, and staff.</li>
+    <li><strong>How are winners selected?</strong><br>We’re looking for joyful, clever, and creative projects. Bonus points (figuratively) for unexpected uses of GitHub Copilot.</li>
+    <li><strong>What if I win more than one category? Do I get multiple prizes?</strong><br>That’d be amazing! But to keep things fair, we’ll likely award each participant one prize max. You’ll still get shoutouts for your other awesome entries.</li>
+    <li><strong>I don’t want the prize. Can I still participate or be featured?</strong><br>Definitely. Just let us know if you’re opting out of the prize; we’ll still celebrate your project like the internet legend you are.</li>
+    <li><strong>Is there cash money involved?</strong><br>Nope. But there’s Copilot Pro+, blog fame, and eternal internet glory.</li>
+    <li><strong>How do you define “best use of Copilot” or “surprise awards”?</strong><br>We’re keeping it loose and fun. If you do something clever, hilarious, or surprisingly useful with Copilot, we’ll take note. Same goes for standout docs, vibes, or chaos energy. Surprise us!</li>
+  </ul>
+</details>
+
+<details>
+  <summary><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/1f5bc.png" alt="🖼" class="wp-smiley" style="height: 1em; max-height: 1em;" /> Media, demos, and showcasing</summary>
+  <ul>
+    <li><strong>Do I need a video or demo?</strong><br>Not required, but highly encouraged! GIFs, screenshots, or short videos help bring your project to life. They also increase your chances of getting noticed and being featured.</li>
+    <li><strong>Can I host my demo outside GitHub (e.g. itch.io, Vercel)?</strong><br>Yes! Just include the link in your README or submission form. We still need the project code in a public GitHub repo.</li>
+    <li><strong>Will projects be shown on livestreams, social, or at GitHub Universe?</strong><br>Maybe! Submitting gives us permission to showcase your project if it’s selected. We’ll always give credit.</li>
+  </ul>
+</details>
+
+
+
+<p>Something not covered here? Please ask in the <a href="https://github.com/orgs/community/discussions/166366">community discussion</a>.</p>
+
+
+
+<p></p>
+<p>The post <a href="https://github.blog/open-source/for-the-love-of-code-2025/">For the Love of Code: a summer hackathon for joyful, ridiculous, and wildly creative projects</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></content:encoded>
+					
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">87995</post-id>	</item>
+		<item>
+		<title>From chaos to clarity: Using GitHub Copilot agents to improve developer workflows</title>
+		<link>https://github.blog/ai-and-ml/github-copilot/from-chaos-to-clarity-using-github-copilot-agents-to-improve-developer-workflows/</link>
+		
+		<dc:creator><![CDATA[Chris Reddington]]></dc:creator>
+		<pubDate>Tue, 15 Jul 2025 16:00:00 +0000</pubDate>
+				<category><![CDATA[AI & ML]]></category>
+		<category><![CDATA[GitHub Copilot]]></category>
+		<category><![CDATA[coding agent]]></category>
+		<category><![CDATA[Rubber Duck Thursdays]]></category>
+		<guid isPermaLink="false">https://github.blog/?p=89531</guid>
+
+					<description><![CDATA[<p>Explore how you can set Copilot coding agent up for success with custom instruction and Copilot setup steps.</p>
+<p>The post <a href="https://github.blog/ai-and-ml/github-copilot/from-chaos-to-clarity-using-github-copilot-agents-to-improve-developer-workflows/">From chaos to clarity: Using GitHub Copilot agents to improve developer workflows</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><p>Modern development often starts with good intentions: a quick script, a prototype, maybe an action to automate one small thing. But as projects evolve, those early efforts can become brittle. What if you could bring clarity and structure to those projects without slowing down your momentum?</p>
+
+
+
+<p>This tutorial shows how we used <strong>GitHub Copilot coding agent</strong> to refactor and enhance a personal GitHub Actions project called <a href="https://github.com/chrisreddington/validate-file-exists"><code>validate-file-exists</code></a>. What started as a patchwork utility became well-structured, test-covered, documented, and set up for success with Copilot agent mode and coding agent.</p>
+
+
+
+<p>We&rsquo;ll walk through my example of:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Updating <a href="https://docs.github.com/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot">Copilot custom instructions</a> for better task alignment.</li>
+
+
+
+<li>Creating the <a href="https://docs.github.com/copilot/how-tos/agents/copilot-coding-agent/customizing-the-development-environment-for-copilot-coding-agent"><code>copilot-setup-steps.yaml</code></a> file to give the coding agent the needed tools in its environment.</li>
+
+
+
+<li>Working with Copilot to identify technical debt.</li>
+
+
+
+<li>Collaborating with Copilot in pull requests.</li>
+
+
+
+<li>Partnering with Copilot to iteratively improve the UI on a separate project.</li>
+</ul>
+
+
+
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe loading="lazy" title="Rubber Duck Thursdays - Let's build with agents" width="500" height="281" src="https://www.youtube.com/embed/fWsj8caUPt0?list=PL0lo9MOBetEEkxEQuYjIvrCbJTrsvRj36" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div></figure>
+
+
+
+<h2 class="wp-block-heading" id="h-the-github-action-that-started-it-all">The GitHub Action that started it all</h2>
+
+
+
+<p>Back in November 2024, I created a small GitHub Action called <a href="https://github.com/chrisreddington/validate-file-exists"><code>validate-file-exists</code></a>. I wanted to ensure certain files (like a <code>dependabot.yml</code> file, or <code>.github/<a href="http://copilot-instructions.md">copilot-instructions.md</a></code>) were present in a repository. If not, then the GitHub Actions workflow would fail. It supported comma-separated inputs and was meant to be part of a larger &ldquo;baseline&rdquo; of quality gates I use across projects.</p>
+
+
+
+<p>It was functional, but I could have improved it further. It was missing docs, had inconsistent metadata, some gaps in input validation, and didn&rsquo;t have Copilot custom instructions or Copilot setup steps to help set Copilot up for success. Time to fix that&mdash;with help from Copilot agent mode in VS Code.</p>
+
+
+
+<h2 class="wp-block-heading" id="h-step-one-improve-custom-instructions">Step one: Improve custom instructions</h2>
+
+
+
+<p>Before bringing in the agent, I reviewed the existing <code>copilot-instructions.md</code>. It was sparse, without any description of the repository&rsquo;s purpose, usage, or structure, nor any clear guidance for Copilot.</p>
+
+
+
+<h3 class="wp-block-heading" id="h-action">Action:</h3>
+
+
+
+<p>I based the instructions on <a href="https://docs.github.com/copilot/how-tos/agents/copilot-coding-agent/best-practices-for-using-copilot-to-work-on-tasks#adding-custom-instructions-to-your-repository">best practices for using Copilot to work on tasks</a>, by providing the sample custom instructions file in my prompt, and asking Copilot to update based on the codebase. In other words, I wanted it to provide:&nbsp;</p>
+
+
+
+<ul class="wp-block-list">
+<li>A clear summary of the repository/codebase and what the action does.</li>
+
+
+
+<li>Contribution guidelines (how to build, format, lint, and test the codebase, including expectations before committing).</li>
+
+
+
+<li>Project structure overview.</li>
+
+
+
+<li>Key technical principles (strict TypeScript, incorporating TSDoc, and focused and manageable functions).</li>
+</ul>
+
+
+
+<h3 class="wp-block-heading" id="h-result-nbsp">Result:&nbsp;</h3>
+
+
+
+<p>Copilot had the right context on my expectations to guide it toward meaningful contributions. You can find the <a href="https://github.com/chrisreddington/validate-file-exists/blob/main/.github/copilot-instructions.md">latest version here</a>, but here&rsquo;s a snapshot below:</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code># Validate File Exists Action
+
+This is a TypeScript-based GitHub Action that validates whether specified files
+exist in a repository. It takes a comma-separated list of files and validates
+their existence, failing the workflow if any files are missing. Please follow
+these guidelines when contributing:
+
+## Code Standards
+
+### Required Before Each Commit
+
+- Run `npm run format:write` to ensure consistent code formatting with Prettier
+- Run `npm run lint` to check for ESLint violations
+- Run `npm run test` to ensure all tests pass
+- Run `npm run local-action` to test the action locally with a `.env` file
+
+### Development Flow
+
+- Build: `npm run package` (compiles TypeScript and bundles with ncc)
+- Test: `npm run test` or `npm run ci-test`
+- Coverage: `npm run coverage` (generates coverage badge)
+- Full check: `npm run all` (format, lint, test, coverage, package)
+- Local testing: `npm run local-action` (test action locally with .env file)
+
+## Repository Structure
+
+- `src/`: Core TypeScript source code
+  - `main.ts`: Main entry point and action orchestration
+  - `fileValidator.ts`: Core file validation logic
+  - `index.ts`: Action entrypoint that calls run()
+  - `types.ts`: TypeScript type definitions
+- `__tests__/`: Jest unit tests for all source files
+- `dist/`: Compiled and bundled JavaScript output (generated)
+- `action.yml`: GitHub Action metadata and interface definition
+- `script/`: Release automation scripts
+- `badges/`: Generated coverage and status badges
+
+## Key Guidelines
+
+1. Follow TypeScript strict mode and best practices
+1. Use clear, descriptive variable and function names
+1. Add TSDoc comments for all public methods and classes
+1. Write comprehensive unit tests using Jest for all new functionality
+1. Keep functions focused and manageable (generally under 50 lines)
+1. Use consistent error handling with @actions/core.setFailed()
+1. Validate inputs and provide meaningful error messages
+1. Use @actions/core for all GitHub Actions integrations (inputs, outputs,
+   logging)
+1. Maintain backwards compatibility for action inputs/outputs</code></pre>
+
+
+
+<h2 class="wp-block-heading" id="step-two-add-copilot-setup-steps-yaml">Step two: Add copilot-setup-steps.yaml</h2>
+
+
+
+<p>Like any of us developers, Copilot coding agent needs a proper environment to work. That means setting up any required frameworks, installing dependencies, and making sure Copilot has access to the right tools to get the job done.</p>
+
+
+
+<h3 class="wp-block-heading" id="action">Action:</h3>
+
+
+
+<p>I created <code>.github/copilot-setup-steps.yaml</code> using the GitHub docs on <a href="https://docs.github.com/copilot/how-tos/agents/copilot-coding-agent/customizing-the-development-environment-for-copilot-coding-agent#preinstalling-tools-or-dependencies-in-copilots-environment">customizing the development environment for Copilot coding agent</a>. The example checks out the code, sets up Node.js, and installs the needed dependencies. Given this is a TypeScript action, that&rsquo;s pretty much all I needed!<br><br>I made one minor change to the workflow: changing the node-version to be sourced from the <code>.node-version</code> file, to be consistent <a href="https://github.com/chrisreddington/validate-file-exists/blob/main/.github/workflows/ci.yml">with my CI workflow</a>:&nbsp;</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code>- name: Setup Node.js
+id: setup-node
+uses: actions/setup-node@v4
+with:
+node-version-file: .node-version
+cache: npm</code></pre>
+
+
+
+<h3 class="wp-block-heading" id="result">Result:</h3>
+
+
+
+<p>Copilot coding agent has the needed dependencies and tools to build, lint, and test the codebase. As it makes changes to the codebase, it will be able to check for quality (as requested in our custom instructions) using the tools that were installed in the <code>copilot-setup-steps.yml</code>.</p>
+
+
+
+<h2 class="wp-block-heading" id="step-three-let-copilot-find-technical-debt">Step three: Let Copilot find technical debt</h2>
+
+
+
+<p>With the setup steps and custom instructions in place, it was time to find a task. So of course, I turned to Copilot. Using Copilot Chat in VS Code, we asked Copilot:</p>
+
+
+
+<p>&ldquo;What technical debt exists in this project? Please give me a prioritized list of areas we need to focus on. I would like to create a GitHub Issue with the top 2 or 3 items. Please include a brief problem statement, a set of acceptance criteria, and pointers on what files need to be added/updated.&rdquo;</p>
+
+
+
+<p>Within minutes, it explored the codebase and came back with a list of suggestions:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Inconsistent package metadata.</li>
+
+
+
+<li>README mismatches (wrong input names).</li>
+
+
+
+<li>No validation for empty or malformed inputs.</li>
+</ul>
+
+
+
+<p>Notice how we asked for a problem statement, acceptance criteria, and guidance on the files to add/update? These come from the <a href="https://docs.github.com/copilot/how-tos/agents/copilot-coding-agent/best-practices-for-using-copilot-to-work-on-tasks#making-sure-your-issues-are-well-scoped">best practices for using Copilot to work on tasks</a>. In other words, make sure your issues are well-scoped!</p>
+
+
+
+<h3 class="wp-block-heading" id="action">Action:</h3>
+
+
+
+<p>I asked Copilot to write an issue that addresses those three items. Once I created the issue, I assigned it to Copilot.</p>
+
+
+
+<h2 class="wp-block-heading" id="h-step-four-copilot-coding-agent-in-action">Step four: Copilot coding agent in action</h2>
+
+
+
+<p>Once assigned, the agent kicked off a new pull request. Here&rsquo;s what it did, asynchronously:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Explored the contents of the repository to build up its understanding of the problem.</li>
+
+
+
+<li>Created a plan based on its exploration.</li>
+
+
+
+<li>Fixed the <code>package.json</code> name, description, URLs, and author field.</li>
+
+
+
+<li>Updated the README usage examples to match the code.</li>
+
+
+
+<li>Added input validation logic:
+<ul class="wp-block-list">
+<li>Reject empty or whitespace-only strings.</li>
+
+
+
+<li>Reject inputs that are just commas.</li>
+</ul>
+</li>
+
+
+
+<li>Wrote four new tests for these edge cases.</li>
+
+
+
+<li>Confirmed linting, formatting, and coverage were intact.</li>
+
+
+
+<li>Updated the pull request body with a checklist of work completed.</li>
+</ul>
+
+
+
+<p>As I delegated the task to Copilot, it freed me up to explain to the audience what it was doing, and how the Copilot setup steps and instructions work in the context of the agent&rsquo;s session.</p>
+
+
+
+<h3 class="wp-block-heading" id="result">Result:</h3>
+
+
+
+<p>Copilot completed all tasks in just over 11 minutes. After a review of the agent&rsquo;s approach, I approved the CI workflow so that it could run the standard quality checks on the codebase. The workflow failed, but through no fault of Copilot. I had some additional Markdown linting checks in the CI that weren&rsquo;t in the instructions.</p>
+
+
+
+<h2 class="wp-block-heading" id="real-time-debugging-and-linting-fixes">Real-time debugging and linting fixes</h2>
+
+
+
+<p>While I could have fixed it manually, it was a good opportunity to show how we can iterate on changes with Copilot. I added a new comment to the pull request, and asked Copilot:&nbsp;</p>
+
+
+
+<p>&ldquo;Our GitHub Action had a linting error for the markdown, can you fix that please?&rdquo; (Also pasting the error from the GitHub Actions workflow.)</p>
+
+
+
+<p>A few minutes later, it updated the code, pushed a new commit, and the pull request passed. And while Copilot was working on my task in the background, I was able to wrap up the stream.</p>
+
+
+
+<h2 class="wp-block-heading" id="bonus-making-ui-changes-with-copilot-coding-agent-and-the-playwright-mcp-server">Bonus: Making UI changes with Copilot coding agent and the Playwright MCP server</h2>
+
+
+
+<p>While Copilot worked on the initial code changes for the GitHub Action, I showed off a second project: a <a href="https://chrisreddington.com/trend-radar/"><strong>Trend Radar visualisation app</strong></a> (<a href="https://github.com/chrisreddington/trend-radar">here&rsquo;s the repository</a>) that I built using Next.js and Tailwind CSS.</p>
+
+
+
+<h3 class="wp-block-heading" id="problem">Problem:</h3>
+
+
+
+<p>Users had to manually input point data into forms. I wanted to:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Let users click on the radar to place a point.</li>
+
+
+
+<li>Enable drag-and-drop repositioning to change a point&rsquo;s category or likelihood.&nbsp;</li>
+</ul>
+
+
+
+<h3 class="wp-block-heading" id="solution">Solution:</h3>
+
+
+
+<p>I filed a GitHub issue describing the UX, acceptance criteria, and references.</p>
+
+
+
+<p>After a few iterations of comments by working through the pull request, Copilot coding agent:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Implemented click-to-place logic.</li>
+
+
+
+<li>Added drag-and-drop support.</li>
+
+
+
+<li>Wrote unit tests.</li>
+
+
+
+<li>Took screenshots and attached them to the pull request.</li>
+
+
+
+<li>Updated the pull request (and responded with comments) with summaries of the work that had been completed</li>
+</ul>
+
+
+
+<p><a href="https://github.blog/changelog/2025-07-02-copilot-coding-agent-now-has-its-own-web-browser/">Playwright is now installed by default</a> with the Copilot coding agent, which lets Copilot validate visual behaviors too.</p>
+
+
+
+<h2 class="wp-block-heading" id="final-thoughts">Final thoughts</h2>
+
+
+
+<p>This wasn&rsquo;t just a cleanup session. It was a lesson in modern software collaboration. Copilot coding agent is our new teammate.</p>
+
+
+
+<p>By structuring our repositories with context and intent, we invite Copilot to contribute meaningfully.</p>
+
+
+
+<p>If you haven&rsquo;t tried Copilot coding agent yet, think through your existing projects:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Clean up an old GitHub Action.</li>
+
+
+
+<li>Refactor a neglected repository.</li>
+
+
+
+<li>Add validations and tests.</li>
+</ul>
+
+
+
+<p>You might be surprised how much progress you can make in an afternoon.</p>
+
+
+
+<ul class="wp-block-list">
+<li><a href="https://docs.github.com/copilot/how-tos/agents/copilot-coding-agent/best-practices-for-using-copilot-to-work-on-tasks#adding-custom-instructions-to-your-repository">Write clear, concise <code>copilot-instructions.md</code></a> to steer the agent.</li>
+
+
+
+<li><a href="https://docs.github.com/en/copilot/how-tos/agents/copilot-coding-agent/customizing-the-development-environment-for-copilot-coding-agent#preinstalling-tools-or-dependencies-in-copilots-environment">Use <code>copilot-setup-steps.yaml</code></a> to give the agent the tools it needs.</li>
+
+
+
+<li><a href="https://docs.github.com/en/copilot/how-tos/agents/copilot-coding-agent/best-practices-for-using-copilot-to-work-on-tasks#making-sure-your-issues-are-well-scoped">Setting a clear and well-scoped piece of work</a> is important when working with Copilot.</li>
+
+
+
+<li><a href="https://github.blog/changelog/2025-07-02-copilot-coding-agent-now-has-its-own-web-browser/">Copilot now has access to a browser</a>, thanks to the Playwright MCP server &ndash; enabling it to interact with web pages, and add screenshots to the pull request.</li>
+
+
+
+<li>You don&rsquo;t have to work on new projects to try out Copilot and its agentic capabilities. Which existing project could you get started on?</li>
+</ul>
+
+
+
+<div class="wp-block-group post-content-cta has-global-padding is-layout-constrained wp-block-group-is-layout-constrained">
+<p><strong>Ready to explore more?</strong> See <a href="https://github.blog/ai-and-ml/github-copilot/how-the-github-billing-team-uses-the-coding-agent-in-github-copilot-to-continuously-burn-down-technical-debt/">how the GitHub billing team uses the coding agent to continuously burn down technical debt &gt;</a></p>
+</div>
+</body></html>
+<p>The post <a href="https://github.blog/ai-and-ml/github-copilot/from-chaos-to-clarity-using-github-copilot-agents-to-improve-developer-workflows/">From chaos to clarity: Using GitHub Copilot agents to improve developer workflows</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></content:encoded>
+					
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">89531</post-id>	</item>
+		<item>
+		<title>Code review in the age of AI: Why developers will always own the merge button</title>
+		<link>https://github.blog/ai-and-ml/generative-ai/code-review-in-the-age-of-ai-why-developers-will-always-own-the-merge-button/</link>
+		
+		<dc:creator><![CDATA[Elle Shwer]]></dc:creator>
+		<pubDate>Mon, 14 Jul 2025 16:38:03 +0000</pubDate>
+				<category><![CDATA[AI & ML]]></category>
+		<category><![CDATA[Generative AI]]></category>
+		<category><![CDATA[agentic workflows]]></category>
+		<category><![CDATA[AI agents]]></category>
+		<category><![CDATA[code review]]></category>
+		<category><![CDATA[GitHub Copilot]]></category>
+		<guid isPermaLink="false">https://github.blog/?p=89505</guid>
+
+					<description><![CDATA[<p>When it comes to merging code, developers will always make the final decision. But we’re rethinking how tools like GitHub Copilot can help. </p>
+<p>The post <a href="https://github.blog/ai-and-ml/generative-ai/code-review-in-the-age-of-ai-why-developers-will-always-own-the-merge-button/">Code review in the age of AI: Why developers will always own the merge button</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><p>When GitHub first shipped the pull request (PR) back in 2008, it wrapped a plain-text diff in a social workflow: comments, approvals, and a merge button that crucially refused to light up without at least one thumbs up from another developer. That design decision hard-wired accountability into modern software and let maintainers scale far beyond hallway conversations or e-mail patches.</p>
+
+
+
+<p>Seventeen years later, just about every &ldquo;agentic&rdquo; coding tool, from research demos to enterprise platforms, still funnels its work through that same merge gate. The PR remains the audit log, the governance layer, and the social contract that says nothing ships until a person is willing to own it.</p>
+
+
+
+<p>Now that large language models (LLM) can scaffold projects, file PRs, and even reply to review comments they wrote themselves, the obvious next question is, who is accountable for code that ships when part of it comes from a model?&nbsp;</p>
+
+
+
+<p>At GitHub, we think the answer hasn&rsquo;t fundamentally changed: it&rsquo;s the developer who hits &ldquo;Merge.&rdquo; But what has changed is everything that happens before that click.&nbsp;</p>
+
+
+
+<p>In this article, we&rsquo;ll explore how we&rsquo;re re-thinking code reviews for a world where developers increasingly work with AI (and how your team can, too).&nbsp;</p>
+
+
+
+<aside data-color-mode="light" data-dark-theme="dark" data-light-theme="light_dimmed" class="wp-block-group post-aside--large p-4 p-md-6 is-style-light-dimmed has-global-padding is-layout-constrained wp-block-group-is-layout-constrained is-style-light-dimmed--5" style="border-top-width:4px">
+<h3 class="wp-block-heading h5-mktg gh-aside-title is-typography-preset-h5" id="h-what-a-code-review-is-still-for" style="margin-top:0">What a code review is (still) for</h3>
+
+
+
+<p>Before diving into AI-assisted reviews, it&rsquo;s worth revisiting what makes code reviews effective in the first place. A review is far more than a bug hunt. A good review:&nbsp;</p>
+
+
+
+<ul class="wp-block-list">
+<li>Catches defects and security issues&nbsp;</li>
+
+
+
+<li>Ensures high code quality</li>
+
+
+
+<li>Shares knowledge across the team and maintains consistency with your codebase&rsquo;s patterns and standards</li>
+
+
+
+<li>Safeguards long-term maintainability&nbsp;</li>
+</ul>
+
+
+
+<p>AI changes none of that; it only moves the bottlenecks. A model can quickly spot an unused import, but it can&rsquo;t decide if a new endpoint undermines your privacy stance or if today is the right day to pay down that gnarly abstraction you&rsquo;ve been avoiding. The merge button still needs (and, in our view, <em>always</em> will need) a developer fingerprint.</p>
+
+
+
+<p>For a deeper dive into effective code review practices, <a href="https://github.blog/developer-skills/github/how-to-review-code-effectively-a-github-staff-engineers-philosophy/">check out our guide on reviewing code effectively</a>.</p>
+</aside>
+
+
+
+<h2 class="wp-block-heading" id="what-we-learned-from-github-copilots-code-review-capabilities">What we learned from GitHub Copilot&rsquo;s code review capabilities</h2>
+
+
+
+<p>Earlier this year, the GitHub Copilot code review team conducted in-depth interviews with developers about their code review process. They also walked us through their code review workflow. These interviews revealed three consistent patterns:</p>
+
+
+
+<ol class="wp-block-list">
+<li><strong>No special treatment for AI:</strong> Reviewers grilled model-generated diffs as hard as those from other developers.</li>
+
+
+
+<li><strong>Self reviews raised the floor:</strong> Developers who <a href="https://docs.github.com/en/copilot/how-tos/agents/copilot-code-review/using-copilot-code-review?tool=vscode#requesting-a-review-from-copilot">ran a Copilot review before opening a PR</a> often wiped out an entire class of trivial nit-picks (i.e., trimmed imports, missing tests), cutting out back-and-forth by roughly a third.</li>
+
+
+
+<li><strong>AI was no replacement for human judgement: </strong>Programming often involves trade-offs. LLMs can inform you about those trade-offs, but someone has to make the call about what path to take based on your organization&rsquo;s goals and standards.&nbsp;&nbsp;</li>
+</ol>
+
+
+
+<p>An overarching principle quickly became clear: <strong>AI augments developer judgment; it can&rsquo;t replace it. </strong>And our findings, from confidence scores to red-flag explanations, are informing how we&rsquo;re building Copilot&rsquo;s code review features.</p>
+
+
+
+<aside data-color-mode="light" data-dark-theme="dark" data-light-theme="light_dimmed" class="wp-block-group post-aside--large p-4 p-md-6 is-style-light-dimmed has-global-padding is-layout-constrained wp-block-group-is-layout-constrained is-style-light-dimmed--6" style="border-top-width:4px">
+<h2 class="wp-block-heading h5-mktg gh-aside-title is-typography-preset-h5" id="h-github-copilot-code-review-is-generally-available" style="margin-top:0">GitHub Copilot code review is generally available</h2>
+
+
+
+<p>Let an AI teammate handle the first pass. GitHub Copilot&rsquo;s code-review agent is generally available for every Copilot plan, and it&rsquo;s spotting bugs, performance issues, and even suggesting fixes before a human ever opens the diff. Enable automatic reviews in your repo rules or ask Copilot on-demand, right inside GitHub, GitHub Mobile, or VS Code.</p>
+
+
+
+<p><a href="https://github.blog/changelog/2025-04-04-copilot-code-review-now-generally-available/">Learn more &gt;</a></p>
+</aside>
+
+
+
+<h3 class="wp-block-heading" id="what-ai-can-and-cant-handle-today">What AI can (and can&rsquo;t) handle today</h3>
+
+
+
+<p>LLMs are already great at the &ldquo;grind&rdquo; layer of a review:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Mechanical scanning.</strong> &ldquo;Is there a typo?&rdquo; &ldquo;Are all arguments used?&rdquo;</li>
+
+
+
+<li><strong>Pattern matching.</strong> &ldquo;This looks like SQL injection&rdquo; or &ldquo;You forgot to await that promise.&rdquo;</li>
+
+
+
+<li><strong>Pedantic consistency.</strong> &ldquo;Variable names snake_case here, camelCase there.&rdquo;</li>
+</ul>
+
+
+
+<p>Soon they&rsquo;ll be able to do even more, such as understand product and domain context.&nbsp; But they still fall short on:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Architecture and trade-offs.</strong> Should we split this service? Cache locally?</li>
+
+
+
+<li><strong>Mentorship.</strong> Explaining <em>why</em> a pattern matters and when to break it.</li>
+
+
+
+<li><strong>Values.</strong> Should we build this feature at all?</li>
+</ul>
+
+
+
+<p>Those gaps keep developers in the loop and in the pilot&rsquo;s seat. That principle is foundational for us as we continue to develop GitHub Copilot.&nbsp;</p>
+
+
+
+<h2 class="wp-block-heading" id="a-playbook-for-modern-code-reviews">A playbook for modern code reviews</h2>
+
+
+
+<p>The most effective approach to AI-assisted code reviews starts before you even submit your pull request. Think of it as the golden rule of development: Treat code reviewers the way you&rsquo;d like them to treat you.</p>
+
+
+
+<h3 class="wp-block-heading" id="use-ai-to-self-review-your-code-in-your-ide">Use AI to self review your code in your IDE</h3>
+
+
+
+<p>Before pushing your code, <a href="https://docs.github.com/en/copilot/how-tos/agents/copilot-code-review/using-copilot-code-review?tool=vscode#requesting-a-review-from-copilot">run GitHub Copilot code review in your IDE</a> to catch the obvious stuff so your teammates can focus on the nuanced issues that require developer insight. Copilot code review can comb your staged diff, suggest docstrings, and flag null dereferences. From there, you can fix everything it finds before you submit your PR so teammates never see the noise.</p>
+
+
+
+<h3 class="wp-block-heading" id="take-ownership-of-your-code">Take ownership of your code</h3>
+
+
+
+<p>Just because you used AI to generate code doesn&rsquo;t mean it&rsquo;s not your code. Once you commit code, you&rsquo;re responsible for it. That means understanding what it does, ensuring it follows your team&rsquo;s standards, and making sure it integrates well with the rest of your codebase.</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p>If an AI agent writes code, it&rsquo;s on me to clean it up before my name shows up in git blame.</p>
+<cite>Jon Wiggins, Machine Learning Engineer at Respondology</cite></blockquote>
+
+
+
+<h3 class="wp-block-heading" id="run-your-code-through-automated-ci-gates">Run your code through automated CI gates</h3>
+
+
+
+<p>Your pipeline should already be running unit tests, secret scanning, CodeQL, dependency checks, style linters. Keep doing that. Fail fast, fail loudly.</p>
+
+
+
+<h3 class="wp-block-heading" id="practical-tips-for-personal-code-hygiene">Practical tips for personal code hygiene:</h3>
+
+
+
+<ul class="wp-block-list">
+<li>Review your own code in your IDE.</li>
+
+
+
+<li>Ensure variable names, comments, and structure to match your team&rsquo;s conventions.</li>
+
+
+
+<li>Test AI-generated code thoroughly before including it in pull requests.</li>
+</ul>
+
+
+
+<h2 class="wp-block-heading" id="use-ai-to-focus-on-the-areas-where-your-judgement-is-critical">Use AI to focus on the areas where your judgement is critical</h2>
+
+
+
+<p>The real power of AI in code reviews isn&rsquo;t in replacing developers as the reviewers. It&rsquo;s in handling the routine work that can bog down the review process, freeing developers to focus where their judgment is most valuable.</p>
+
+
+
+<h3 class="wp-block-heading" id="ai-doesnt-replace-your-existing-automated-checks">AI doesn&rsquo;t replace your existing automated checks.&nbsp;</h3>
+
+
+
+<p>Make sure tests pass, coverage metrics are met, and static analysis tools have done their work before developer reviews begin. This creates a solid foundation for more meaningful discussion.&nbsp;</p>
+
+
+
+<p>You can use an LLM to catch not just syntax issues, but also patterns, potential bugs, and style inconsistencies. Ironically, LLMs are particularly good at catching the sorts of mistakes that LLMs make, which is increasingly relevant as more AI-generated code enters our codebases.</p>
+
+
+
+<h3 class="wp-block-heading" id="clearly-define-roles">Clearly define roles</h3>
+
+
+
+<p>Set clear expectations about when AI feedback should be considered versus when human judgment takes precedence. For example, you should rely on other developers for code architecture and consistency with business goals and organizational values. It&rsquo;s especially useful to use AI to review long repetitive PRs where it can be easy to miss little things.</p>
+
+
+
+<h2 class="wp-block-heading" id="implementation-tips-for-building-a-sustainable-ai-assisted-review-process">Implementation tips for building a sustainable AI-assisted review process</h2>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Document clear guidelines</strong> that specify when to use AI in code reviews, what types of feedback to trust, and how to escalate when developers disagree with an AI code review. With GitHub Copilot, for instance, <a href="https://docs.github.com/en/copilot/how-tos/agents/copilot-code-review/using-copilot-code-review?tool=webui#customizing-copilots-reviews-with-custom-instructions">you can use custom instructions to set clear rules for how Copilot engages with your code</a>.&nbsp;</li>
+
+
+
+<li><strong>Update guidelines regularly</strong> based on team feedback and evolving AI capabilities. Remember that as your codebase and AI tools evolve, what works today might not work tomorrow.</li>
+
+
+
+<li><strong>Encourage open team discussions</strong> about the strengths and limitations of AI-assisted reviews. Share both positive and negative experiences to help everyone learn and improve their approach.</li>
+
+
+
+<li><strong>Refine automation continuously</strong> by using feedback from reviewers to improve your automated testing strategy. Identify patterns where solutions to recurring issues could be automated.</li>
+</ul>
+
+
+
+<h2 class="wp-block-heading" id="developer-judgement-remains-crucial">Developer judgement remains crucial</h2>
+
+
+
+<p>While AI can handle much of the routine work in code reviews, developer judgment remains irreplaceable for architectural decisions, mentoring and knowledge transfer, and context-specific decisions that require understanding of your product and users.&nbsp;</p>
+
+
+
+<p>And even as LLMs get smarter, three review tasks remain stubbornly human:</p>
+
+
+
+<ol class="wp-block-list">
+<li><strong>Architecture trade-offs</strong>: Should we split this service? Cache locally? Pay tech debt now or later?</li>
+
+
+
+<li><strong>Mentorship and culture</strong>: PR threads are team classrooms. A bot can&rsquo;t tell a junior engineer the war story behind that odd regex.</li>
+
+
+
+<li><strong>Ethics and product values</strong>: &ldquo;Should we even build this?&rdquo; is a question AI can&rsquo;t answer.</li>
+</ol>
+
+
+
+<p>The goal is to make developers more effective by letting them focus on what they do best.</p>
+
+
+
+<div class="wp-block-group post-content-cta has-global-padding is-layout-constrained wp-block-group-is-layout-constrained">
+<p><strong>Learn more</strong> about <a href="https://docs.github.com/en/copilot/how-tos/agents/copilot-code-review/using-copilot-code-review">code reviews with GitHub Copilot &gt;&nbsp;</a></p>
+</div>
+</body></html>
+<p>The post <a href="https://github.blog/ai-and-ml/generative-ai/code-review-in-the-age-of-ai-why-developers-will-always-own-the-merge-button/">Code review in the age of AI: Why developers will always own the merge button</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></content:encoded>
+					
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">89505</post-id>	</item>
+		<item>
+		<title>Modeling CORS frameworks with CodeQL to find security vulnerabilities</title>
+		<link>https://github.blog/security/application-security/modeling-cors-frameworks-with-codeql-to-find-security-vulnerabilities/</link>
+		
+		<dc:creator><![CDATA[Kevin Stubbings]]></dc:creator>
+		<pubDate>Thu, 10 Jul 2025 17:38:14 +0000</pubDate>
+				<category><![CDATA[Application security]]></category>
+		<category><![CDATA[Security]]></category>
+		<category><![CDATA[CodeQL]]></category>
+		<category><![CDATA[GitHub Security Lab]]></category>
+		<category><![CDATA[security research]]></category>
+		<guid isPermaLink="false">https://github.blog/?p=89417</guid>
+
+					<description><![CDATA[<p>Discover how to increase the coverage of your CodeQL CORS security by modeling developer headers and frameworks.</p>
+<p>The post <a href="https://github.blog/security/application-security/modeling-cors-frameworks-with-codeql-to-find-security-vulnerabilities/">Modeling CORS frameworks with CodeQL to find security vulnerabilities</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><p>There are many <a href="https://github.blog/security/application-security/localhost-dangers-cors-and-dns-rebinding/">different types of vulnerabilities</a> that can occur when setting up CORS for your web application, and insecure usage of CORS frameworks and logic errors in homemade CORS implementations can lead to serious security vulnerabilities that allow attackers to bypass authentication. What&rsquo;s more, attackers can utilize CORS misconfigurations to escalate the severity of other existing vulnerabilities in web applications to access services on the intranet.</p>
+
+
+
+<figure class="wp-block-image size-large"><img data-recalc-dims="1" loading="lazy" decoding="async" height="847" width="1024" src="https://github.blog/wp-content/uploads/2025/07/cors1.jpg?resize=1024%2C847" alt="A CORS diagram showing communication between two websites in the browser." class="wp-image-89421" srcset="https://github.blog/wp-content/uploads/2025/07/cors1.jpg?w=1600 1600w, https://github.blog/wp-content/uploads/2025/07/cors1.jpg?w=300 300w, https://github.blog/wp-content/uploads/2025/07/cors1.jpg?w=768 768w, https://github.blog/wp-content/uploads/2025/07/cors1.jpg?w=1024 1024w, https://github.blog/wp-content/uploads/2025/07/cors1.jpg?w=1536 1536w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></figure>
+
+
+
+<p>In this blog post, I&rsquo;ll show how developers and security researchers can use CodeQL to model their own libraries, using work that I&rsquo;ve done on CORS frameworks in Go as an example. Since the techniques that I used are useful for modeling other frameworks, this blog post can help you model and find vulnerabilities in your own projects. Because static analyzers like CodeQL have the ability to get the detailed information about structures, functions, and imported libraries, they&rsquo;re more versatile than simple tools like grep. Plus, since CORS frameworks often use set configurations via specific structures and functions, using CodeQL is the easiest way to find misconfigurations in your codebases.</p>
+
+
+
+<h2 class="wp-block-heading" id="h-modeling-headers-in-codeql">Modeling headers in CodeQL</h2>
+
+
+
+<p>When adding code to CodeQL, it&rsquo;s best practice to always check the related queries and frameworks that are already available so that we&rsquo;re not reinventing the wheel. For most languages, CodeQL already has a CORS query that covers many of the default cases. The easiest and simplest way of implementing CORS is by manually setting the&nbsp; <code>Access-Control-Allow-Origin</code> and <code>Access-Control-Allow-Credentials</code> <a href="https://developer.mozilla.org/en-US/docs/Glossary/Response_header">response headers</a>. By modeling the frameworks for a language (e.g., Django, FastAPI, and Flask), CodeQL can identify where in the code those headers are set. Building on those models by looking for specific header values, CodeQL can find simple examples of CORS and see if they match vulnerable values.</p>
+
+
+
+<p>In the following Go example, unauthenticated resources on the servers could be accessed by arbitrary websites.</p>
+
+
+
+<pre class="wp-block-code language-go"><code>func saveHandler(w http.ResponseWriter, r *http.Request) { 
+    w.Header().Set("Access-Control-Allow-Origin", "*") 
+}</code></pre>
+
+
+
+<p>This may be troublesome for web applications that do not have authentication, such as tools intended to be hosted locally, because any dangerous endpoint could be accessed and exploited by an attacker.</p>
+
+
+
+<p>This is a snippet of the Go http framework where CodeQL models the <code>Set</code> method to find security-related header writes for this framework. Header writes are modeled by the <code>HeaderWrite</code> class in <code>HTTP.qll</code>, which is extended by other modules and classes in order to find all header writes.</p>
+
+
+
+<pre class="wp-block-code language-go"><code> /** Provides a class for modeling new HTTP header-write APIs. */
+  module HeaderWrite {
+    /**
+     * A data-flow node that represents a write to an HTTP header.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `HTTP::HeaderWrite` instead.
+     */
+    abstract class Range extends DataFlow::ExprNode {
+      /** Gets the (lower-case) name of a header set by this definition. */
+      string getHeaderName() { result = this.getName().getStringValue().toLowerCase() }</code></pre>
+
+
+
+<p>Some useful methods such as <code>getHeaderName</code> and <code>getHeaderValue</code> can also&nbsp; help in developing security queries related to headers, like CORS misconfiguration. Unlike the previous code example, the below pattern is an example of a CORS misconfiguration whose effect is much more impactful.</p>
+
+
+
+<pre class="wp-block-code language-go"><code>func saveHandler(w http.ResponseWriter, r *http.Request) { 
+    w.Header().Set("Access-Control-Allow-Origin", 
+    r.Header.Get("Origin"))
+    w.Header().Set("Access-Control-Allow-Credentials", 
+    "true") 
+}</code></pre>
+
+
+
+<p>Reflecting the request origin header and allowing credentials permits an attacking website to make requests as the current logged in user, which could compromise the entire web application.</p>
+
+
+
+<p>Using CodeQL, we can model the headers, looking for specific headers and methods in order to help CodeQL identify the relevant security code structures to find CORS vulnerabilities.</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code>/**
+ * An `Access-Control-Allow-Credentials` header write.
+ */
+class AllowCredentialsHeaderWrite extends Http::HeaderWrite {
+    AllowCredentialsHeaderWrite() {
+        this.getHeaderName() = headerAllowCredentials()
+    }
+}
+
+/**
+ * predicate for CORS query.
+ */
+predicate allowCredentialsIsSetToTrue(DataFlow::ExprNode allowOriginHW) {
+        exists(AllowCredentialsHeaderWrite allowCredentialsHW |
+                allowCredentialsHW.getHeaderValue().toLowerCase() = "true"</code></pre>
+
+
+
+<p>Here, the <code>HTTP::HeaderWrite</code> class, as previously discussed, is used as a superclass for <code>AllowCredentialsHeaderWrite</code>, which finds all header writes of the value <code>Access-Control-Allow-Credentials</code>. Then, when our CORS misconfiguration query checks whether credentials are enabled, we use AllowCredentialsHeaderWrite as one of the possible sources to check.</p>
+
+
+
+<p>The simplest way for developers to set a CORS policy is by setting headers on HTTP responses in their server. By modeling all instances where a header is set, we can check for these CORS cases in our CORS query.&nbsp;</p>
+
+
+
+<p>When modeling web frameworks using CodeQL, creating classes that extend more generic superclasses such as <code>HTTP::HeaderWrite</code> allows the impact of the model to be used in all CodeQL security queries that need them. Since headers in web applications can be so important, modeling all the ways they can be written to in a framework can be a great first step to adding that web framework to CodeQL.</p>
+
+
+
+<h2 class="wp-block-heading" id="modeling-frameworks-in-codeql">Modeling frameworks in CodeQL</h2>
+
+
+
+<figure class="wp-block-image size-full"><img data-recalc-dims="1" loading="lazy" decoding="async" width="961" height="877" src="https://github.blog/wp-content/uploads/2025/07/cors2.png?resize=961%2C877" alt="A computer with two windows open showing secure code." class="wp-image-89422" srcset="https://github.blog/wp-content/uploads/2025/07/cors2.png?w=961 961w, https://github.blog/wp-content/uploads/2025/07/cors2.png?w=300 300w, https://github.blog/wp-content/uploads/2025/07/cors2.png?w=768 768w" sizes="auto, (max-width: 961px) 100vw, 961px" /></figure>
+
+
+
+<p>Rather than setting the CORS headers manually, many developers use a CORS framework instead.&nbsp; Generally, CORS frameworks use middleware in the router of a web framework in order to add headers for every response. Some web frameworks will have their own CORS middleware, or you may have to include a third-party package. When modeling a CORS framework in CodeQL, you&rsquo;re usually modeling the relevant structures and methods that signify a CORS policy. Once the modeled structure or methods have the correct values, the query should check that the structure is actually used in the codebase.</p>
+
+
+
+<p>For frameworks, we&rsquo;ll look into Go as our language of choice since it has great support for CORS. Go provides a couple of CORS frameworks, but most follow the structure of Gin CORS, a CORS middleware framework for the Gin web framework. Here&rsquo;s an example of a Gin configuration for CORS:</p>
+
+
+
+<pre class="wp-block-code language-go"><code>package main
+
+import (
+  "time"
+
+  "github.com/gin-contrib/cors"
+  "github.com/gin-gonic/gin"
+)
+
+func main() {
+  router := gin.Default()
+  router.Use(cors.New(cors.Config{
+    AllowOrigins:     []string{"https://foo.com"},
+    AllowMethods:     []string{"PUT", "PATCH"},
+    AllowHeaders:     []string{"Origin"},
+    ExposeHeaders:    []string{"Content-Length"},
+    AllowCredentials: true,
+    AllowOriginFunc: func(origin string) bool {
+      return origin == "https://github.com"
+    }
+  }))
+  router.Run()
+}</code></pre>
+
+
+
+<p>Now that we&rsquo;ve modeled the <code>router.Use</code> method and <code>cors.New</code> &mdash; ensuring that <code>cors.Config</code> structure is at some point put into a <code>router.Use</code> function for actual use &mdash; we should then check all <code>cors.Config</code> structures for appropriate headers.</p>
+
+
+
+<p>Next, we find the appropriate headers fields we want to model. For a basic CORS misconfiguration query, we would model <code>AllowOrigins</code>, <code>AllowCredentials</code>, <code>AllowOriginFunc</code>. My pull requests for adding GinCors and RSCors to CodeQL can be used as references if you&rsquo;re interested in seeing everything that goes into adding a framework to CodeQL. Below I&rsquo;ll discuss some of the most important details.</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code> /**
+   * A variable of type Config that holds the headers to be set.
+   */
+  class GinConfig extends Variable {
+    SsaWithFields v;
+
+    GinConfig() {
+      this = v.getBaseVariable().getSourceVariable() and
+      v.getType().hasQualifiedName(packagePath(), "Config")
+    }
+
+    /**
+     * Get variable declaration of GinConfig
+     */
+    SsaWithFields getV() { result = v }
+  }</code></pre>
+
+
+
+<p>I modeled the Config type by using SSAWithFields, which is a <a href="https://en.wikipedia.org/wiki/Static_single-assignment_form">single static assignment</a> with fields. By using <code>getSourceVariable()</code>, we can get the variable that the structure was assigned to, which can help us see where the config is used. This allows us to find track variables that contain the CORS config structure across the codebase, including ones that are often initialized like this:</p>
+
+
+
+<pre class="wp-block-code language-go"><code>func main() {
+...
+// We can now track the corsConfig variable for further updates,such as when one of the fields is updated.
+corsConfig:= cors.New(cors.Config{
+...
+})}</code></pre>
+
+
+
+<p>Now that we have the variable containing the relevant structure, we want to find all the instances where the variable is written to. By doing this, we can get an understanding of the relevant property values that have been assigned to it, and thus decide whether the CORS config is misconfigured.</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code> /**
+   * A write to the value of Access-Control-Allow-Origins header
+   */
+  class AllowOriginsWrite extends UniversalOriginWrite {
+    DataFlow::Node base;
+	
+	// This models all writes to the AllowOrigins field of the Config type
+    AllowOriginsWrite() {
+
+      exists(Field f, Write w |
+        f.hasQualifiedName(packagePath(), "Config", "AllowOrigins") and
+        w.writesField(base, f, this) and
+
+		// To ensure we are finding the correct field, we look for a write of type string (SliceLit)
+        this.asExpr() instanceof SliceLit
+      )
+
+    }
+
+    /**
+     * Get config variable holding header values
+     */
+    override GinConfig getConfig() {
+      exists(GinConfig gc |
+        (
+          gc.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
+            base.asInstruction() or
+          gc.getV().getAUse() = base
+        ) and
+        result = gc
+      )
+    }
+  }</code></pre>
+
+
+
+<p>By adding the <code>getConfig</code> function, we return the previously created <code>GinConfig</code>, which allows us to verify that any writes to relevant headers affect the same configuration structure. For example, a developer may create a config that has a vulnerable origin and another config that allows credentials. The config that allows credentials wouldn&rsquo;t be highlighted because only configs with vulnerable origins would create a security issue. By allowing CORS relevant header writes from different frameworks to all extend <code>UniversalOriginWrite</code> and <code>UniversalCredentialsWrite</code>, we can use those in our CORS misconfiguration query.&nbsp;</p>
+
+
+
+<h2 class="wp-block-heading" id="writing-cors-misconfiguration-queries-in-codeql">Writing CORS misconfiguration queries in CodeQL</h2>
+
+
+
+<p>CORS issues are separated into two types: those without credentials (where we&rsquo;re looking for * or null) and CORS with credentials (where we&rsquo;re looking for origin reflection or null). If you want to keep the CodeQL query simple, you can create one query for each type of CORS vulnerability and assign their severity accordingly. For the Go language, CodeQL only has a &ldquo;CORS with credentials&rdquo; type of query because it&rsquo;s applicable to all applications.&nbsp;</p>
+
+
+
+<p>Let&rsquo;s tie in the models we just created above to see how they&rsquo;re used in the Go CORS misconfiguration query itself.&nbsp;</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code>from DataFlow::ExprNode allowOriginHW, string message
+where
+  allowCredentialsIsSetToTrue(allowOriginHW) and
+  (
+    flowsFromUntrustedToAllowOrigin(allowOriginHW, message)
+    or
+    allowOriginIsNull(allowOriginHW, message)
+  ) and
+  not flowsToGuardedByCheckOnUntrusted(allowOriginHW)
+...
+select allowOriginHW, message</code></pre>
+
+
+
+<p>This query is only interested in critical vulnerabilities, so it checks whether credentials are allowed, and whether the allowed origins either come from a remote source or are hardcoded as null. In order to prevent false positives, it checks if there are certain guards &mdash; such as string comparisons &mdash;&nbsp; before the remote source gets to the origin. Let&rsquo;s take a closer look at the predicate <code>allowCredentialsIsSetToTrue</code>.</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code>/**
+ * Holds if the provided `allowOriginHW` HeaderWrite's parent ResponseWriter
+ * also has another HeaderWrite that sets a `Access-Control-Allow-Credentials`
+ * header to `true`.
+ */
+predicate allowCredentialsIsSetToTrue(DataFlow::ExprNode allowOriginHW) {
+  exists(AllowCredentialsHeaderWrite allowCredentialsHW |
+    allowCredentialsHW.getHeaderValue().toLowerCase() = "true"
+  |
+    allowOriginHW.(AllowOriginHeaderWrite).getResponseWriter() =
+      allowCredentialsHW.getResponseWriter()
+  )
+  or
+...</code></pre>
+
+
+
+<p>For the first part of the predicate, we&rsquo;ll use one of the headers we previously modeled, AllowCredentialsHeaderWrite, in order to compare headers. This will help us filter out all header writes that don&rsquo;t have credentials set.</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code>  exists(UniversalAllowCredentialsWrite allowCredentialsGin |
+    allowCredentialsGin.getExpr().getBoolValue() = true
+  |
+    allowCredentialsGin.getConfig() = allowOriginHW.(UniversalOriginWrite).getConfig() and
+    not exists(UniversalAllowAllOriginsWrite allowAllOrigins |
+      allowAllOrigins.getExpr().getBoolValue() = true and
+      allowCredentialsGin.getConfig() = allowAllOrigins.getConfig()
+    )
+    or
+    allowCredentialsGin.getBase() = allowOriginHW.(UniversalOriginWrite).getBase() and
+    not exists(UniversalAllowAllOriginsWrite allowAllOrigins |
+      allowAllOrigins.getExpr().getBoolValue() = true and
+      allowCredentialsGin.getBase() = allowAllOrigins.getBase()
+    )
+  )
+}</code></pre>
+
+
+
+<p>If CORS is not set through a header, we check for CORS frameworks using <code>UniversalAllowCredentialsWrite</code>.To filter out all instances whose corresponding Origin value is set to &ldquo;*&rdquo;, we use the <code>not</code> CodeQL keyword on <code>UniversalAllowAllOriginsWrite</code>,&nbsp; since these are not applicable to this vulnerability. <code>flowsFromUntrustedToAllowOrigin</code> and <code>allowOriginIsNull</code> follow similar logic to ensure that the resulting header rights are vulnerable.</p>
+
+
+
+<h2 class="wp-block-heading" id="extra-credit">Extra credit</h2>
+
+
+
+<p>When you model CodeQL queries to detect vulnerabilities related to CORS, you can&rsquo;t use a one-size-fits-all approach. Instead, you have to tailor your queries to each web framework for two reasons:&nbsp;</p>
+
+
+
+<ul class="wp-block-list">
+<li>Each framework implements CORS policies in its own way</li>
+
+
+
+<li>Vulnerability patterns depend on a framework&rsquo;s behavior</li>
+</ul>
+
+
+
+<p>For example, we saw before in Gin CORS that there is an <code>AllowOriginFunc</code>. After looking at the documentation or experimenting with the code, we can see that it may override <code>AllowOrigins</code>. To improve our query, we could write a CodeQL query that looks for <code>AllowOriginFunc</code>s that always return true, which will result in a high severity vulnerability if paired with credentials.</p>
+
+
+
+<h2 class="wp-block-heading" id="take-this-with-you">Take this with you&nbsp;</h2>
+
+
+
+<p>Once you understand the behavior of web frameworks and headers with CodeQL, it&rsquo;s simple to find security issues in your code and reduce the chance of vulnerabilities making their way into your work. The number of CodeQL languages that support CORS misconfiguration queries is still growing, and there is always room for improvement from the community .&nbsp;</p>
+
+
+
+<p>If this blog has been helpful in helping you write CodeQL queries, please feel free to open anything you&rsquo;d like to share with the community in our <a href="https://github.com/GitHubSecurityLab/CodeQL-Community-Packs">CodeQL Community Packs</a>.</p>
+
+
+
+<p>Finally, <a href="https://github.com/security/advanced-security/code-security">GitHub Code Security</a> can help you secure your project by detecting and suggesting a fix for bugs such as <a href="https://codeql.github.com/codeql-query-help/javascript/js-cors-misconfiguration-for-credentials/">CORS misconfiguration</a>!</p>
+
+
+
+<div class="wp-block-group post-content-cta has-global-padding is-layout-constrained wp-block-group-is-layout-constrained">
+<p><strong>Explore more</strong> GitHub Security Lab <a href="https://github.blog/tag/github-security-lab/">blog posts &gt;</a></p>
+</div>
+</body></html>
+<p>The post <a href="https://github.blog/security/application-security/modeling-cors-frameworks-with-codeql-to-find-security-vulnerabilities/">Modeling CORS frameworks with CodeQL to find security vulnerabilities</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></content:encoded>
+					
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">89417</post-id>	</item>
+		<item>
+		<title>Beyond prompt crafting: How to be a better partner for your AI pair programmer</title>
+		<link>https://github.blog/ai-and-ml/github-copilot/beyond-prompt-crafting-how-to-be-a-better-partner-for-your-ai-pair-programmer/</link>
+		
+		<dc:creator><![CDATA[Christopher Harrison]]></dc:creator>
+		<pubDate>Wed, 09 Jul 2025 16:00:00 +0000</pubDate>
+				<category><![CDATA[AI & ML]]></category>
+		<category><![CDATA[GitHub Copilot]]></category>
+		<guid isPermaLink="false">https://github.blog/?p=89424</guid>
+
+					<description><![CDATA[<p>Ensuring quality code suggestions from Copilot goes beyond the perfect prompt. Context is key to success when working with your AI pair programmer.</p>
+<p>The post <a href="https://github.blog/ai-and-ml/github-copilot/beyond-prompt-crafting-how-to-be-a-better-partner-for-your-ai-pair-programmer/">Beyond prompt crafting: How to be a better partner for your AI pair programmer</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><p>When a developer first starts working with <a href="https://github.com/features/copilot">GitHub Copilot</a> there&rsquo;s (rightly) a focus on prompt crafting &mdash; or the art of providing good context and information to generate quality suggestions.&nbsp;</p>
+
+
+
+<p>But context goes beyond typing out a couple of lines into Copilot Chat in VS Code. We want to ensure Copilot is considering the right files when performing operations, that these files are easy for Copilot to read, and that we provide Copilot any extra guidance it may need about the project or specific task.&nbsp;</p>
+
+
+
+<p>So let&rsquo;s explore taking the next step beyond prompt crafting, and think about how we can be a better partner for our AI pair programmer.</p>
+
+
+
+<h2 class="wp-block-heading" id="h-context-is-key">Context is key</h2>
+
+
+
+<p>I always like to talk about context by starting with a story. The other day my partner and I woke up and she said, &ldquo;Let&rsquo;s go to brunch!&rdquo; Fantastic! Who doesn&rsquo;t love brunch?&nbsp;</p>
+
+
+
+<p>I recommended a spot, one of our favorites, and she said, &ldquo;You know&hellip; we&rsquo;ve been there quite a bit lately. I&rsquo;d like to try something different.&rdquo; I recommended another spot to which she replied, &ldquo;Now that I&rsquo;m thinking about it, I really want waffles. Let&rsquo;s find somewhere that does good waffles.&rdquo;</p>
+
+
+
+<p>This conversation is, of course, pretty normal. My partner asked a question, I responded, she provided more context, and back and forth we went. All of my suggestions were perfectly reasonable based on the information I had, and when she didn&rsquo;t hear what she was expecting she provided a bit more guidance. As we continued talking, she realized she had a craving for waffles, which she discovered as she considered my suggestions.</p>
+
+
+
+<p>This is very much how we both talk with other people, but also how we approach working with generative AI tools, including Copilot. We ask questions, get answers, and work back and forth providing more context and making decisions based on what we see.&nbsp;</p>
+
+
+
+<p>If we don&rsquo;t receive the suggestions we&rsquo;re expecting, or if something isn&rsquo;t built to the specs we had in mind, it&rsquo;s very likely Copilot didn&rsquo;t have the context it needed &mdash; just as I didn&rsquo;t have the context to suggest somewhere new when I started the conversation with my partner.</p>
+
+
+
+<h2 class="wp-block-heading" id="h-how-github-copilot-works-with-code">How GitHub Copilot works with code</h2>
+
+
+
+<p>To understand how Copilot in the IDE gets its context, it&rsquo;s important to understand how it works. Except for <a href="https://github.blog/news-insights/product-news/from-pair-to-peer-programmer-our-vision-for-agentic-workflows-in-github-copilot/">agent mode, which performs external tasks</a>, Copilot doesn&rsquo;t build or run the code as it generates code suggestions. In fact, it behaves very similarly to, well, a pair programmer. It reads the code (and comments) of the files we&rsquo;ve pointed it at just as another developer would.&nbsp;</p>
+
+
+
+<p>But unlike a teammate, Copilot doesn&rsquo;t have &ldquo;institutional knowledge,&rdquo; or the background information that comes with experience (although <a href="https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot">you can add custom instructions</a>, but more on that later). This could be the history of why things were built a certain way (which isn&rsquo;t documented somewhere but everyone just &ldquo;knows&rdquo; &#128580;), that an internal library or framework that should always be used, or patterns that need to be followed.</p>
+
+
+
+<p>Obviously, all of this background info is important to get the right code suggestions from Copilot. If we&rsquo;re using a data abstraction layer (DAL), for instance, but Copilot is generating raw SQL code, the suggestions aren&rsquo;t going to be that helpful.&nbsp;</p>
+
+
+
+<p>The problem isn&rsquo;t that Copilot is generating invalid code. Instead, it&rsquo;s lacking the context to generate the code in the format and structure we need. Basically, we want waffles and it&rsquo;s giving us an omelette. Let&rsquo;s see what we can do to get waffles.</p>
+
+
+
+<h2 class="wp-block-heading" id="h-using-code-comments-to-improve-copilot-s-suggestions-through-better-context">Using code comments to improve Copilot&rsquo;s suggestions through better context</h2>
+
+
+
+<p>There&rsquo;s a common belief that quality code shouldn&rsquo;t need comments, and that adding comments is a &ldquo;code smell,&rdquo; or an indication that something could be improved. While it&rsquo;s noble to strive to write code that&rsquo;s as readable as possible, it&rsquo;s something we often fall short of in our day-to-day work.</p>
+
+
+
+<p>Even when we do &ldquo;hit the mark&rdquo;, we need to remember that just because code might be readable to one developer, it doesn&rsquo;t mean it&rsquo;s readable to all developers. A couple of lines of comments can go a long way to ensuring readability.</p>
+
+
+
+<p>The same holds true for Copilot! As we highlighted above, Copilot doesn&rsquo;t run or compile your code except in specific situations. Instead, it &ldquo;reads&rdquo; your code much like a developer would.&nbsp;</p>
+
+
+
+<p>Following the guidelines for having <a href="https://peps.python.org/pep-0257/">docstrings</a> in functions/modules in Python, for example, can help ensure Copilot has a better understanding of what the code does and how it does it. This allows Copilot to generate higher-quality suggestions by using your existing code to ensure any new code follows the same patterns and practices already in place.</p>
+
+
+
+<figure class="wp-block-table"><table class="has-fixed-layout"><tbody><tr><td>&#128161; <strong>Pro tip</strong>: <strong>When you open a file, it&rsquo;s always a good idea to leave it in a better state than when you found it</strong>. One of the little improvements you could make is to add a few comments to places to help describe the code. You could always ask Copilot to generate the first draft of the comments, and you can add any additional details Copilot missed!</td></tr></tbody></table></figure>
+
+
+
+<h2 class="wp-block-heading" id="the-benefit-of-using-custom-instructions-with-github-copilot-on-your-projects">The benefit of using custom instructions with GitHub Copilot on your projects</h2>
+
+
+
+<p>To generate quality suggestions, Copilot benefits from having context around what you&rsquo;re doing and how you&rsquo;re doing it. Knowing the technology and frameworks you&rsquo;re using, what coding standards to follow, and even some background on what you&rsquo;re building helps Copilot raise the quality bar on its suggestions. This is where <a href="https://docs.github.com/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot">custom instructions</a> come into play.</p>
+
+
+
+<p>Custom instructions help you provide all of this background information and set ground rules (things like what APIs you want to call, naming patterns you want followed, or even stylistic preferences).&nbsp;</p>
+
+
+
+<p>To get started, you place everything that&rsquo;s important into a file named <strong>copilot-instructions.md</strong> inside your <strong>.github</strong> folder. It&rsquo;s a markdown file, so you can create sections like <strong>Project structure</strong>, <strong>Technologies</strong>, <strong>Coding standards</strong>, and any other notes you want Copilot to consider on every single chat request. You can also add any guidance on tasks where you see Copilot not always choosing the right path, like maybe using class-based React components instead of function-based components (all the cool kids are using function based-components).</p>
+
+
+
+<p>Keep in mind that custom instructions are sent to Copilot on <strong>every single</strong> chat request. You want to keep your instructions limited to information that&rsquo;s relevant to the entire project. Providing too many details can make it a bit harder for Copilot to determine what&rsquo;s important.</p>
+
+
+
+<p>In simpler terms, you can basically think about the one friend you have who maybe shares too much detail when they&rsquo;re telling a story, and how it can make it tricky to focus on the main plot points. It&rsquo;s the same thing with Copilot. Provide some project-level guidance and overviews, so it best understands the environment in which it&rsquo;s working.</p>
+
+
+
+<p>A good rule of thumb is to have sections that highlight the various aspects of your project. An outline for a monorepo with a client and server for a web app might look like this:</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code># Tailspin Toys Crowd Funding
+
+Website for crowd funding for games.
+
+## Backend
+
+The backend is written using:
+
+- Flask for the API
+- SQLAlchemy for the ORM
+- SQLite for the database
+
+## Frontend
+
+The frontend is written using:
+
+- Astro for routing
+- Svelte for the components and interactivity
+- Tailwind CSS for styling
+
+## Code standards
+
+- Use good variable names, avoiding abbreviations and single letter variables
+- Use the casing standard for the language in question (camelCasing for TypeScript, snake_casing for Python, etc.)
+- Use type hints in all languages which support them
+
+## Project structure
+
+- `client` contains the frontend code
+- `docs` contains the documentation for the project
+- `scripts` contains the scripts used to install services, start the app, and run tests
+- `server` contains the backend code </code></pre>
+
+
+
+<p>This is relatively abbreviated, but notice the structure. We&rsquo;re telling Copilot about the project we have, its structure, the techs in use, and some guidance about how we want our code to be created. We don&rsquo;t have anything specific to tasks, like maybe writing unit tests, because we have another way to tell Copilot that information!</p>
+
+
+
+<h2 class="wp-block-heading" id="providing-specific-instructions-for-specific-tasks">Providing specific instructions for specific tasks</h2>
+
+
+
+<p>Continuing our conversation about instruction files&hellip; (I&rsquo;m Gen-X, so <a href="https://www.reddit.com/r/GenX/comments/108t56v/so_umm_theres_that/">I&rsquo;m required to use the Gen-X ellipsis at least once</a>.)</p>
+
+
+
+<p>VS Code and Codespaces also support <a href="https://code.visualstudio.com/docs/copilot/copilot-customization#_use-instructionsmd-files"><code>.instructions.md</code></a> files. These are just like the <code>copilot-instructions.md</code> file we spoke about previously, only they&rsquo;re designed to be used for specific types of tasks and placed in <code>.github/instructions</code>.</p>
+
+
+
+<p>Consider a project where you&rsquo;re building out <a href="https://flask.palletsprojects.com/en/stable/blueprints/">Flask Blueprints</a> for the routes for an API. There might be requirements around how the file should be structured and how unit tests should be created. You can create a custom instructions file called <code>flask-endpoint.instructions.md</code>, place it in <code>.github/instructions</code>, then add it as context to the chat when you request Copilot to create a new endpoint. It might look something like:</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code># Endpoint creation guidelines
+
+## Endpoint notes
+
+- Endpoints are created in Flask using blueprints
+- Create a centralized function for accessing data
+- All endpoints require tests
+    - Use the `unittest` module for testing
+    - All tests must pass
+    - A script is provided to run tests at `scripts/run-server-tests.sh`
+
+## Project notes
+
+- The Python virtual environment is located in the root of the project in a **venv** folder
+- Register all blueprints in `server/app.py`
+- Use the [test instructions](./python-tests.instructions.md) when creating tests
+
+## Prototype files
+
+- [Endpoint prototype](../../server/routes/games.py)
+- [Tests prototype](../../server/tests/test_games.py)</code></pre>
+
+
+
+<p>Notice how we&rsquo;re providing specific information about how we want our endpoints created. You&rsquo;ll also notice we&rsquo;re even linking out to other files <strong>in the project</strong> using hyperlinks &mdash; both existing files for Copilot to use as representative examples, and other instructions files for more information.</p>
+
+
+
+<p>Additionally, you can also apply instructions to file types based on a pattern. Let&rsquo;s take the tests for example. If they were all located in <code>server/tests</code>, and started with <code>test_</code>, you could add metadata to the top to ensure Copilot always includes the instructions when working on a test file:</p>
+
+
+
+<pre class="wp-block-code language-plaintext"><code>---
+applyTo: server/tests/test_*.py
+---</code></pre>
+
+
+
+<p>This gives you a lot of flexibility in ensuring Copilot is able to access the right information at the right time. This can be done explicitly by adding in the instructions file, or implicitly by providing a pattern for Copilot to use when building certain files.</p>
+
+
+
+<p>Just as before, these are artifacts in your repository. It can take some time to build a collection of instruction files, but that investment will pay off in the form of higher-quality code and, in turn, improved productivity.</p>
+
+
+
+<h2 class="wp-block-heading" id="fully-reusable-prompts">Fully reusable prompts</h2>
+
+
+
+<p>The VS Code team recently published a new, experimental feature called prompt files. Because they&rsquo;re still in development I don&rsquo;t want to dig too deep into them, but you can read more about <a href="https://code.visualstudio.com/docs/copilot/copilot-customization#_prompt-files-experimental">prompt files in the docs</a> and see how to utilize them as they are currently implemented. In a nutshell, they allow you to effectively create scripted prompts for Copilot. You can choose the Copilot modes they&rsquo;re available in (ask, edit and agent), the tools to be called, and what questions to ask the developer. These can be created by the team for enhanced reuse and consistency.</p>
+
+
+
+<h2 class="wp-block-heading" id="extending-github-copilots-capabilities-with-model-context-protocol-mcp">Extending GitHub Copilot&rsquo;s capabilities with Model Context Protocol (MCP)</h2>
+
+
+
+<p>In an ever changing software development landscape, we need to ensure the information we&rsquo;re working with is accurate, relevant, and up to date. This is what MCP, or Model Context Protocol, is built for! Developed initially by Anthropic, MCP is an open source protocol that lets organizations expose their services or data to generative AI tools.&nbsp;</p>
+
+
+
+<p>When you add an MCP server to your IDE, you allow Copilot to &ldquo;phone a friend&rdquo; to find information, or even perform tasks on your behalf. For example, the <a href="https://github.com/microsoft/playwright-mcp">Playwright MCP server</a> helps create <a href="https://playwright.dev/">Playwright</a> end-to-end tests, while the <a href="https://github.com/github/github-mcp-server">GitHub MCP server</a> provides access to GitHub services like repositories, issues, and pull requests.</p>
+
+
+
+<p>Let&rsquo;s say, for instance, that you added the Playwright MCP server to your IDE. When you ask Copilot to create a new test to validate functionality on your website, Copilot can consult an authoritative source, allowing it to generate the best code it can.</p>
+
+
+
+<p>You can even create your own MCP servers! One question I commonly hear is about how you can allow Copilot to look through an internal codebase or suite of libraries. With a custom MCP server, you could provide a facade for Copilot to perform these types of queries, then utilize the information discovered to suggest code based on your internal environment.</p>
+
+
+
+<p>MCP is large enough to have its own blog post, which my colleague Cassidy wrote, sharing <a href="https://github.blog/ai-and-ml/llms/what-the-heck-is-mcp-and-why-is-everyone-talking-about-it/">tips, tricks, and insights about MCP</a>.</p>
+
+
+
+<h2 class="wp-block-heading" id="thinking-beyond-prompts">Thinking beyond prompts</h2>
+
+
+
+<p>Let me be clear: prompt crafting is important. It&rsquo;s one of the first skills any developer should learn when they begin using GitHub Copilot.&nbsp;</p>
+
+
+
+<p>But writing a good prompt is only one piece Copilot considers when generating an answer. By using the best practices highlighted above &mdash; comments and good code, custom instructions, and MCP servers &mdash; you can help Copilot understand what you want it to do and how you want it to do it. To bring it back to my analogy, you can ensure Copilot knows when you want waffles instead of omelettes.</p>
+
+
+
+<p>And on that note, I&rsquo;m off to brunch.</p>
+
+
+
+<div class="wp-block-group post-content-cta has-global-padding is-layout-constrained wp-block-group-is-layout-constrained">
+<p><strong>Get started</strong> with <a href="https://github.com/features/copilot">GitHub Copilot &gt;</a></p>
+</div>
+</body></html>
+<p>The post <a href="https://github.blog/ai-and-ml/github-copilot/beyond-prompt-crafting-how-to-be-a-better-partner-for-your-ai-pair-programmer/">Beyond prompt crafting: How to be a better partner for your AI pair programmer</a> appeared first on <a href="https://github.blog">The GitHub Blog</a>.</p>
+]]></content:encoded>
+					
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">89424</post-id>	</item>
+	</channel>
+</rss>

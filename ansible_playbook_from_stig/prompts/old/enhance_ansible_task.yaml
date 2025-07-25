@@ -1,0 +1,143 @@
+name: "enhance_ansible_task"
+description: "Review and enhance an Ansible task with best practices and improved reliability"
+template: |
+  You are an Ansible best practices expert. Review and enhance the provided Ansible task to improve its quality, reliability, and maintainability.
+
+  Current Ansible Task:
+  <task>
+  {ansible_task}
+  </task>
+
+  Original Requirements:
+  <requirements>
+  {requirements_json}
+  </requirements>
+
+  Enhance this task by applying Ansible best practices:
+
+  1. **Idempotency**: Ensure the task can run multiple times safely
+  2. **Error Handling**: Add appropriate error handling and validation
+  3. **Conditionals**: Improve OS/distribution detection if needed
+  4. **Variables**: Extract hardcoded values to variables where beneficial
+  5. **Performance**: Optimize for efficiency
+  6. **Safety**: Add safeguards to prevent system damage
+  7. **Handlers**: Suggest handlers for service restarts if applicable
+
+  Enhancement Examples:
+
+  Example 1 - Adding Check Mode Support:
+  Original:
+  - name: "STIG CONFIG: Update system file"
+    copy:
+      src: secure.conf
+      dest: /etc/security/secure.conf
+    become: true
+
+  Enhanced:
+  - name: "STIG CONFIG: Update system file"
+    copy:
+      src: secure.conf
+      dest: /etc/security/secure.conf
+      backup: yes
+      validate: '/usr/sbin/security-check %s'
+    become: true
+    check_mode: yes
+    tags:
+      - stig
+      - security
+      - configuration
+
+  Example 2 - Improved Service Management:
+  Original:
+  - name: "STIG SERVICE: Disable telnet"
+    service:
+      name: telnet
+      state: stopped
+    become: true
+
+  Enhanced:
+  - name: "STIG SERVICE: Disable and stop telnet service"
+    service:
+      name: telnet
+      state: stopped
+      enabled: no
+    become: true
+    when: 
+      - ansible_facts['services']['telnet.service'] is defined
+      - ansible_facts['services']['telnet.service']['status'] != 'not-found'
+    register: telnet_result
+    failed_when: 
+      - telnet_result.failed
+      - "'Could not find the requested service' not in telnet_result.msg"
+    tags:
+      - stig
+      - security
+      - services
+
+  Example 3 - Better Configuration Management:
+  Original:
+  - name: "STIG SSH: Set SSH parameter"
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      line: 'PermitRootLogin no'
+    become: true
+
+  Enhanced:
+  - name: "STIG SSH: Configure SSH to disable root login"
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^#?[\s]*PermitRootLogin'
+      line: 'PermitRootLogin no'
+      state: present
+      backup: yes
+      validate: '/usr/sbin/sshd -t -f %s'
+      create: no
+    become: true
+    notify: restart sshd
+    tags:
+      - stig
+      - security
+      - ssh
+
+  Example 4 - Package Management with Multiple Distributions:
+  Original:
+  - name: "STIG PACKAGE: Remove insecure package"
+    package:
+      name: telnet
+      state: absent
+    when: ansible_os_family == "RedHat"
+
+  Enhanced:
+  - name: "STIG PACKAGE: Remove telnet package"
+    package:
+      name: "{{ telnet_package_name | default('telnet') }}"
+      state: absent
+    become: true
+    when: ansible_facts['os_family'] in ['RedHat', 'Debian', 'Suse']
+    vars:
+      telnet_package_name: >-
+        {%- if ansible_facts['os_family'] == 'Debian' -%}
+        telnet
+        {%- elif ansible_facts['os_family'] == 'RedHat' -%}
+        telnet
+        {%- elif ansible_facts['os_family'] == 'Suse' -%}
+        telnet
+        {%- endif -%}
+    register: package_result
+    tags:
+      - stig
+      - security
+      - packages
+
+  Output the enhanced task in valid YAML format. Include comments only if they add significant value. Focus on practical improvements that increase reliability and maintainability.
+
+  If the task needs handlers, provide them separately after the main task with a clear separator comment.
+variables:
+  - name: "ansible_task"
+    type: "string"
+    description: "The Ansible task generated in step 2"
+    required: true
+  - name: "requirements_json"
+    type: "string"
+    description: "The original requirements for context"
+    required: true

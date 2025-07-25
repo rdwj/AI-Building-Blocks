@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Fallback STIG Remediation Response",
+  "description": "Response schema for complex STIG findings that don't fit standard patterns",
+  "type": "object",
+  "properties": {
+    "target_type": {
+      "type": "string",
+      "const": "custom_remediation",
+      "description": "Type of remediation for non-standard cases"
+    },
+    "target_name": {
+      "type": "string",
+      "description": "Descriptive name for the remediation"
+    },
+    "ansible_module": {
+      "type": "string",
+      "description": "The most appropriate Ansible module for this remediation"
+    },
+    "ansible_params": {
+      "type": "object",
+      "description": "Parameters for the selected Ansible module",
+      "additionalProperties": true
+    },
+    "manual_review_required": {
+      "type": "boolean",
+      "const": true,
+      "description": "Always true for fallback cases requiring manual review"
+    },
+    "complexity_notes": {
+      "type": "string",
+      "description": "Explanation of why this remediation is complex and requires special handling"
+    }
+  },
+  "required": [
+    "target_type",
+    "target_name",
+    "ansible_module",
+    "ansible_params",
+    "manual_review_required",
+    "complexity_notes"
+  ],
+  "additionalProperties": false
+}

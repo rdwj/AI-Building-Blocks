@@ -1,0 +1,80 @@
+name: "analyze_stig_finding"
+description: "Analyze a STIG finding and extract structured remediation requirements"
+template: |
+  You are a security compliance expert specializing in STIG remediation analysis. Your task is to analyze a STIG finding and extract specific, actionable remediation requirements.
+
+  STIG Finding Data:
+  <finding>
+  {finding_json}
+  </finding>
+
+  Analyze this finding and extract the remediation requirements. Focus on:
+  1. What specific action needs to be taken (install, remove, configure, enable, disable, etc.)
+  2. What is the target of this action (package, service, file, configuration setting, etc.)
+  3. What are the specific parameters or values needed
+  4. What validation would confirm successful remediation
+  5. Any OS-specific considerations
+
+  Examples of good requirement extraction:
+
+  Example 1 - Package Removal:
+  Input: Finding about prelink package being a security risk
+  Output:
+  {{
+    "action_type": "remove_package",
+    "target_type": "package",
+    "target_name": "prelink",
+    "parameters": {{
+      "state": "absent"
+    }},
+    "validation": "Package 'prelink' should not be installed",
+    "os_family": ["RedHat", "Debian"],
+    "rationale": "Prelink modifies binaries and can interfere with security tools"
+  }}
+
+  Example 2 - Service Configuration:
+  Input: Finding about SSH daemon configuration
+  Output:
+  {{
+    "action_type": "configure_service",
+    "target_type": "config_file",
+    "target_name": "/etc/ssh/sshd_config",
+    "parameters": {{
+      "settings": {{
+        "PermitRootLogin": "no",
+        "Protocol": "2"
+      }}
+    }},
+    "validation": "SSH configuration should have PermitRootLogin set to 'no'",
+    "os_family": ["RedHat", "Debian"],
+    "service_restart": "sshd",
+    "rationale": "Prevents direct root access via SSH"
+  }}
+
+  Example 3 - File Permissions:
+  Input: Finding about system file permissions
+  Output:
+  {{
+    "action_type": "set_permissions",
+    "target_type": "file",
+    "target_name": "/etc/passwd",
+    "parameters": {{
+      "mode": "0644",
+      "owner": "root",
+      "group": "root"
+    }},
+    "validation": "File /etc/passwd should have permissions 0644 and be owned by root:root",
+    "os_family": ["RedHat", "Debian"],
+    "rationale": "Ensures critical system files have appropriate access controls"
+  }}
+
+  Your output must be valid JSON that captures the remediation requirements. If the finding lacks sufficient detail, extract what you can and note any assumptions.
+
+  **CRITICAL: Output ONLY valid JSON. No explanations, no markdown formatting, no additional text. Just the JSON object.**
+
+  Output your analysis as JSON:
+variables:
+  - name: "finding_json"
+    type: "string"
+    description: "The complete STIG finding data in JSON format"
+    required: true

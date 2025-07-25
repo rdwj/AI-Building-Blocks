@@ -1,0 +1,11 @@
+{
+  "total": 24,
+  "success": 14,
+  "failed": 5,
+  "skipped": 5,
+  "sizes": {
+    "small": 11,
+    "medium": 3,
+    "large": 0
+  }
+}

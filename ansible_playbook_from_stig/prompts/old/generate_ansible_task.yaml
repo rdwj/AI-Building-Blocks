@@ -1,0 +1,133 @@
+name: "generate_ansible_task"
+description: "Convert structured remediation requirements into a valid Ansible task"
+template: |
+  You are an Ansible automation expert. Convert the provided remediation requirements into a single, valid Ansible task.
+
+  Remediation Requirements:
+  <requirements>
+  $requirements_json
+  </requirements>
+
+  STIG Context:
+  Rule ID: $rule_id
+  Severity: $severity
+
+  Generate an Ansible task following these rules:
+  1. Use the most appropriate Ansible module for the action
+  2. Include all necessary parameters
+  3. Add proper conditionals (when statements)
+  4. Include become: true if root privileges are needed
+  5. Add appropriate tags
+  6. Make the task idempotent
+
+  Module Selection Guide:
+  - Package management: package, yum, dnf, apt
+  - File operations: file, copy, template
+  - Line in file: lineinfile, replace, blockinfile
+  - Service management: service, systemd
+  - System settings: sysctl, mount
+  - User/Group: user, group
+  - Commands (last resort): command, shell
+
+  Example Transformations:
+
+  Example 1 - Package Removal:
+  Input Requirements:
+  {
+    "action_type": "remove_package",
+    "target_type": "package",
+    "target_name": "telnet",
+    "parameters": {"state": "absent"}
+  }
+  Output Task:
+  - name: "STIG TELNET: Remove telnet package"
+    package:
+      name: telnet
+      state: absent
+    become: true
+    when: ansible_os_family == "RedHat"
+    tags:
+      - stig
+      - security
+      - medium
+
+  Example 2 - Configuration File:
+  Input Requirements:
+  {
+    "action_type": "configure_service",
+    "target_type": "config_file",
+    "target_name": "/etc/ssh/sshd_config",
+    "parameters": {"settings": {"PermitRootLogin": "no"}},
+    "service_restart": "sshd"
+  }
+  Output Task:
+  - name: "STIG SSH: Configure SSH to disable root login"
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^PermitRootLogin'
+      line: 'PermitRootLogin no'
+      state: present
+      backup: yes
+    become: true
+    notify: restart sshd
+    tags:
+      - stig
+      - security
+      - high
+
+  Example 3 - File Permissions:
+  Input Requirements:
+  {
+    "action_type": "set_permissions",
+    "target_type": "file",
+    "target_name": "/etc/passwd",
+    "parameters": {"mode": "0644", "owner": "root", "group": "root"}
+  }
+  Output Task:
+  - name: "STIG PASSWD: Set correct permissions on /etc/passwd"
+    file:
+      path: /etc/passwd
+      mode: '0644'
+      owner: root
+      group: root
+    become: true
+    tags:
+      - stig
+      - security
+      - high
+
+  Example 4 - System Setting:
+  Input Requirements:
+  {
+    "action_type": "set_kernel_parameter",
+    "target_type": "sysctl",
+    "target_name": "net.ipv4.conf.all.accept_source_route",
+    "parameters": {"value": "0"}
+  }
+  Output Task:
+  - name: "STIG KERNEL: Disable IPv4 source routing"
+    sysctl:
+      name: net.ipv4.conf.all.accept_source_route
+      value: '0'
+      state: present
+      reload: yes
+    become: true
+    tags:
+      - stig
+      - security
+      - medium
+
+  Output ONLY the Ansible task in valid YAML format. No explanations, no markdown, just the task.
+variables:
+  - name: "requirements_json"
+    type: "string"
+    description: "The structured requirements from step 1 analysis"
+    required: true
+  - name: "rule_id"
+    type: "string"
+    description: "The STIG rule ID for reference"
+    required: true
+  - name: "severity"
+    type: "string"
+    description: "The STIG severity level"
+    required: true

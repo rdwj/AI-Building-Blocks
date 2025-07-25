@@ -1,0 +1,46 @@
+name: "Assemble Final Playbook"
+description: "Combine all extracted components into a valid Ansible playbook"
+template: |
+  You must create an Ansible playbook using the provided components and following the template structure.
+  
+  Components to use:
+  - Task Name: $task_name
+  - Action Type: $action_type
+  - Target: $target
+  - Parameters: $parameters
+  - Severity: $severity
+  
+  ANSIBLE PLAYBOOK TEMPLATE REFERENCE:
+  $template_content
+  
+  JSON Schema for response:
+  {
+    "type": "object",
+    "properties": {
+      "playbook": {
+        "type": "string",
+        "description": "Complete YAML playbook as a single string"
+      }
+    },
+    "required": ["playbook"]
+  }
+  
+  Create a complete Ansible playbook following these requirements:
+  - Start with YAML document separator (---)
+  - Use proper YAML syntax with 2-space indentation
+  - Use correct Ansible module names (ansible.builtin.package for packages)
+  - Include required structure: name, hosts, become, vars, tasks
+  - Add appropriate tags for STIG compliance (stig, security, severity)
+  - Include stig_enabled variable for conditional control
+  - Use proper boolean values (true/false)
+  - Follow Ansible best practices
+  
+  Return ONLY valid JSON with the playbook as a string value.
+
+variables:
+  - task_name
+  - action_type
+  - target
+  - parameters
+  - rule_id
+  - severity

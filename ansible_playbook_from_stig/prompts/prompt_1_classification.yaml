@@ -1,0 +1,67 @@
+name: "STIG Finding Complexity Classification"
+description: "Classifies STIG security findings into complexity categories to determine appropriate processing approach."
+template: |
+  You are analyzing a STIG security finding to classify its complexity type.
+
+  STIG Finding:
+  <rule_id>{rule_id}</rule_id>
+  <title>{title}</title>
+  <description>{description}</description>
+  <fix_text>{fix_text}</fix_text>
+
+  Classify this finding into ONE category based on the remediation complexity:
+
+  1. SHELL_SCRIPT - Complex shell scripts with conditionals, loops, or multiple commands
+     Keywords: "if", "then", "for", "while", "grep", "sed", "awk", "case", "test", "&&", "||"
+  
+  2. PACKAGE_VERIFICATION - RPM verification, package integrity checks, reinstallation logic
+     Keywords: "rpm -Va", "reinstall", "verify", "package integrity", "yum reinstall", "dnf reinstall"
+  
+  3. CONFIG_MODIFICATION - Complex file configuration changes (AIDE, PAM, etc.)
+     Keywords: "aide.conf", "pam", "configuration file", "config", "edit", "modify", "append"
+  
+  4. BOOT_CONFIGURATION - GRUB, kernel parameters, boot-critical changes
+     Keywords: "grub", "dracut", "initramfs", "fips", "kernel", "boot", "grub2", "bootloader"
+  
+  5. MULTI_STEP_PROCESS - Sequential tasks that must be done in specific order
+     Keywords: "After", "Next", "Then", "First", "Second", "Finally", "step", "order", "sequence"
+  
+  6. CRON_SCHEDULING - Cron job creation with complex timing or piping
+     Keywords: "crontab", "cron", "scheduled", "schedule", "periodic", "regular", "daily", "weekly"
+  
+  7. UNKNOWN - Simple tasks or cannot be classified into above categories
+     Use for: OS architecture checks, simple file existence checks, basic system queries
+
+  Analysis approach:
+  - Focus on the fix_text section for remediation complexity
+  - Consider whether the task requires multiple steps or complex logic
+  - Simple checks or informational tasks should be UNKNOWN
+  - Complex automation or scripting should match appropriate categories
+
+  **Response Format:**
+  You must respond with ONLY valid JSON in this exact format:
+  {{"category": "CATEGORY_NAME"}}
+
+  Where CATEGORY_NAME is one of: SHELL_SCRIPT, PACKAGE_VERIFICATION, CONFIG_MODIFICATION, BOOT_CONFIGURATION, MULTI_STEP_PROCESS, CRON_SCHEDULING, UNKNOWN
+
+parameters:
+  - temperature: 0.0
+  - max_tokens: 2000
+
+variables:
+  - name: "rule_id"
+    type: "string"
+    description: "The STIG rule identifier"
+    required: true
+  - name: "title"
+    type: "string"
+    description: "The title of the STIG finding"
+    required: true
+  - name: "description"
+    type: "string"
+    description: "The description of the STIG finding"
+    required: true
+  - name: "fix_text"
+    type: "string"
+    description: "The remediation instructions for the STIG finding"
+    required: true

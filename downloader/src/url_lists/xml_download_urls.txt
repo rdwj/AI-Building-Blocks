@@ -1,0 +1,66 @@
+# XML Test Files Download URLs
+# Format: TYPE|URL|FILENAME
+# Each line represents: XML_TYPE|DOWNLOAD_URL|SUGGESTED_FILENAME
+
+# SCAP Security Reports
+SCAP|https://csrc.nist.gov/CSRC/media/Projects/Security-Content-Automation-Protocol/specifications/xccdf/1.1/ios-sample-1.1.xccdf.xml|ios-sample-1.1.xccdf.xml
+SCAP|https://csrc.nist.gov/CSRC/media/Projects/Security-Content-Automation-Protocol/specifications/xccdf/1.0/ios-sample-1.0.xccdf.xml|ios-sample-1.0.xccdf.xml
+SCAP|https://csrc.nist.gov/CSRC/media/Projects/Security-Content-Automation-Protocol/specifications/xccdf/1.1.3/ios-sample-v1.1.3.xccdf.xml|ios-sample-v1.1.3.xccdf.xml
+SCAP|https://csrc.nist.gov/schema/xccdf/1.2/xccdf_1.2.zip|xccdf_1.2_bundle.zip
+
+# KML Geographic Data
+KML|https://raw.githubusercontent.com/mapbox/Simple-KML/master/sample/example.kml|mapbox-example.kml
+
+# GPX GPS Exchange
+GPX|https://gist.githubusercontent.com/cly/bab1a4f982d43bcc53ff32d4708b8a77/raw/sample.gpx|sample-track.gpx
+
+# Apache Ant Build Files
+ANT|https://raw.githubusercontent.com/apache/ant/master/build.xml|apache-ant-build.xml
+ANT|https://raw.githubusercontent.com/apache/ant-antlibs-common/master/build.xml|ant-antlibs-common-build.xml
+ANT|https://raw.githubusercontent.com/apache/maven-resolver-ant-tasks/master/build.xml|maven-resolver-ant-build.xml
+ANT|https://raw.githubusercontent.com/apache/ant-ivy/master/build.xml|ant-ivy-build.xml
+
+# NuGet Package Specs
+NUGET|https://gist.githubusercontent.com/AndyLPK247/57867293047cbbd5257ce73636e6113d/raw/example-nuget-quick-ref-nuspec.xml|example-nuspec.xml
+
+# WADL REST API Descriptions
+WADL|https://raw.githubusercontent.com/philippsimon/wadl-library/master/sample-wadl.xml|sample-wadl.xml
+
+# WSDL SOAP Web Services
+WSDL|https://gist.githubusercontent.com/SorenPoulsen/ad7db25d2616f96a91849d77d01bb328/raw/test.wsdl|sample-1.1-soap.wsdl
+WSDL|https://gist.githubusercontent.com/CodetheCloud/c7d1df244912f2312a6b0aa381d33792/raw/JFcalculator.xml|calculator-soap.wsdl
+WSDL|https://gist.githubusercontent.com/vikasgupta1812/5d569b958675f0f8ac323588b8623e8f/raw/MuleSoft-TShirt2-Soap-Example.wsdl|mulesoft-tshirt-soap.wsdl
+WSDL|https://raw.githubusercontent.com/bet365/soap/master/doc/example.wsdl|bet365-contacts-soap.wsdl
+
+# XSD Schema Definitions
+XSD|https://csrc.nist.gov/schema/xccdf/1.2/xccdf_1.2.xsd|xccdf_1.2.xsd
+
+# RelaxNG Schemas
+RELAXNG|https://raw.githubusercontent.com/gioele/rng-doc/master/demo.rng|demo-annotated.rng
+
+# DITA Technical Documentation  
+DITA|https://raw.githubusercontent.com/TEI-Correspondence-SIG/encoding-correspondence/master/tei-xml/introduction.xml|tei-correspondence-intro.xml
+
+# TEI Digital Humanities
+TEI|https://raw.githubusercontent.com/TEI-Correspondence-SIG/encoding-correspondence/master/tei-xml/pre-printed-parts.xml|tei-pre-printed-parts.xml
+TEI|https://raw.githubusercontent.com/TEI-Correspondence-SIG/encoding-correspondence/master/tei-xml/addresses.xml|tei-addresses.xml
+TEI|https://raw.githubusercontent.com/TEIC/TEI-Simple/master/teisimple.xml|tei-simple-spec.xml
+
+# HL7 CDA Clinical Documents
+HL7|https://raw.githubusercontent.com/HL7/C-CDA-Examples/master/General/External%20Document%20Reference/PROBLEMS_in_Empty_C-CDA_2.1%20(C-CDAR2.1).xml|ccda-problems-external-ref.xml
+HL7|https://raw.githubusercontent.com/HL7/C-CDA-Examples/master/Documents/Care%20Plan/Care_Plan.xml|ccda-care-plan.xml
+HL7|https://raw.githubusercontent.com/HL7/C-CDA-Examples/master/Documents/CCD/CCD%202/CCD.xml|ccda-ccd-sample.xml
+HL7|https://raw.githubusercontent.com/chb/sample_ccdas/master/HL7%20Samples/CCD.sample.xml|hl7-ccd-sample.xml
+
+# XBRL Business Reporting
+XBRL|https://raw.githubusercontent.com/IBM/watson-machine-learning-samples/master/cpd3.5/models/pmml/iris-species/model/iris_chaid.xml|watson-iris-pmml.xml
+
+# PMML Predictive Models  
+PMML|https://raw.githubusercontent.com/IBM/watson-machine-learning-samples/master/cpd3.5/models/pmml/iris-species/model/iris_chaid.xml|ibm-watson-iris-chaid.xml
+
+# XSLT Transformations
+XSLT|https://gist.githubusercontent.com/Shree987/8659aec72ad16ec10ab20b4dc8cbe2fe/raw/XSLTest.xsl|xml-to-xml-transform.xsl
+XSLT|https://raw.githubusercontent.com/statedecoded/statedecoded/master/sample.xsl|legal-codes-transform.xsl
+
+# XSL-FO Formatting Objects
+XSLFO|https://raw.githubusercontent.com/pellcorp/fop/master/examples/embedding/xml/xslt/projectteam2fo.xsl|projectteam-to-fo.xsl

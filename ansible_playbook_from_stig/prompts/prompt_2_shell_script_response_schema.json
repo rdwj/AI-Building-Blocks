@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "properties": {
+    "target_type": {
+      "type": "string",
+      "enum": ["shell_script_remediation"]
+    },
+    "target_name": {
+      "type": "string",
+      "description": "Descriptive name for the remediation action"
+    },
+    "ansible_module": {
+      "type": "string",
+      "description": "Primary Ansible module to use (block, lineinfile, command, etc.)"
+    },
+    "ansible_params": {
+      "type": "object",
+      "description": "Parameters for the Ansible module"
+    },
+    "requires_reboot": {
+      "type": "boolean",
+      "description": "Whether the changes require a system reboot"
+    }
+  },
+  "required": ["target_type", "target_name", "ansible_module", "ansible_params", "requires_reboot"]
+}

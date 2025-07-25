@@ -1,0 +1,128 @@
+name: "document_ansible_task"
+description: "Add comprehensive documentation and metadata to an Ansible task for STIG compliance tracking"
+template: |
+  You are a compliance documentation expert. Add comprehensive documentation to the provided Ansible task for STIG compliance tracking and audit purposes.
+
+  Enhanced Ansible Task:
+  <task>
+  {enhanced_task}
+  </task>
+
+  STIG Finding Information:
+  <finding>
+  {finding_json}
+  </finding>
+
+  Add documentation that includes:
+  1. **Task Header Comment**: Brief description of what the task does and why
+  2. **STIG References**: Rule ID, finding ID, CCE numbers if available
+  3. **Compliance Mapping**: How this task addresses the STIG requirement
+  4. **Impact Assessment**: What changes this task makes to the system
+  5. **Rollback Information**: How to reverse the changes if needed
+  6. **Testing Guidance**: How to verify the task succeeded
+  7. **Variables Documentation**: Document any variables that should be set
+
+  Documentation Examples:
+
+  Example 1 - Well-Documented Package Task:
+  ```yaml
+  # STIG ID: xccdf_org.ssgproject.content_rule_package_telnet_removed
+  # Severity: High
+  # Title: Remove Telnet Package
+  # Description: The telnet package contains the telnet client, which allows users
+  #              to start connections to other systems via the telnet protocol.
+  # Rationale: Telnet protocol transmits data in clear text and should not be used.
+  # Check: Run 'rpm -q telnet' - should return 'package telnet is not installed'
+  # Rollback: yum install telnet (not recommended for security reasons)
+  # Variables:
+  #   stig_remove_telnet: Set to false to skip this task (default: true)
+
+  - name: "STIG TELNET: Remove telnet package for secure communications"
+    package:
+      name: telnet
+      state: absent
+    become: true
+    when: 
+      - ansible_facts['os_family'] in ['RedHat', 'Debian']
+      - stig_remove_telnet | default(true) | bool
+    tags:
+      - stig
+      - security
+      - high
+      - CCE-27305-2
+      - package_removal
+    # Impact: Removes telnet client; use SSH for remote connections instead
+    # Validation: Verify with 'which telnet' returning no results
+  ```
+
+  Example 2 - Configuration File Task:
+  ```yaml
+  # STIG ID: xccdf_org.ssgproject.content_rule_sshd_disable_root_login
+  # Severity: Medium  
+  # Title: Disable SSH Root Login
+  # Description: SSH server should be configured to deny root user login
+  # Rationale: Direct root login increases risk of unauthorized access
+  # Check: grep "^PermitRootLogin" /etc/ssh/sshd_config should show "no"
+  # Rollback: Set PermitRootLogin to yes in /etc/ssh/sshd_config (not recommended)
+  # Dependencies: Requires SSH service restart via handler
+
+  - name: "STIG SSH: Configure SSH daemon to deny root login"
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^#?[\s]*PermitRootLogin'
+      line: 'PermitRootLogin no'
+      state: present
+      backup: yes
+      validate: '/usr/sbin/sshd -t -f %s'
+    become: true
+    notify: restart sshd
+    tags:
+      - stig
+      - security
+      - medium
+      - CCE-27445-6
+      - ssh_configuration
+    # Impact: Root user cannot login directly via SSH; use sudo for elevation
+    # Validation: Test with 'ssh root@localhost' - should be denied
+  ```
+
+  Example 3 - Kernel Parameter Task:
+  ```yaml
+  # STIG ID: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_source_route
+  # Severity: Medium
+  # Title: Disable Kernel Parameter for Accepting Source-Routed Packets
+  # Description: Disable acceptance of source-routed IPv4 packets
+  # Rationale: Source routing allows sender to control packet path, potential security risk
+  # Check: sysctl net.ipv4.conf.all.accept_source_route should return 0
+  # Rollback: sysctl -w net.ipv4.conf.all.accept_source_route=1 (not recommended)
+  # Persistence: This setting persists across reboots via /etc/sysctl.conf
+
+  - name: "STIG KERNEL: Disable IPv4 source-routed packet acceptance"
+    sysctl:
+      name: net.ipv4.conf.all.accept_source_route
+      value: '0'
+      state: present
+      reload: yes
+      sysctl_file: /etc/sysctl.d/99-stig-network.conf
+    become: true
+    tags:
+      - stig
+      - security
+      - medium
+      - CCE-27434-0
+      - kernel_parameters
+      - network_security
+    # Impact: System will drop source-routed packets; normal routing unaffected
+    # Validation: cat /proc/sys/net/ipv4/conf/all/accept_source_route should show 0
+  ```
+
+  Provide the fully documented task in valid YAML format. Ensure all documentation is accurate and helpful for both implementation and audit purposes.
+variables:
+  - name: "enhanced_task"
+    type: "string"
+    description: "The enhanced Ansible task from step 3"
+    required: true
+  - name: "finding_json"
+    type: "string"
+    description: "The original STIG finding data for reference"
+    required: true

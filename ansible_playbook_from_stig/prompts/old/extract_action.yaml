@@ -1,0 +1,31 @@
+name: "Extract Action Type"
+description: "Extract the primary action needed to remediate this STIG finding"
+template: |
+  You are analyzing a STIG security finding to determine what action is needed.
+  
+  STIG Finding:
+  Title: {title}
+  Description: {description}
+  Fix Text: {fix_text}
+
+  The following is a reference guide for the action types you can choose from:
+  <action_type_reference>
+  {action_type_reference}
+  </action_type_reference>
+  
+  JSON Schema for response:
+  <extract_action_response_schema>
+  {{extract_action_response_schema}}
+  </extract_action_response_schema>
+  
+  Choose the primary action needed from the enumerated values. Return ONLY valid JSON matching the schema above.
+
+  **Crucial Instructions:**
+  * ONLY respond in JSON format
+  * DO NOT include explanations, reasoning, or additional text
+  * If the action type is not in the reference guide, use "other"
+
+variables:
+  - title
+  - description
+  - fix_text

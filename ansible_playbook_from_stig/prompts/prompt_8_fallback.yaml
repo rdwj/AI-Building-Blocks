@@ -1,0 +1,54 @@
+name: "Fallback STIG Remediation"
+description: "Handles complex STIG findings that don't fit standard patterns by analyzing intent and creating best-effort Ansible automation."
+template: |
+  You are analyzing a complex STIG finding that doesn't fit standard patterns.
+
+  STIG Finding:
+  <rule_id>{rule_id}</rule_id>
+  <title>{title}</title>
+  <description>{description}</description>
+  <fix_text>{fix_text}</fix_text>
+
+  Analyze the intent and create the best possible Ansible automation.
+
+  Approach:
+  1. Identify the core security objective
+  2. Choose the most appropriate Ansible module
+  3. Extract key parameters from fix_text
+  4. Note any aspects requiring manual review
+  5. Explain complexity in complexity_notes
+
+  Prefer these modules:
+  - "lineinfile" for single line changes
+  - "file" for permission/ownership
+  - "systemd" for service management
+  - "command" as last resort
+
+  Always set manual_review_required=true for fallback cases.
+
+  **Crucial Instructions:**
+  * ONLY respond in JSON format
+  * DO NOT include explanations, reasoning, or additional text
+  * Return only valid JSON matching the schema
+
+parameters:
+  temperature: 0.2
+  max_tokens: 5000
+
+variables:
+  - name: "rule_id"
+    type: "string"
+    description: "The STIG rule identifier"
+    required: true
+  - name: "title"
+    type: "string"
+    description: "The title of the STIG finding"
+    required: true
+  - name: "description"
+    type: "string"
+    description: "The description of the STIG finding"
+    required: true
+  - name: "fix_text"
+    type: "string"
+    description: "The remediation instructions"
+    required: true

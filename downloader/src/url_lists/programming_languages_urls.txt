@@ -1,0 +1,55 @@
+# Programming Language Examples
+# Format: TYPE|URL|FILENAME
+# ✅ All URLs from GitHub public repositories - fully compliant with robots.txt
+
+# === PYTHON ===
+PYTHON|https://raw.githubusercontent.com/django/django/main/setup.py|django-setup.py
+PYTHON|https://raw.githubusercontent.com/pallets/flask/main/src/flask/app.py|flask-app.py
+PYTHON|https://raw.githubusercontent.com/psf/requests/main/requests/__init__.py|requests-init.py
+PYTHON|https://raw.githubusercontent.com/numpy/numpy/main/setup.py|numpy-setup.py
+PYTHON|https://raw.githubusercontent.com/scikit-learn/scikit-learn/main/sklearn/__init__.py|sklearn-init.py
+
+# === JAVA ===
+JAVA|https://raw.githubusercontent.com/spring-projects/spring-boot/main/spring-boot-project/spring-boot/src/main/java/org/springframework/boot/SpringApplication.java|spring-boot-application.java
+JAVA|https://raw.githubusercontent.com/apache/hadoop/trunk/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/util/StringUtils.java|hadoop-string-utils.java
+JAVA|https://raw.githubusercontent.com/google/guava/master/guava/src/com/google/common/base/Strings.java|guava-strings.java
+JAVA|https://raw.githubusercontent.com/eclipse/collections/master/eclipse-collections/src/main/java/org/eclipse/collections/impl/utility/ArrayIterate.java|eclipse-collections-array.java
+
+# === JAVASCRIPT ===
+JS|https://raw.githubusercontent.com/facebook/react/main/packages/react/index.js|react-index.js
+JS|https://raw.githubusercontent.com/lodash/lodash/master/lodash.js|lodash-core.js
+JS|https://raw.githubusercontent.com/expressjs/express/master/index.js|express-index.js
+JS|https://raw.githubusercontent.com/axios/axios/v1.x/lib/axios.js|axios-core.js
+
+# === GO ===
+GO|https://raw.githubusercontent.com/golang/go/master/src/fmt/print.go|go-fmt-print.go
+GO|https://raw.githubusercontent.com/kubernetes/kubernetes/master/cmd/kubectl/kubectl.go|kubernetes-kubectl.go
+GO|https://raw.githubusercontent.com/docker/docker/master/api/server/server.go|docker-server.go
+GO|https://raw.githubusercontent.com/gin-gonic/gin/master/gin.go|gin-framework.go
+
+# === RUST ===
+RUST|https://raw.githubusercontent.com/rust-lang/rust/master/src/libstd/lib.rs|rust-std-lib.rs
+RUST|https://raw.githubusercontent.com/tokio-rs/tokio/master/tokio/src/lib.rs|tokio-async-lib.rs
+RUST|https://raw.githubusercontent.com/actix/actix-web/master/src/lib.rs|actix-web-lib.rs
+
+# === C/C++ ===
+CPP|https://raw.githubusercontent.com/facebook/folly/main/folly/String.h|folly-string.h
+CPP|https://raw.githubusercontent.com/protocolbuffers/protobuf/main/src/google/protobuf/message.h|protobuf-message.h
+CPP|https://raw.githubusercontent.com/opencv/opencv/4.x/modules/core/include/opencv2/core.hpp|opencv-core.hpp
+
+# === C# ===
+CSHARP|https://raw.githubusercontent.com/dotnet/core/main/README.md|dotnet-core-readme.cs
+CSHARP|https://raw.githubusercontent.com/aspnet/AspNetCore/main/src/Http/Http.Abstractions/src/HttpContext.cs|aspnet-httpcontext.cs
+
+# === R ===
+R|https://raw.githubusercontent.com/tidyverse/ggplot2/main/R/ggplot.R|ggplot2-core.R
+R|https://raw.githubusercontent.com/tidyverse/dplyr/main/R/arrange.R|dplyr-arrange.R
+
+# === SQL ===
+SQL|https://raw.githubusercontent.com/postgres/postgres/master/src/test/regress/sql/create_table.sql|postgres-create-table.sql
+SQL|https://raw.githubusercontent.com/mysql/mysql-server/8.0/mysql-test/suite/innodb/t/innodb.test|mysql-innodb-test.sql
+
+# === SHELL SCRIPTS ===
+SHELL|https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh|nvm-install.sh
+SHELL|https://raw.githubusercontent.com/rbenv/rbenv/master/bin/rbenv|rbenv-script.sh
+SHELL|https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh|oh-my-zsh-install.sh

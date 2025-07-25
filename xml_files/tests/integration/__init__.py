@@ -1,0 +1,1 @@
+"""Integration tests for handlers with the main framework"""

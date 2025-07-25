@@ -1,0 +1,48 @@
+name: "Cron Scheduling STIG Remediation"
+description: "Converts STIG cron job configuration and scheduling requirements to Ansible cron tasks with proper timing and notification setup."
+template: |
+  You are converting STIG cron job configuration to Ansible tasks.
+
+  STIG Finding:
+  <rule_id>{rule_id}</rule_id>
+  <title>{title}</title>
+  <fix_text>{fix_text}</fix_text>
+
+  This involves creating scheduled tasks. Convert to Ansible.
+
+  Cron Time Patterns:
+  - "05 4 * * *" = Daily at 4:05 AM
+  - "05 4 * * 0" = Weekly on Sunday at 4:05 AM  
+  - "0 * * * *" = Hourly
+
+  Email Notification:
+  - If fix_text contains "mail" or "email": set notification_required=true
+  - Add email piping to job command
+
+  Common STIG Cron Jobs:
+  - AIDE integrity checks
+  - Log rotation
+  - Security scans
+
+  **Crucial Instructions:**
+  * ONLY respond in JSON format
+  * DO NOT include explanations, reasoning, or additional text
+  * Return only valid JSON matching the schema
+
+parameters:
+  temperature: 0.2
+  max_tokens: 5000
+
+variables:
+  - name: "rule_id"
+    type: "string"
+    description: "The STIG rule identifier"
+    required: true
+  - name: "title"
+    type: "string"
+    description: "The title of the STIG finding"
+    required: true
+  - name: "fix_text"
+    type: "string"
+    description: "The cron job configuration instructions"
+    required: true

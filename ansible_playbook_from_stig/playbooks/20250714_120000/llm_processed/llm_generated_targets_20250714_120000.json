@@ -1,0 +1,115 @@
+{
+  "metadata": {
+    "total_actionable": 5,
+    "extraction_date": "2025-07-14T11:41:03.270186",
+    "source": "llm_batch_processing",
+    "run_timestamp": "20250714_120000",
+    "processing_summary": {
+      "classified": 5,
+      "processed": 5,
+      "successful": 5
+    }
+  },
+  "targets": [
+    {
+      "rule_id": "xccdf_org.ssgproject.content_rule_prefer_64bit_os",
+      "severity": "medium",
+      "status": "unknown",
+      "title": "Prefer to use a 64-bit Operating System when supported",
+      "target_type": "unknown",
+      "target_name": "unknown",
+      "action_context": "",
+      "ansible_module": "command",
+      "ansible_params": {
+        "value": "unknown"
+      },
+      "compliance": {
+        "cci_refs": [],
+        "nist_refs": [
+          "CCE-83691-6"
+        ],
+        "cis_refs": []
+      }
+    },
+    {
+      "rule_id": "xccdf_org.ssgproject.content_rule_rpm_verify_permissions",
+      "severity": "high",
+      "status": "unknown",
+      "title": "Verify and Correct File Permissions with RPM",
+      "target_type": "unknown",
+      "target_name": "unknown",
+      "action_context": "",
+      "ansible_module": "unknown",
+      "ansible_params": {
+        "value": "unknown"
+      },
+      "compliance": {
+        "cci_refs": [],
+        "nist_refs": [
+          "CCE-27209-6"
+        ],
+        "cis_refs": []
+      }
+    },
+    {
+      "rule_id": "xccdf_org.ssgproject.content_rule_disable_prelink",
+      "severity": "medium",
+      "status": "unknown",
+      "title": "Disable Prelinking",
+      "target_type": "unknown",
+      "target_name": "unknown",
+      "action_context": "",
+      "ansible_module": "unknown",
+      "ansible_params": {
+        "value": "unknown"
+      },
+      "compliance": {
+        "cci_refs": [],
+        "nist_refs": [
+          "CCE-27078-5"
+        ],
+        "cis_refs": []
+      }
+    },
+    {
+      "rule_id": "xccdf_org.ssgproject.content_rule_rpm_verify_hashes",
+      "severity": "high",
+      "status": "unknown",
+      "title": "Verify File Hashes with RPM",
+      "target_type": "unknown",
+      "target_name": "unknown",
+      "action_context": "",
+      "ansible_module": "unknown",
+      "ansible_params": {
+        "value": "unknown"
+      },
+      "compliance": {
+        "cci_refs": [],
+        "nist_refs": [
+          "CCE-27157-7"
+        ],
+        "cis_refs": []
+      }
+    },
+    {
+      "rule_id": "xccdf_org.ssgproject.content_rule_rpm_verify_ownership",
+      "severity": "high",
+      "status": "unknown",
+      "title": "Verify and Correct Ownership with RPM",
+      "target_type": "unknown",
+      "target_name": "unknown",
+      "action_context": "",
+      "ansible_module": "unknown",
+      "ansible_params": {
+        "value": "unknown"
+      },
+      "compliance": {
+        "cci_refs": [],
+        "nist_refs": [
+          "CCE-80545-7"
+        ],
+        "cis_refs": []
+      }
+    }
+  ]
+}

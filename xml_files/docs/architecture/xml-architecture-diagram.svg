@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="2" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.2"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-size="24" font-weight="bold" fill="#333">
+    XML Analysis Framework Architecture
+  </text>
+  
+  <!-- Input Layer -->
+  <g id="input-layer">
+    <rect x="50" y="60" width="120" height="60" rx="5" fill="#e8f4f8" stroke="#4a90e2" stroke-width="2" filter="url(#shadow)"/>
+    <text x="110" y="95" text-anchor="middle" font-size="14" fill="#333">XML Files</text>
+  </g>
+  
+  <!-- Core Analyzer -->
+  <g id="core-analyzer">
+    <rect x="250" y="60" width="300" height="120" rx="5" fill="#f0f8ff" stroke="#4a90e2" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="85" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">Core Analyzer</text>
+    
+    <!-- Sub-components -->
+    <rect x="270" y="100" width="120" height="30" rx="3" fill="#e6f3ff" stroke="#7bb3e8" stroke-width="1"/>
+    <text x="330" y="120" text-anchor="middle" font-size="12" fill="#333">Schema Analyzer</text>
+    
+    <rect x="410" y="100" width="120" height="30" rx="3" fill="#e6f3ff" stroke="#7bb3e8" stroke-width="1"/>
+    <text x="470" y="120" text-anchor="middle" font-size="12" fill="#333">Type Detector</text>
+    
+    <rect x="340" y="140" width="120" height="30" rx="3" fill="#e6f3ff" stroke="#7bb3e8" stroke-width="1"/>
+    <text x="400" y="160" text-anchor="middle" font-size="12" fill="#333">Basic Analysis</text>
+  </g>
+  
+  <!-- Specialized Handlers -->
+  <g id="handlers">
+    <rect x="50" y="220" width="700" height="140" rx="5" fill="#fff5e6" stroke="#ff9800" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="245" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">Specialized Handlers</text>
+    
+    <!-- Individual handlers -->
+    <rect x="70" y="260" width="90" height="40" rx="3" fill="#ffe0b2" stroke="#ff9800" stroke-width="1"/>
+    <text x="115" y="285" text-anchor="middle" font-size="11" fill="#333">SCAP</text>
+    
+    <rect x="170" y="260" width="90" height="40" rx="3" fill="#ffe0b2" stroke="#ff9800" stroke-width="1"/>
+    <text x="215" y="285" text-anchor="middle" font-size="11" fill="#333">RSS/Atom</text>
+    
+    <rect x="270" y="260" width="90" height="40" rx="3" fill="#ffe0b2" stroke="#ff9800" stroke-width="1"/>
+    <text x="315" y="285" text-anchor="middle" font-size="11" fill="#333">Maven POM</text>
+    
+    <rect x="370" y="260" width="90" height="40" rx="3" fill="#ffe0b2" stroke="#ff9800" stroke-width="1"/>
+    <text x="415" y="285" text-anchor="middle" font-size="11" fill="#333">Log4j</text>
+    
+    <rect x="470" y="260" width="90" height="40" rx="3" fill="#ffe0b2" stroke="#ff9800" stroke-width="1"/>
+    <text x="515" y="285" text-anchor="middle" font-size="11" fill="#333">Spring</text>
+    
+    <rect x="570" y="260" width="90" height="40" rx="3" fill="#ffe0b2" stroke="#ff9800" stroke-width="1"/>
+    <text x="615" y="285" text-anchor="middle" font-size="11" fill="#333">DocBook</text>
+    
+    <rect x="320" y="310" width="160" height="40" rx="3" fill="#ffccbc" stroke="#ff9800" stroke-width="1"/>
+    <text x="400" y="335" text-anchor="middle" font-size="11" fill="#333">Generic (Fallback)</text>
+  </g>
+  
+  <!-- Chunking Strategies -->
+  <g id="chunking">
+    <rect x="50" y="380" width="340" height="100" rx="5" fill="#f0fff0" stroke="#4caf50" stroke-width="2" filter="url(#shadow)"/>
+    <text x="220" y="405" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">Chunking Strategies</text>
+    
+    <rect x="70" y="425" width="100" height="30" rx="3" fill="#e8f5e9" stroke="#4caf50" stroke-width="1"/>
+    <text x="120" y="445" text-anchor="middle" font-size="11" fill="#333">Hierarchical</text>
+    
+    <rect x="180" y="425" width="100" height="30" rx="3" fill="#e8f5e9" stroke="#4caf50" stroke-width="1"/>
+    <text x="230" y="445" text-anchor="middle" font-size="11" fill="#333">Sliding Window</text>
+    
+    <rect x="290" y="425" width="90" height="30" rx="3" fill="#e8f5e9" stroke="#4caf50" stroke-width="1"/>
+    <text x="335" y="445" text-anchor="middle" font-size="11" fill="#333">Content-Aware</text>
+  </g>
+  
+  <!-- Output -->
+  <g id="output">
+    <rect x="410" y="380" width="340" height="100" rx="5" fill="#fff0f5" stroke="#e91e63" stroke-width="2" filter="url(#shadow)"/>
+    <text x="580" y="405" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">AI-Ready Output</text>
+    
+    <rect x="430" y="425" width="100" height="30" rx="3" fill="#fce4ec" stroke="#e91e63" stroke-width="1"/>
+    <text x="480" y="445" text-anchor="middle" font-size="11" fill="#333">JSON Analysis</text>
+    
+    <rect x="540" y="425" width="100" height="30" rx="3" fill="#fce4ec" stroke="#e91e63" stroke-width="1"/>
+    <text x="590" y="445" text-anchor="middle" font-size="11" fill="#333">LLM Chunks</text>
+    
+    <rect x="650" y="425" width="90" height="30" rx="3" fill="#fce4ec" stroke="#e91e63" stroke-width="1"/>
+    <text x="695" y="445" text-anchor="middle" font-size="11" fill="#333">Use Cases</text>
+  </g>
+  
+  <!-- Arrows -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <!-- Flow arrows -->
+  <path d="M 170 90 L 250 90" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <path d="M 400 180 L 400 220" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <path d="M 220 360 L 220 380" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <path d="M 530 360 L 580 380" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- LLM Integration (future) -->
+  <g id="llm-integration">
+    <rect x="300" y="520" width="200" height="50" rx="5" fill="#f5f5f5" stroke="#999" stroke-width="2" stroke-dasharray="5,5" filter="url(#shadow)"/>
+    <text x="400" y="550" text-anchor="middle" font-size="14" fill="#666" font-style="italic">LLM Integration (Future)</text>
+  </g>
+  
+  <path d="M 580 480 L 400 520" stroke="#999" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+</svg>

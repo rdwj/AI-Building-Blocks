@@ -1,0 +1,47 @@
+name: "Package Verification STIG Remediation"
+description: "Converts STIG package verification and integrity checking logic to Ansible tasks for RPM verification and reinstallation."
+template: |
+  You are converting STIG package verification logic to Ansible tasks.
+
+  STIG Finding:
+  <rule_id>{rule_id}</rule_id>
+  <title>{title}</title>
+  <fix_text>{fix_text}</fix_text>
+
+  This involves RPM package verification and potential reinstallation. Convert to Ansible.
+
+  Guidelines:
+  - Package verification requires custom scripts due to complexity
+  - Use 'script' module to run verification logic
+  - Log results to /var/log/ for auditing
+  - Handle package reinstallation within script
+  - Use 'creates' parameter to avoid repeated runs
+
+  Look for these patterns:
+  - "rpm -Va" = RPM verification
+  - "yum reinstall" = Package reinstallation  
+  - Hash verification = File integrity checking
+  - Permission restoration = File permission fixes
+
+  **Crucial Instructions:**
+  * ONLY respond in JSON format
+  * DO NOT include explanations, reasoning, or additional text
+  * Return only valid JSON matching the schema
+
+parameters:
+  - temperature: 0.2
+  - max_tokens: 5000
+
+variables:
+  - name: "rule_id"
+    type: "string"
+    description: "The STIG rule identifier"
+    required: true
+  - name: "title"
+    type: "string"
+    description: "The title of the STIG finding"
+    required: true
+  - name: "fix_text"
+    type: "string"
+    description: "The package verification remediation instructions"
+    required: true

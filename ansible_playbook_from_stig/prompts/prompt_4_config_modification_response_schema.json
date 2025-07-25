@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "properties": {
+    "target_type": {
+      "type": "string",
+      "enum": ["config_modification"]
+    },
+    "target_name": {
+      "type": "string",
+      "description": "Configuration file path or descriptive name"
+    },
+    "ansible_module": {
+      "type": "string",
+      "description": "Appropriate Ansible module (lineinfile, blockinfile, replace, template)"
+    },
+    "ansible_params": {
+      "type": "object",
+      "description": "Parameters for the Ansible module"
+    },
+    "backup_required": {
+      "type": "boolean",
+      "description": "Whether to backup the file before modification"
+    }
+  },
+  "required": ["target_type", "target_name", "ansible_module", "ansible_params", "backup_required"]
+}

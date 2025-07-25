@@ -1,0 +1,58 @@
+name: "Validate Ansible Playbook"
+description: "Validate if the generated playbook follows Ansible syntax and best practices"
+template: |
+  You are an Ansible expert validating playbook syntax and structure.
+  
+  Playbook to validate:
+  $playbook_content
+  
+  JSON Schema for response:
+  {
+    "type": "object",
+    "properties": {
+      "is_valid": {
+        "type": "boolean",
+        "description": "True if playbook is syntactically valid"
+      },
+      "issues": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "List of validation issues found"
+      },
+      "suggestions": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "List of improvement suggestions"
+      }
+    },
+    "required": ["is_valid", "issues", "suggestions"]
+  }
+  
+  Validate the playbook against these criteria:
+  
+  YAML Syntax:
+  - Proper indentation (2 spaces)
+  - Correct use of colons and spaces
+  - Valid boolean values (true/false)
+  - Proper quoting when needed
+  
+  Ansible Structure:
+  - Valid play-level keywords: hosts, become, vars, tasks, roles, gather_facts
+  - Valid task-level keywords: name, when, tags, register, notify, become
+  - Proper module usage and parameters
+  - Correct conditional syntax
+  
+  Best Practices:
+  - Descriptive task names
+  - Appropriate use of tags
+  - Proper variable naming
+  - OS family conditionals
+  
+  Return ONLY valid JSON with validation results.
+
+variables:
+  - playbook_content

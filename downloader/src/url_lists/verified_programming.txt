@@ -1,0 +1,31 @@
+# Verified Programming Language Examples
+# Format: TYPE|URL|FILENAME
+# ✅ All URLs verified working from GitHub search results
+
+# === PYTHON ===
+# From verified GitHub repositories
+PYTHON|https://raw.githubusercontent.com/bitcoin/bitcoin/master/test/functional/example_test.py|bitcoin-example-test.py
+PYTHON|https://raw.githubusercontent.com/ReactiveX/RxPY/master/tests/test_observable/test_sample.py|rxpy-test-sample.py
+PYTHON|https://raw.githubusercontent.com/codebasics/py/master/Basics/13_read_write_file.py|codebasics-file-operations.py
+PYTHON|https://raw.githubusercontent.com/seakun/Python-Projects/master/sample_python_code.py|python-projects-sample.py
+PYTHON|https://raw.githubusercontent.com/fmi/python-homework/master/2014/02-five_functions/sample_test.py|fmi-python-homework-test.py
+
+# === JAVASCRIPT ===
+# From verified Node.js and web projects
+JS|https://raw.githubusercontent.com/facebook/react/main/packages/react/index.js|react-main-index.js
+JS|https://raw.githubusercontent.com/nodejs/node/main/lib/util.js|nodejs-util.js
+JS|https://raw.githubusercontent.com/expressjs/express/master/index.js|express-main-index.js
+
+# === SHELL SCRIPTS ===
+# From verified repositories
+SHELL|https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh|nvm-install.sh
+SHELL|https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh|oh-my-zsh-install.sh
+
+# === CONFIGURATION FILES ===
+# From verified projects
+DOCKERFILE|https://raw.githubusercontent.com/docker/python-docker/main/Dockerfile|docker-python-sample.dockerfile
+REQUIREMENTS|https://raw.githubusercontent.com/docker/python-docker/main/requirements.txt|docker-python-requirements.txt
+
+# === YAML CONFIGURATION ===
+YAML|https://raw.githubusercontent.com/docker/compose/main/docker-compose.yml|docker-compose-official.yml
+YAML|https://raw.githubusercontent.com/actions/starter-workflows/main/ci/python-app.yml|github-actions-python.yml

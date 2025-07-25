@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "properties": {
+    "target_type": {
+      "type": "string",
+      "enum": ["package_verification"]
+    },
+    "target_name": {
+      "type": "string",
+      "description": "Name of the verification target (e.g., package_integrity_check)"
+    },
+    "ansible_module": {
+      "type": "string",
+      "description": "Ansible module to use (typically 'script' for complex verification)"
+    },
+    "ansible_params": {
+      "type": "object",
+      "description": "Parameters for the Ansible module"
+    },
+    "script_content": {
+      "type": "string",
+      "description": "Content of the verification script if using script module"
+    }
+  },
+  "required": ["target_type", "target_name", "ansible_module", "ansible_params"]
+}

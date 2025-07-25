@@ -1,0 +1,19 @@
+{
+  "run_timestamp": "20250714_120000",
+  "processing_date": "2025-07-14T11:06:33.510370",
+  "input_files": {
+    "enhanced_findings": "../findings/node2.example.com-STIG-20250710162433_20250714_110147_enhanced_findings.json",
+    "ansible_targets": "../findings/node2.example.com-STIG-20250710162433_20250714_110147_ansible_targets.json"
+  },
+  "statistics": {
+    "total_findings": 1529,
+    "deterministic_processed": 435,
+    "llm_processing_needed": 1094,
+    "deterministic_percentage": 28.44996729888816
+  },
+  "output_files": {
+    "deterministic_playbook": "../playbooks/20250714_120000/deterministic/deterministic_remediation_20250714_120000.yml",
+    "deterministic_targets": "../playbooks/20250714_120000/deterministic/deterministic_targets.json",
+    "llm_needed_findings": "../playbooks/20250714_120000/llm_needed/llm_needed_findings_20250714_120000.json"
+  }
+}

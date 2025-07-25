@@ -1,0 +1,36 @@
+# Essential Document Types - PDF, Office Documents, Text Files
+# Format: TYPE|URL|FILENAME
+# ✅ All URLs checked for robots.txt compliance - GitHub repositories are public and meant for sharing
+
+# === PDF DOCUMENTS ===
+# PDF Association official examples (public domain)
+PDF|https://raw.githubusercontent.com/pdf-association/pdf20examples/master/Introduction.pdf|pdf20-introduction.pdf
+PDF|https://raw.githubusercontent.com/pdf-association/pdf20examples/master/Annotations/page-level-output-intent.pdf|pdf20-page-output-intent.pdf
+PDF|https://raw.githubusercontent.com/pdf-association/pdf20examples/master/Fonts/simple-text-string.pdf|pdf20-simple-text.pdf
+
+# Technical PDF examples
+PDF|https://www.w3.org/WAI/WCAG21/wcag21-guidelines.pdf|wcag21-guidelines.pdf
+PDF|https://github.com/mozilla/pdf.js/raw/master/test/pdfs/basicapi.pdf|pdfjs-basic-api-test.pdf
+PDF|https://github.com/mozilla/pdf.js/raw/master/test/pdfs/issue1689.pdf|pdfjs-issue-test.pdf
+
+# === OFFICE DOCUMENTS ===
+# Microsoft Office examples from open source projects
+DOCX|https://github.com/open-xml-templating/docxtemplater/raw/master/examples/tag-example.docx|docxtemplater-tag-example.docx
+DOCX|https://github.com/open-xml-templating/docxtemplater/raw/master/examples/with-comments.docx|docxtemplater-with-comments.docx
+XLSX|https://github.com/unidoc/unioffice/raw/master/_examples/spreadsheet/basic/basic.xlsx|unioffice-basic-spreadsheet.xlsx
+PPTX|https://github.com/unidoc/unioffice/raw/master/_examples/presentation/basic/basic.pptx|unioffice-basic-presentation.pptx
+
+# LibreOffice/OpenDocument formats
+ODT|https://github.com/oasis-tcs/odata-vocabularies/raw/master/examples/TripPin/TripPin.odt|oasis-trippin-example.odt
+
+# === PLAIN TEXT DOCUMENTS ===
+TXT|https://raw.githubusercontent.com/torvalds/linux/master/README|linux-kernel-readme.txt
+TXT|https://raw.githubusercontent.com/git/git/master/README.md|git-readme.txt
+TXT|https://www.gutenberg.org/files/74/74-0.txt|gutenberg-tom-sawyer.txt
+TXT|https://raw.githubusercontent.com/octocat/Hello-World/master/README.md|github-hello-world.txt
+
+# === LOG FILES ===
+LOG|https://raw.githubusercontent.com/elastic/examples/master/Exploring%20Public%20Datasets/nyc_traffic_accidents/nyc_collision.log|elastic-nyc-collision.log
+
+# === RTF DOCUMENTS ===
+RTF|https://github.com/jgm/pandoc/raw/master/test/rtf/table.rtf|pandoc-table-test.rtf

@@ -1,0 +1,113 @@
+{
+  "timestamp": "2025-07-14T12:29:40.176989",
+  "results": [
+    {
+      "finding_index": 0,
+      "rule_id": "xccdf_org.ssgproject.content_rule_prefer_64bit_os",
+      "title": "Prefer to use a 64-bit Operating System when supported",
+      "classification": "programming",
+      "raw_result": {
+        "category": "programming"
+      },
+      "success": true,
+      "expected_categories": [
+        "SHELL_SCRIPT",
+        "PACKAGE_VERIFICATION",
+        "CONFIG_MODIFICATION",
+        "BOOT_CONFIGURATION",
+        "MULTI_STEP_PROCESS",
+        "CRON_SCHEDULING",
+        "UNKNOWN"
+      ]
+    },
+    {
+      "finding_index": 1,
+      "rule_id": "xccdf_org.ssgproject.content_rule_disable_prelink",
+      "title": "Disable Prelinking",
+      "classification": "Programming",
+      "raw_result": {
+        "category": "Programming",
+        "sub_category": "Python"
+      },
+      "success": true,
+      "expected_categories": [
+        "SHELL_SCRIPT",
+        "PACKAGE_VERIFICATION",
+        "CONFIG_MODIFICATION",
+        "BOOT_CONFIGURATION",
+        "MULTI_STEP_PROCESS",
+        "CRON_SCHEDULING",
+        "UNKNOWN"
+      ]
+    },
+    {
+      "finding_index": 2,
+      "rule_id": "xccdf_org.ssgproject.content_rule_rpm_verify_hashes",
+      "title": "Verify File Hashes with RPM",
+      "classification": "programming",
+      "raw_result": {
+        "category": "programming"
+      },
+      "success": true,
+      "expected_categories": [
+        "SHELL_SCRIPT",
+        "PACKAGE_VERIFICATION",
+        "CONFIG_MODIFICATION",
+        "BOOT_CONFIGURATION",
+        "MULTI_STEP_PROCESS",
+        "CRON_SCHEDULING",
+        "UNKNOWN"
+      ]
+    },
+    {
+      "finding_index": 3,
+      "rule_id": "xccdf_org.ssgproject.content_rule_rpm_verify_ownership",
+      "title": "Verify and Correct Ownership with RPM",
+      "classification": "programming",
+      "raw_result": {
+        "category": "programming"
+      },
+      "success": true,
+      "expected_categories": [
+        "SHELL_SCRIPT",
+        "PACKAGE_VERIFICATION",
+        "CONFIG_MODIFICATION",
+        "BOOT_CONFIGURATION",
+        "MULTI_STEP_PROCESS",
+        "CRON_SCHEDULING",
+        "UNKNOWN"
+      ]
+    },
+    {
+      "finding_index": 4,
+      "rule_id": "xccdf_org.ssgproject.content_rule_rpm_verify_permissions",
+      "title": "Verify and Correct File Permissions with RPM",
+      "classification": "Uncategorized",
+      "raw_result": {
+        "category": "Uncategorized"
+      },
+      "success": true,
+      "expected_categories": [
+        "SHELL_SCRIPT",
+        "PACKAGE_VERIFICATION",
+        "CONFIG_MODIFICATION",
+        "BOOT_CONFIGURATION",
+        "MULTI_STEP_PROCESS",
+        "CRON_SCHEDULING",
+        "UNKNOWN"
+      ]
+    }
+  ],
+  "analysis": {
+    "total_tests": 5,
+    "successful_calls": 5,
+    "valid_categories": 0,
+    "success_rate": 100.0,
+    "valid_category_rate": 0.0,
+    "category_distribution": {
+      "programming": 3,
+      "Programming": 1,
+      "Uncategorized": 1
+    }
+  }
+}

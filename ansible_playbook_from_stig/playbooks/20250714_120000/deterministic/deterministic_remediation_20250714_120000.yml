@@ -1,0 +1,5237 @@
+---
+# STIG Compliance Remediation Playbook
+# Generated automatically on 2025-07-14 11:06:13
+# DO NOT EDIT MANUALLY - Regenerate from STIG targets
+
+- name: STIG Compliance Remediation Playbook
+  hosts: all
+  become: true
+  gather_facts: true
+  vars:
+    stig_remediation_date: '2025-07-14T11:06:13.139298'
+    total_remediations: 435
+  tasks:
+  - name: Display STIG remediation information
+    debug:
+      msg:
+      - Starting STIG compliance remediation
+      - 'Total remediations: {{ total_remediations }}'
+      - 'Generated on: {{ stig_remediation_date }}'
+    tags:
+    - info
+  - name: === Packages Install ===
+    debug:
+      msg: Starting packages install remediation
+    tags:
+    - packages_install
+    - info
+  - name: 'CCE-27096-7: Install AIDE'
+    yum:
+      name: aide
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_27096_7
+  - name: 'CCE-80358-5: Install the dracut-fips Package'
+    yum:
+      name: dracut-fips
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_80358_5
+  - name: 'CCE-90778-2: Install the dracut-fips-aesni Package'
+    yum:
+      name: dracut-fips-aesni
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_90778_2
+  - name: 'CCE-86257-3: Install McAfee Endpoint Security for Linux (ENSL)'
+    yum:
+      name: mcafeetp
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_86257_3
+  - name: 'CCE-80368-4: Install the Host Intrusion Prevention System (HIPS) Module'
+    yum:
+      name: MFEhiplsm
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_80368_4
+  - name: 'CCE-82213-0: Install sudo Package'
+    yum:
+      name: sudo
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_82213_0
+  - name: 'CCE-82990-3: Install binutils Package'
+    yum:
+      name: binutils
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_82990_3
+  - name: 'CCE-82951-5: Install scap-security-guide Package'
+    yum:
+      name: scap-security-guide
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_82951_5
+  - name: 'CCE-82882-2: Install rear Package'
+    yum:
+      name: rear
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_82882_2
+  - name: 'CCE-82980-4: Install libcap-ng-utils Package'
+    yum:
+      name: libcap-ng-utils
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_82980_4
+  - name: 'CCE-82957-2: Install vim Package'
+    yum:
+      name: vim
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_low
+    - packages
+    - cce_82957_2
+  - name: 'CCE-82966-3: Install tar Package'
+    yum:
+      name: tar
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_82966_3
+  - name: 'CCE-82969-7: Install rng-tools Package'
+    yum:
+      name: rng-tools
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_low
+    - packages
+    - cce_82969_7
+  - name: Ensure nss-tools is installed
+    yum:
+      name: nss-tools
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+  - name: Ensure gnutls-utils is installed
+    yum:
+      name: gnutls-utils
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+  - name: 'CCE-82219-7: Install openscap-scanner Package'
+    yum:
+      name: openscap-scanner
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_82219_7
+  - name: 'CCE-82638-8: Install subscription-manager Package'
+    yum:
+      name: subscription-manager
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_82638_8
+  - name: 'CCE-82996-0: Install cryptsetup Package'
+    yum:
+      name: cryptsetup-luks
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_82996_0
+  - name: 'CCE-86224-3: Install pam_pwquality Package'
+    yum:
+      name: pam_pwquality
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_86224_3
+  - name: 'CCE-27351-6: Install the screen Package'
+    yum:
+      name: screen
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_27351_6
+  - name: 'CCE-82347-6: Install the pcsc-lite package'
+    yum:
+      name: pcsc-lite
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_82347_6
+  - name: 'CCE-80568-9: Install the opensc Package For Multifactor Authentication'
+    yum:
+      name: opensc
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_80568_9
+  - name: 'CCE-86724-2: Ensure rsyslog-gnutls is installed'
+    yum:
+      name: rsyslog-gnutls
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_86724_2
+  - name: 'CCE-80187-8: Ensure rsyslog is Installed'
+    yum:
+      name: rsyslog
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_80187_8
+  - name: 'CCE-87415-6: Install systemd-journal-remote Package'
+    yum:
+      name: systemd-journal-remote
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_87415_6
+  - name: 'CCE-86153-4: Ensure logrotate is Installed'
+    yum:
+      name: logrotate
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_86153_4
+  - name: Ensure syslog-ng is Installed
+    yum:
+      name: syslogng
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+  - name: 'CCE-82999-4: Install firewalld Package'
+    yum:
+      name: firewalld
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_82999_4
+  - name: 'CCE-80170-4: Install libreswan Package'
+    yum:
+      name: libreswan
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_80170_4
+  - name: 'CCE-82983-8: Install iptables Package'
+    yum:
+      name: iptables
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_82983_8
+  - name: 'CCE-86682-2: Install nftables Package'
+    yum:
+      name: nftables
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_86682_2
+  - name: 'CCE-82876-4: Install libselinux Package'
+    yum:
+      name: libselinux
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_high
+    - packages
+    - cce_82876_4
+  - name: 'CCE-82977-0: Install policycoreutils Package'
+    yum:
+      name: policycoreutils
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_low
+    - packages
+    - cce_82977_0
+  - name: 'CCE-82403-7: Install the psacct package'
+    yum:
+      name: psacct
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_low
+    - packages
+    - cce_82403_7
+  - name: Install the cron service
+    yum:
+      name: cron
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+  - name: Install the docker Package
+    yum:
+      name: docker
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+  - name: 'CCE-80246-2: Install vsftpd Package'
+    yum:
+      name: vsftpd
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_low
+    - packages
+    - cce_80246_2
+  - name: 'CCE-86611-1: The mailx Package Is Installed'
+    yum:
+      name: mailx
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_86611_1
+  - name: The Postfix package is installed
+    yum:
+      name: postfix
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+  - name: Install the ntp service
+    yum:
+      name: ntp
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_high
+    - packages
+  - name: 'CCE-83419-2: The Chrony package is installed'
+    yum:
+      name: chrony
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_83419_2
+  - name: 'CCE-27361-5: Install tcp_wrappers Package'
+    yum:
+      name: tcp_wrappers
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_27361_5
+  - name: 'CCE-80360-1: Install the Samba Common Package'
+    yum:
+      name: samba-common
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_80360_1
+  - name: 'CCE-80215-7: Install the OpenSSH Server Package'
+    yum:
+      name: openssh-server
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_80215_7
+  - name: 'CCE-82993-7: Install sssd-ipa Package'
+    yum:
+      name: sssd-ipa
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_82993_7
+  - name: 'CCE-80362-7: Install the SSSD Package'
+    yum:
+      name: sssd
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_80362_7
+  - name: 'CCE-82960-6: Install usbguard Package'
+    yum:
+      name: usbguard
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_82960_6
+  - name: 'CCE-86531-1: Ensure the audit-libs package as a part of audit Subsystem is Installed'
+    yum:
+      name: audit-libs
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_86531_1
+  - name: 'CCE-82954-9: Install audispd-plugins Package'
+    yum:
+      name: audispd-plugins
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_82954_9
+  - name: Ensure the default plugins for the audit dispatcher are Installed
+    yum:
+      name: audit-audispd-plugins
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+  - name: 'CCE-81042-4: Ensure the audit Subsystem is Installed'
+    yum:
+      name: audit
+      state: present
+    tags:
+    - stig
+    - security
+    - packages_install
+    - severity_medium
+    - packages
+    - cce_81042_4
+  - name: === Packages Remove ===
+    debug:
+      msg: Starting packages remove remediation
+    tags:
+    - packages_remove
+    - info
+  - name: 'CCE-86562-6: Package "prelink" Must not be Installed'
+    yum:
+      name: prelink
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+    - cce_86562_6
+  - name: 'CCE-82348-4: Remove the GDM Package Group'
+    yum:
+      name: gdm
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+    - cce_82348_4
+  - name: 'CCE-82917-6: Uninstall abrt-plugin-rhtsupport Package'
+    yum:
+      name: abrt-plugin-rhtsupport
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_82917_6
+  - name: 'CCE-82930-9: Uninstall krb5-workstation Package'
+    yum:
+      name: krb5-workstation
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+    - cce_82930_9
+  - name: 'CCE-82937-4: Uninstall geolite2-country Package'
+    yum:
+      name: geolite2-country
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_82937_4
+  - name: 'CCE-82927-5: Uninstall abrt-addon-kerneloops Package'
+    yum:
+      name: abrt-addon-kerneloops
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_82927_5
+  - name: 'CCE-82947-3: Uninstall iprutils Package'
+    yum:
+      name: iprutils
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+    - cce_82947_3
+  - name: 'CCE-82914-3: Uninstall abrt-plugin-logger Package'
+    yum:
+      name: abrt-plugin-logger
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_82914_3
+  - name: Uninstall libreport-plugin-rhtsupport Package
+    yum:
+      name: libreport-plugin-rhtsupport
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+  - name: 'CCE-82940-8: Uninstall geolite2-city Package'
+    yum:
+      name: geolite2-city
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_82940_8
+  - name: 'CCE-82911-9: Uninstall abrt-plugin-sosreport Package'
+    yum:
+      name: abrt-plugin-sosreport
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_82911_9
+  - name: Uninstall libreport-plugin-logger Package
+    yum:
+      name: libreport-plugin-logger
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+  - name: 'CCE-82920-0: Uninstall abrt-addon-ccpp Package'
+    yum:
+      name: abrt-addon-ccpp
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_82920_0
+  - name: 'CCE-82908-5: Uninstall abrt-cli Package'
+    yum:
+      name: abrt-cli
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_82908_5
+  - name: 'CCE-82905-1: Uninstall tuned Package'
+    yum:
+      name: tuned
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+    - cce_82905_1
+  - name: 'CCE-82924-2: Uninstall abrt-addon-python Package'
+    yum:
+      name: abrt-addon-python
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_82924_2
+  - name: 'CCE-82944-0: Uninstall gssproxy Package'
+    yum:
+      name: gssproxy
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+    - cce_82944_0
+  - name: 'CCE-86678-0: Remove iptables-services Package'
+    yum:
+      name: iptables-services
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+    - cce_86678_0
+  - name: 'CCE-86680-6: Uninstall nftables package'
+    yum:
+      name: nftables
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+    - cce_86680_6
+  - name: 'CCE-84249-2: Uninstall setroubleshoot-plugins Package'
+    yum:
+      name: setroubleshoot-plugins
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_84249_2
+  - name: 'CCE-83488-7: Uninstall setroubleshoot-server Package'
+    yum:
+      name: setroubleshoot-server
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_83488_7
+  - name: 'CCE-80445-0: Uninstall mcstrans Package'
+    yum:
+      name: mcstrans
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_80445_0
+  - name: 'CCE-80444-3: Uninstall setroubleshoot Package'
+    yum:
+      name: setroubleshoot
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_80444_3
+  - name: 'CCE-86511-3: Uninstall avahi Server Package'
+    yum:
+      name: avahi
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+    - cce_86511_3
+  - name: 'CCE-86514-7: Uninstall avahi-autoipd Server Package'
+    yum:
+      name: avahi-autoipd
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+    - cce_86514_7
+  - name: 'CCE-81040-8: Uninstall Automatic Bug Reporting Tool (abrt)'
+    yum:
+      name: abrt
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+    - cce_81040_8
+  - name: Uninstall the nis package
+    yum:
+      name: nis
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+  - name: Uninstall the inet-based telnet server
+    yum:
+      name: inetutils-telnetd
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_high
+    - packages
+  - name: Uninstall the ntpdate package
+    yum:
+      name: ntpdate
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+  - name: Uninstall the ssl compliant telnet server
+    yum:
+      name: telnetd-ssl
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_high
+    - packages
+  - name: 'CCE-82461-5: Uninstall the telnet server'
+    yum:
+      name: telnetd
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_high
+    - packages
+    - cce_82461_5
+  - name: 'CCE-80331-2: Uninstall DHCP Server Package'
+    yum:
+      name: dhcp
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+    - cce_80331_2
+  - name: 'CCE-90761-8: Uninstall dnsmasq Package'
+    yum:
+      name: dnsmasq
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_90761_8
+  - name: 'CCE-80326-2: Uninstall bind Package'
+    yum:
+      name: bind
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_80326_2
+  - name: 'CCE-90757-6: Remove ftp Package'
+    yum:
+      name: ftp
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_90757_6
+  - name: 'CCE-80245-4: Uninstall vsftpd Package'
+    yum:
+      name: vsftpd
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_high
+    - packages
+    - cce_80245_4
+  - name: 'CCE-80301-5: Uninstall httpd Package'
+    yum:
+      name: httpd
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_unknown
+    - packages
+    - cce_80301_5
+  - name: 'CCE-90758-4: Uninstall nginx Package'
+    yum:
+      name: nginx
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_unknown
+    - packages
+    - cce_90758_4
+  - name: 'CCE-90760-0: Uninstall cyrus-imapd Package'
+    yum:
+      name: cyrus-imapd
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_unknown
+    - packages
+    - cce_90760_0
+  - name: 'CCE-80295-9: Uninstall dovecot Package'
+    yum:
+      name: dovecot
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_unknown
+    - packages
+    - cce_80295_9
+  - name: Remove the Kerberos Server Package
+    yum:
+      name: krb5-server
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+  - name: 'CCE-82727-9: Uninstall 389-ds-base Package'
+    yum:
+      name: 389-ds-base
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_82727_9
+  - name: 'CCE-82884-8: Ensure LDAP client is not installed'
+    yum:
+      name: openldap-clients
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_82884_8
+  - name: 'CCE-80293-4: Uninstall openldap-servers Package'
+    yum:
+      name: openldap-servers
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_80293_4
+  - name: 'CCE-80288-4: Uninstall Sendmail Package'
+    yum:
+      name: sendmail
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+    - cce_80288_4
+  - name: 'CCE-82933-3: Uninstall nfs-utils Package'
+    yum:
+      name: nfs-utils
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_82933_3
+  - name: 'CCE-86644-2: Uninstall rpcbind Package'
+    yum:
+      name: rpcbind
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_86644_2
+  - name: 'CCE-86334-0: Uninstall rsync Package'
+    yum:
+      name: rsync
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+    - cce_86334_0
+  - name: 'CCE-27354-0: Uninstall xinetd Package'
+    yum:
+      name: xinetd
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_27354_0
+  - name: 'CCE-27396-1: Remove NIS Client'
+    yum:
+      name: ypbind
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_unknown
+    - packages
+    - cce_27396_1
+  - name: 'CCE-27399-5: Uninstall ypserv Package'
+    yum:
+      name: ypserv
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_high
+    - packages
+    - cce_27399_5
+  - name: 'CCE-27274-0: Uninstall rsh Package'
+    yum:
+      name: rsh
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_unknown
+    - packages
+    - cce_27274_0
+  - name: 'CCE-27342-5: Uninstall rsh-server Package'
+    yum:
+      name: rsh-server
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_high
+    - packages
+    - cce_27342_5
+  - name: 'CCE-27432-4: Uninstall talk Package'
+    yum:
+      name: talk
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+    - cce_27432_4
+  - name: 'CCE-27210-4: Uninstall talk-server Package'
+    yum:
+      name: talk-server
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+    - cce_27210_4
+  - name: 'CCE-27305-2: Remove telnet Clients'
+    yum:
+      name: telnet
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_27305_2
+  - name: 'CCE-27165-0: Uninstall telnet-server Package'
+    yum:
+      name: telnet-server
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_high
+    - packages
+    - cce_27165_0
+  - name: 'CCE-80443-5: Remove tftp Daemon'
+    yum:
+      name: tftp
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_80443_5
+  - name: 'CCE-80213-2: Uninstall tftp-server Package'
+    yum:
+      name: tftp-server
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_high
+    - packages
+    - cce_80213_2
+  - name: 'CCE-86295-3: Uninstall CUPS Package'
+    yum:
+      name: cups
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_unknown
+    - packages
+    - cce_86295_3
+  - name: 'CCE-80286-8: Uninstall squid Package'
+    yum:
+      name: squid
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_unknown
+    - packages
+    - cce_80286_8
+  - name: 'CCE-82751-9: Remove the FreeRadius Server Package'
+    yum:
+      name: freeradius
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_82751_9
+  - name: 'CCE-27594-1: Uninstall quagga Package'
+    yum:
+      name: quagga
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_low
+    - packages
+    - cce_27594_1
+  - name: 'CCE-80278-5: Uninstall Samba Package'
+    yum:
+      name: samba
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_unknown
+    - packages
+    - cce_80278_5
+  - name: 'CCE-80275-1: Uninstall net-snmp Package'
+    yum:
+      name: net-snmp
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_unknown
+    - packages
+    - cce_80275_1
+  - name: Remove the OpenSSH Server Package
+    yum:
+      name: openssh-server
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+  - name: 'CCE-27218-7: Remove the X Windows Package Group'
+    yum:
+      name: xorg-x11-server-common
+      state: absent
+    tags:
+    - stig
+    - security
+    - packages_remove
+    - severity_medium
+    - packages
+    - cce_27218_7
+  - name: === Services ===
+    debug:
+      msg: Starting services remediation
+    tags:
+    - services
+    - info
+  - name: 'CCE-80128-2: Enable nails Service'
+    systemd:
+      name: nails
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_80128_2
+  - name: 'CCE-80206-6: Disable debug-shell SystemD Service'
+    systemd:
+      name: debug-shell
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_80206_6
+  - name: 'CCE-80569-7: Enable the pcscd Service'
+    systemd:
+      name: pcscd
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_80569_7
+  - name: 'CCE-80188-6: Enable rsyslog Service'
+    systemd:
+      name: rsyslog
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_80188_6
+  - name: 'CCE-87634-2: Enable systemd-journald Service'
+    systemd:
+      name: systemd-journald
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_87634_2
+  - name: Enable syslog-ng Service
+    systemd:
+      name: syslogng
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+  - name: 'CCE-80998-8: Verify firewalld Enabled'
+    systemd:
+      name: firewalld
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_80998_8
+  - name: Verify ip6tables Enabled if Using IPv6
+    systemd:
+      name: ip6tables
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+  - name: 'CCE-87026-1: Verify iptables Enabled'
+    systemd:
+      name: iptables
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_87026_1
+  - name: 'CCE-86723-4: Verify nftables Service is Enabled'
+    systemd:
+      name: nftables
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_86723_4
+  - name: 'CCE-86683-0: Verify nftables Service is Disabled'
+    systemd:
+      name: nftables
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_86683_0
+  - name: Verify ufw Enabled
+    systemd:
+      name: ufw
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+  - name: 'CCE-27328-4: Disable Bluetooth Service'
+    systemd:
+      name: bluetooth
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_27328_4
+  - name: 'CCE-27498-5: Disable the Automounter'
+    systemd:
+      name: autofs
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_27498_5
+  - name: 'CCE-80338-7: Disable Avahi Server Software'
+    systemd:
+      name: avahi-daemon
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_80338_7
+  - name: 'CCE-80265-2: Enable Process Accounting (psacct)'
+    systemd:
+      name: psacct
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80265_2
+  - name: 'CCE-80257-9: Enable IRQ Balance (irqbalance)'
+    systemd:
+      name: irqbalance
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80257_9
+  - name: 'CCE-80255-3: Disable Control Group Rules Engine (cgred)'
+    systemd:
+      name: cgred
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80255_3
+  - name: 'CCE-80260-3: Disable D-Bus IPC Service (messagebus)'
+    systemd:
+      name: messagebus
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80260_3
+  - name: 'CCE-80252-0: Disable Advanced Configuration and Power Interface (acpid)'
+    systemd:
+      name: acpid
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_80252_0
+  - name: 'CCE-80258-7: Disable KDump Kernel Crash Analyzer (kdump)'
+    systemd:
+      name: kdump
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_80258_7
+  - name: 'CCE-80261-1: Disable Network Console (netconsole)'
+    systemd:
+      name: netconsole
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80261_1
+  - name: 'CCE-80253-8: Disable Certmonger Service (certmonger)'
+    systemd:
+      name: certmonger
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80253_8
+  - name: 'CCE-80267-8: Disable Quota Netlink (quota_nld)'
+    systemd:
+      name: quota_nld
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80267_8
+  - name: 'CCE-80269-4: Disable Red Hat Network Service (rhnsd)'
+    systemd:
+      name: rhnsd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80269_4
+  - name: 'CCE-80259-5: Disable Software RAID Monitor (mdmonitor)'
+    systemd:
+      name: mdmonitor
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80259_5
+  - name: 'CCE-80263-7: Disable Odd Job Daemon (oddjobd)'
+    systemd:
+      name: oddjobd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_80263_7
+  - name: 'CCE-80272-8: Disable SMART Disk Monitoring Service (smartd)'
+    systemd:
+      name: smartd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80272_8
+  - name: 'CCE-80266-0: Disable Apache Qpid (qpidd)'
+    systemd:
+      name: qpidd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80266_0
+  - name: 'CCE-82027-4: Disable Automatic Bug Reporting Tool (abrtd)'
+    systemd:
+      name: abrtd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_82027_4
+  - name: Disable Cockpit Management Server
+    systemd:
+      name: cockpit
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+  - name: 'CCE-80256-1: Disable CPU Speed (cpupower)'
+    systemd:
+      name: cpupower
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80256_1
+  - name: 'CCE-80271-0: Disable Cyrus SASL Authentication Daemon (saslauthd)'
+    systemd:
+      name: saslauthd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80271_0
+  - name: 'CCE-80254-6: Disable Control Group Config (cgconfig)'
+    systemd:
+      name: cgconfig
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80254_6
+  - name: 'CCE-80262-9: Disable ntpdate Service (ntpdate)'
+    systemd:
+      name: ntpdate
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80262_9
+  - name: 'CCE-80268-6: Disable Network Router Discovery Daemon (rdisc)'
+    systemd:
+      name: rdisc
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_80268_6
+  - name: 'CCE-80270-2: Disable Red Hat Subscription Manager Daemon (rhsmcertd)'
+    systemd:
+      name: rhsmcertd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80270_2
+  - name: 'CCE-80264-5: Disable Portreserve (portreserve)'
+    systemd:
+      name: portreserve
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80264_5
+  - name: 'CCE-80273-6: Disable System Statistics Reset Service (sysstat)'
+    systemd:
+      name: sysstat
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80273_6
+  - name: 'CCE-27323-5: Enable cron Service'
+    systemd:
+      name: crond
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_27323_5
+  - name: Enable cron Service
+    systemd:
+      name: cron
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+  - name: 'CCE-80345-2: Disable At Service (atd)'
+    systemd:
+      name: atd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_80345_2
+  - name: 'CCE-80330-4: Disable DHCP Service'
+    systemd:
+      name: dhcpd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_80330_4
+  - name: 'CCE-80325-4: Disable named Service'
+    systemd:
+      name: named
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_80325_4
+  - name: 'CCE-80440-1: Enable the Docker service'
+    systemd:
+      name: docker
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_80440_1
+  - name: 'CCE-80244-7: Disable vsftpd Service'
+    systemd:
+      name: vsftpd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_80244_7
+  - name: 'CCE-80300-7: Disable httpd Service'
+    systemd:
+      name: httpd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_unknown
+    - services
+    - cce_80300_7
+  - name: 'CCE-80294-2: Disable Dovecot Service'
+    systemd:
+      name: dovecot
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_unknown
+    - services
+    - cce_80294_2
+  - name: 'CCE-80287-6: Enable Postfix Service'
+    systemd:
+      name: postfix
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_unknown
+    - services
+    - cce_80287_6
+  - name: Disable Network File Systems (netfs)
+    systemd:
+      name: netfs
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_unknown
+    - services
+  - name: 'CCE-80228-0: Disable Network File System Lock Service (nfslock)'
+    systemd:
+      name: nfslock
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_unknown
+    - services
+    - cce_80228_0
+  - name: 'CCE-80231-4: Disable RPC ID Mapping Service (rpcidmapd)'
+    systemd:
+      name: rpcidmapd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_unknown
+    - services
+    - cce_80231_4
+  - name: 'CCE-80229-8: Disable Secure RPC Client Service (rpcgssd)'
+    systemd:
+      name: rpcgssd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_unknown
+    - services
+    - cce_80229_8
+  - name: 'CCE-80230-6: Disable rpcbind Service'
+    systemd:
+      name: rpcbind
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80230_6
+  - name: 'CCE-80237-1: Disable Network File System (nfs)'
+    systemd:
+      name: nfs
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_unknown
+    - services
+    - cce_80237_1
+  - name: 'CCE-80238-9: Disable Secure RPC Server Service (rpcsvcgssd)'
+    systemd:
+      name: rpcsvcgssd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_unknown
+    - services
+    - cce_80238_9
+  - name: 'CCE-83420-0: The Chronyd service is enabled'
+    systemd:
+      name: chronyd
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_83420_0
+  - name: 'CCE-84253-4: Enable the NTP Daemon'
+    systemd:
+      name: ntpd
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_84253_4
+  - name: 'CCE-27444-9: Enable the NTP Daemon'
+    systemd:
+      name: chronyd_or_ntpd
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_27444_9
+  - name: Enable the NTP Daemon
+    systemd:
+      name: ntp
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_high
+    - services
+    validate: systemctl is-active ntp
+  - name: 'CCE-83334-3: Ensure rsyncd service is disabled'
+    systemd:
+      name: rsyncd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_83334_3
+  - name: 'CCE-27443-1: Disable xinetd Service'
+    systemd:
+      name: xinetd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_27443_1
+  - name: 'CCE-90759-2: Disable ypserv Service'
+    systemd:
+      name: ypserv
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_90759_2
+  - name: 'CCE-27385-4: Disable ypbind Service'
+    systemd:
+      name: ypbind
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_27385_4
+  - name: 'CCE-27336-7: Disable rlogin Service'
+    systemd:
+      name: rlogin
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_high
+    - services
+    - cce_27336_7
+    validate: systemctl is-active rlogin
+  - name: 'CCE-27337-5: Disable rsh Service'
+    systemd:
+      name: rsh
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_high
+    - services
+    - cce_27337_5
+    validate: systemctl is-active rsh
+  - name: 'CCE-27408-4: Disable rexec Service'
+    systemd:
+      name: rexec
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_high
+    - services
+    - cce_27408_4
+    validate: systemctl is-active rexec
+  - name: 'CCE-27401-9: Disable telnet Service'
+    systemd:
+      name: telnet
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_high
+    - services
+    - cce_27401_9
+    validate: systemctl is-active telnet
+  - name: 'CCE-80212-4: Disable tftp Service'
+    systemd:
+      name: tftp
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_high
+    - services
+    - cce_80212_4
+    validate: systemctl is-active tftp
+  - name: 'CCE-80282-7: Disable the CUPS Service'
+    systemd:
+      name: cups
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_unknown
+    - services
+    - cce_80282_7
+  - name: 'CCE-80285-0: Disable Squid'
+    systemd:
+      name: squid
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_unknown
+    - services
+    - cce_80285_0
+  - name: 'CCE-27191-6: Disable Quagga Service'
+    systemd:
+      name: zebra
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_27191_6
+  - name: 'CCE-80277-7: Disable Samba'
+    systemd:
+      name: smb
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80277_7
+  - name: 'CCE-80274-4: Disable snmpd Service'
+    systemd:
+      name: snmpd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_low
+    - services
+    - cce_80274_4
+  - name: 'CCE-80216-5: Enable the OpenSSH Service'
+    systemd:
+      name: sshd
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_80216_5
+  - name: 'CCE-80217-3: Disable SSH Server If Possible'
+    systemd:
+      name: sshd
+      state: stopped
+      enabled: false
+    tags:
+    - stig
+    - security
+    - services
+    - severity_high
+    - services
+    - cce_80217_3
+    validate: systemctl is-active sshd
+  - name: 'CCE-80363-5: Enable the SSSD Service'
+    systemd:
+      name: sssd
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_80363_5
+  - name: 'CCE-27407-6: Enable auditd Service'
+    systemd:
+      name: auditd
+      state: started
+      enabled: true
+    tags:
+    - stig
+    - security
+    - services
+    - severity_medium
+    - services
+    - cce_27407_6
+  - name: === File Ownership ===
+    debug:
+      msg: Starting file ownership remediation
+    tags:
+    - file_ownership
+    - info
+  - name: 'CCE-86412-4: Verify Group Who Owns /etc/sudoers File'
+    file:
+      path: /etc/etc/sudoers
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86412_4
+    register: file_ownership_etc_etc_sudoers_result
+  - name: 'CCE-86415-7: Verify User Who Owns /etc/sudoers File'
+    file:
+      path: /etc/etc/sudoers
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86415_7
+    register: file_ownership_etc_etc_sudoers_result
+  - name: 'CCE-83707-0: Verify Group Ownership of System Login Banner'
+    file:
+      path: /etc/etc/issue
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_83707_0
+    register: file_ownership_etc_etc_issue_result
+  - name: 'CCE-86050-2: Verify Group Ownership of System Login Banner for Remote Connections'
+    file:
+      path: /etc/etc/issue/net
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86050_2
+    register: file_ownership_etc_etc_issue_net_result
+  - name: 'CCE-83727-8: Verify Group Ownership of Message of the Day Banner'
+    file:
+      path: /etc/etc/motd
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_83727_8
+    register: file_ownership_etc_etc_motd_result
+  - name: 'CCE-83717-9: Verify ownership of System Login Banner'
+    file:
+      path: /etc/etc/issue
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_83717_9
+    register: file_ownership_etc_etc_issue_result
+  - name: 'CCE-86053-6: Verify ownership of System Login Banner for Remote Connections'
+    file:
+      path: /etc/etc/issue/net
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86053_6
+    register: file_ownership_etc_etc_issue_net_result
+  - name: 'CCE-83737-7: Verify ownership of Message of the Day Banner'
+    file:
+      path: /etc/etc/motd
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_83737_7
+    register: file_ownership_etc_etc_motd_result
+  - name: 'CCE-82023-3: Verify /boot/grub2/grub.cfg Group Ownership'
+    file:
+      path: /etc/grub2/cfg
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82023_3
+    register: file_ownership_etc_grub2_cfg_result
+  - name: 'CCE-86008-0: Verify /boot/grub2/user.cfg Group Ownership'
+    file:
+      path: /etc/user/cfg
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86008_0
+    register: file_ownership_etc_user_cfg_result
+  - name: 'CCE-82026-6: Verify /boot/grub2/grub.cfg User Ownership'
+    file:
+      path: /etc/grub2/cfg
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82026_6
+    register: file_ownership_etc_grub2_cfg_result
+  - name: 'CCE-86014-8: Verify /boot/grub2/user.cfg User Ownership'
+    file:
+      path: /etc/user/cfg
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86014_8
+    register: file_ownership_etc_user_cfg_result
+  - name: 'CCE-83430-9: Verify the UEFI Boot Loader grub.cfg Group Ownership'
+    file:
+      path: /etc/efi/grub2/cfg
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_83430_9
+    register: file_ownership_etc_efi_grub2_cfg_result
+  - name: 'CCE-86011-4: Verify /boot/efi/EFI/redhat/user.cfg Group Ownership'
+    file:
+      path: /etc/efi/user/cfg
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86011_4
+    register: file_ownership_etc_efi_user_cfg_result
+  - name: 'CCE-83429-1: Verify the UEFI Boot Loader grub.cfg User Ownership'
+    file:
+      path: /etc/efi/grub2/cfg
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_83429_1
+    register: file_ownership_etc_efi_grub2_cfg_result
+  - name: 'CCE-86019-7: Verify /boot/efi/EFI/redhat/user.cfg User Ownership'
+    file:
+      path: /etc/efi/user/cfg
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86019_7
+    register: file_ownership_etc_efi_user_cfg_result
+  - name: 'CCE-86385-2: Verify Group Who Owns /etc/ipsec.conf File'
+    file:
+      path: /etc/etc/ipsec/conf
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86385_2
+    register: file_ownership_etc_etc_ipsec_conf_result
+  - name: 'CCE-86396-9: Verify Group Who Owns /etc/ipsec.secrets File'
+    file:
+      path: /etc/etc/ipsec/secrets
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86396_9
+    register: file_ownership_etc_etc_ipsec_secrets_result
+  - name: 'CCE-86388-6: Verify User Who Owns /etc/ipsec.conf File'
+    file:
+      path: /etc/etc/ipsec/conf
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86388_6
+    register: file_ownership_etc_etc_ipsec_conf_result
+  - name: 'CCE-86399-3: Verify User Who Owns /etc/ipsec.secrets File'
+    file:
+      path: /etc/etc/ipsec/secrets
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86399_3
+    register: file_ownership_etc_etc_ipsec_secrets_result
+  - name: 'CCE-86361-3: Verify Group Who Owns /etc/crypttab File'
+    file:
+      path: /etc/etc/crypttab
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86361_3
+    register: file_ownership_etc_etc_crypttab_result
+  - name: 'CCE-86582-4: Verify Group Who Owns System.map Files'
+    file:
+      path: /etc/systemmap
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_low
+    - file_security
+    - cce_86582_4
+    register: file_ownership_etc_systemmap_result
+  - name: 'CCE-86364-7: Verify User Who Owns /etc/crypttab File'
+    file:
+      path: /etc/etc/crypttab
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86364_7
+    register: file_ownership_etc_etc_crypttab_result
+  - name: 'CCE-86585-7: Verify User Who Owns System.map Files'
+    file:
+      path: /etc/systemmap
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_low
+    - file_security
+    - cce_86585_7
+    register: file_ownership_etc_systemmap_result
+  - name: 'CCE-83474-7: Verify Group Who Owns Backup group File'
+    file:
+      path: /etc/backup/etc/group
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_83474_7
+    register: file_ownership_etc_backup_etc_group_result
+  - name: 'CCE-83534-8: Verify Group Who Owns Backup gshadow File'
+    file:
+      path: /etc/backup/etc/gshadow
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_83534_8
+    register: file_ownership_etc_backup_etc_gshadow_result
+  - name: 'CCE-83323-6: Verify Group Who Owns Backup passwd File'
+    file:
+      path: /etc/backup/etc/passwd
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_83323_6
+    register: file_ownership_etc_backup_etc_passwd_result
+  - name: 'CCE-83414-3: Verify User Who Owns Backup shadow File'
+    file:
+      path: /etc/backup/etc/shadow
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_83414_3
+    register: file_ownership_etc_backup_etc_shadow_result
+  - name: 'CCE-82037-3: Verify Group Who Owns group File'
+    file:
+      path: /etc/etc/group
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82037_3
+    register: file_ownership_etc_etc_group_result
+  - name: 'CCE-82025-8: Verify Group Who Owns gshadow File'
+    file:
+      path: /etc/etc/gshadow
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82025_8
+    register: file_ownership_etc_etc_gshadow_result
+  - name: 'CCE-26639-5: Verify Group Who Owns passwd File'
+    file:
+      path: /etc/etc/passwd
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_26639_5
+    register: file_ownership_etc_etc_passwd_result
+  - name: 'CCE-82051-4: Verify Group Who Owns shadow File'
+    file:
+      path: /etc/etc/shadow
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82051_4
+    register: file_ownership_etc_etc_shadow_result
+  - name: 'CCE-86624-4: Verify Group Who Owns /etc/shells File'
+    file:
+      path: /etc/etc/shells
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86624_4
+    register: file_ownership_etc_etc_shells_result
+  - name: 'CCE-83472-1: Verify User Who Owns Backup group File'
+    file:
+      path: /etc/backup/etc/group
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_83472_1
+    register: file_ownership_etc_backup_etc_group_result
+  - name: 'CCE-83532-2: Verify User Who Owns Backup gshadow File'
+    file:
+      path: /etc/backup/etc/gshadow
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_83532_2
+    register: file_ownership_etc_backup_etc_gshadow_result
+  - name: 'CCE-83325-1: Verify User Who Owns Backup passwd File'
+    file:
+      path: /etc/backup/etc/passwd
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_83325_1
+    register: file_ownership_etc_backup_etc_passwd_result
+  - name: 'CCE-83412-7: Verify Group Who Owns Backup shadow File'
+    file:
+      path: /etc/backup/etc/shadow
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_83412_7
+    register: file_ownership_etc_backup_etc_shadow_result
+  - name: 'CCE-82031-6: Verify User Who Owns group File'
+    file:
+      path: /etc/etc/group
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82031_6
+    register: file_ownership_etc_etc_group_result
+  - name: 'CCE-82195-9: Verify User Who Owns gshadow File'
+    file:
+      path: /etc/etc/gshadow
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82195_9
+    register: file_ownership_etc_etc_gshadow_result
+  - name: 'CCE-82052-2: Verify User Who Owns passwd File'
+    file:
+      path: /etc/etc/passwd
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82052_2
+    register: file_ownership_etc_etc_passwd_result
+  - name: 'CCE-82022-5: Verify User Who Owns shadow File'
+    file:
+      path: /etc/etc/shadow
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82022_5
+    register: file_ownership_etc_etc_shadow_result
+  - name: 'CCE-86622-8: Verify Who Owns /etc/shells File'
+    file:
+      path: /etc/etc/shells
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86622_8
+    register: file_ownership_etc_etc_shells_result
+  - name: Verify Group Who Owns /var/log Directory
+    file:
+      path: /etc/var/log
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    register: file_ownership_etc_var_log_result
+  - name: Verify Group Who Owns /var/log/messages File
+    file:
+      path: /etc/var/log/messages
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    register: file_ownership_etc_var_log_messages_result
+  - name: Verify Group Who Owns /var/log/syslog File
+    file:
+      path: /etc/var/log/syslog
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    register: file_ownership_etc_var_log_syslog_result
+  - name: Verify User Who Owns /var/log Directory
+    file:
+      path: /etc/var/log
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    register: file_ownership_etc_var_log_result
+  - name: Verify User Who Owns /var/log/messages File
+    file:
+      path: /etc/var/log/messages
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    register: file_ownership_etc_var_log_messages_result
+  - name: Verify User Who Owns /var/log/syslog File
+    file:
+      path: /etc/var/log/syslog
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    register: file_ownership_etc_var_log_syslog_result
+  - name: 'CCE-86287-0: Verify Group Who Owns /etc/sestatus.conf File'
+    file:
+      path: /etc/etc/sestatus/conf
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86287_0
+    register: file_ownership_etc_etc_sestatus_conf_result
+  - name: 'CCE-86284-7: Verify User Who Owns /etc/sestatus.conf File'
+    file:
+      path: /etc/etc/sestatus/conf
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86284_7
+    register: file_ownership_etc_etc_sestatus_conf_result
+  - name: 'CCE-82265-0: Verify Group Who Owns cron.d'
+    file:
+      path: /etc/cron.d/*
+      group: root
+      recurse: true
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82265_0
+    register: file_ownership_etc_cron_d_*_result
+  - name: 'CCE-82232-0: Verify Group Who Owns cron.daily'
+    file:
+      path: /etc/cron.daily/*
+      group: root
+      recurse: true
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82232_0
+    register: file_ownership_etc_cron_daily_*_result
+  - name: 'CCE-82226-2: Verify Group Who Owns cron.hourly'
+    file:
+      path: /etc/cron.hourly/*
+      group: root
+      recurse: true
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82226_2
+    register: file_ownership_etc_cron_hourly_*_result
+  - name: 'CCE-82255-1: Verify Group Who Owns cron.monthly'
+    file:
+      path: /etc/cron.monthly/*
+      group: root
+      recurse: true
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82255_1
+    register: file_ownership_etc_cron_monthly_*_result
+  - name: 'CCE-82242-9: Verify Group Who Owns cron.weekly'
+    file:
+      path: /etc/cron.weekly/*
+      group: root
+      recurse: true
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82242_9
+    register: file_ownership_etc_cron_weekly_*_result
+  - name: 'CCE-82222-1: Verify Group Who Owns Crontab'
+    file:
+      path: /etc/crontab
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82222_1
+    register: file_ownership_etc_crontab_result
+  - name: 'CCE-82270-0: Verify Owner on cron.d'
+    file:
+      path: /etc/cron.d/*
+      owner: root
+      recurse: true
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82270_0
+    register: file_ownership_etc_cron_d_*_result
+  - name: 'CCE-82236-1: Verify Owner on cron.daily'
+    file:
+      path: /etc/cron.daily/*
+      owner: root
+      recurse: true
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82236_1
+    register: file_ownership_etc_cron_daily_*_result
+  - name: 'CCE-82208-0: Verify Owner on cron.hourly'
+    file:
+      path: /etc/cron.hourly/*
+      owner: root
+      recurse: true
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82208_0
+    register: file_ownership_etc_cron_hourly_*_result
+  - name: 'CCE-82259-3: Verify Owner on cron.monthly'
+    file:
+      path: /etc/cron.monthly/*
+      owner: root
+      recurse: true
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82259_3
+    register: file_ownership_etc_cron_monthly_*_result
+  - name: 'CCE-82246-0: Verify Owner on cron.weekly'
+    file:
+      path: /etc/cron.weekly/*
+      owner: root
+      recurse: true
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82246_0
+    register: file_ownership_etc_cron_weekly_*_result
+  - name: 'CCE-82217-1: Verify Owner on crontab'
+    file:
+      path: /etc/crontab
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82217_1
+    register: file_ownership_etc_crontab_result
+  - name: 'CCE-80379-1: Verify Group Who Owns /etc/cron.allow file'
+    file:
+      path: /etc/cron/allow
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_80379_1
+    register: file_ownership_etc_cron_allow_result
+  - name: 'CCE-80378-3: Verify User Who Owns /etc/cron.allow file'
+    file:
+      path: /etc/cron/allow
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_80378_3
+    register: file_ownership_etc_cron_allow_result
+  - name: 'CCE-86371-2: Verify Group Who Owns /etc/chrony.keys File'
+    file:
+      path: /etc/etc/chrony/keys
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86371_2
+    register: file_ownership_etc_etc_chrony_keys_result
+  - name: 'CCE-86375-3: Verify User Who Owns /etc/chrony.keys File'
+    file:
+      path: /etc/etc/chrony/keys
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_86375_3
+    register: file_ownership_etc_etc_chrony_keys_result
+  - name: 'CCE-83824-3: Verify Group Ownership of /etc/hosts.allow'
+    file:
+      path: /etc/etc/hosts/allow
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_83824_3
+    register: file_ownership_etc_etc_hosts_allow_result
+  - name: 'CCE-84031-4: Verify Group Ownership of /etc/hosts.deny'
+    file:
+      path: /etc/etc/hosts/deny
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_84031_4
+    register: file_ownership_etc_etc_hosts_deny_result
+  - name: 'CCE-83826-8: Verify Ownership of /etc/hosts.allow'
+    file:
+      path: /etc/etc/hosts/allow
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_83826_8
+    register: file_ownership_etc_etc_hosts_allow_result
+  - name: 'CCE-84033-0: Verify Ownership of /etc/hosts.deny'
+    file:
+      path: /etc/etc/hosts/deny
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_84033_0
+    register: file_ownership_etc_etc_hosts_deny_result
+  - name: 'CCE-82902-8: Verify Group Who Owns SSH Server config file'
+    file:
+      path: /etc/ssh/sshd_config
+      group: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82902_8
+    register: file_ownership_etc_ssh_sshd_config_result
+    notify:
+    - restart sshd
+  - name: 'CCE-82899-6: Verify Owner on SSH Server config file'
+    file:
+      path: /etc/ssh/sshd_config
+      owner: root
+      recurse: false
+    tags:
+    - stig
+    - security
+    - file_ownership
+    - severity_medium
+    - file_security
+    - cce_82899_6
+    register: file_ownership_etc_ssh_sshd_config_result
+    notify:
+    - restart sshd
+  - name: === File Permissions ===
+    debug:
+      msg: Starting file permissions remediation
+    tags:
+    - file_permissions
+    - info
+  - name: 'CCE-86418-1: Verify Permissions On /etc/sudoers File'
+    file:
+      path: /etc/etc/sudoers
+      mode: '440'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_86418_1
+    register: file_permission_etc_etc_sudoers_result
+  - name: 'CCE-86949-5: Ensure That the sudo Binary Has the Correct Permissions'
+    file:
+      path: /etc/sudo
+      mode: '4111'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_86949_5
+    register: file_permission_etc_sudo_result
+  - name: 'CCE-80530-9: All Interactive User Home Directories Must Have mode 0750 Or Less Permissive'
+    file:
+      path: /etc/home/directories
+      mode: '750'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_80530_9
+    register: file_permission_etc_home_directories_result
+  - name: 'CCE-80201-7: Ensure that User Home Directories are not Group-Writable or World-Readable'
+    file:
+      path: /etc/home/dirs
+      mode: '1000'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_80201_7
+    register: file_permission_etc_home_dirs_result
+  - name: 'CCE-83347-5: Verify permissions on System Login Banner'
+    file:
+      path: /etc/etc/issue
+      mode: '644'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_83347_5
+    register: file_permission_etc_etc_issue_result
+  - name: 'CCE-86058-5: Verify permissions on System Login Banner for Remote Connections'
+    file:
+      path: /etc/etc/issue/net
+      mode: '644'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_86058_5
+    register: file_permission_etc_etc_issue_net_result
+  - name: 'CCE-83337-6: Verify permissions on Message of the Day Banner'
+    file:
+      path: /etc/etc/motd
+      mode: '644'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_83337_6
+    register: file_permission_etc_etc_motd_result
+  - name: 'CCE-82039-9: Verify /boot/grub2/grub.cfg Permissions'
+    file:
+      path: /etc/grub2/cfg
+      mode: '600'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_82039_9
+    register: file_permission_etc_grub2_cfg_result
+  - name: 'CCE-86023-9: Verify /boot/grub2/user.cfg Permissions'
+    file:
+      path: /etc/user/cfg
+      mode: '600'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_86023_9
+    register: file_permission_etc_user_cfg_result
+  - name: 'CCE-83431-7: Verify the UEFI Boot Loader grub.cfg Permissions'
+    file:
+      path: /etc/efi/grub2/cfg
+      mode: '700'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_83431_7
+    register: file_permission_etc_efi_grub2_cfg_result
+  - name: 'CCE-86026-2: Verify /boot/efi/EFI/redhat/user.cfg Permissions'
+    file:
+      path: /etc/efi/user/cfg
+      mode: '600'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_86026_2
+    register: file_permission_etc_efi_user_cfg_result
+  - name: 'CCE-86392-8: Verify Permissions On /etc/ipsec.conf File'
+    file:
+      path: /etc/etc/ipsec/conf
+      mode: '644'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_86392_8
+    register: file_permission_etc_etc_ipsec_conf_result
+  - name: 'CCE-86403-3: Verify Permissions On /etc/ipsec.secrets File'
+    file:
+      path: /etc/etc/ipsec/secrets
+      mode: '644'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_86403_3
+    register: file_permission_etc_etc_ipsec_secrets_result
+  - name: 'CCE-86367-0: Verify Permissions On /etc/crypttab File'
+    file:
+      path: /etc/etc/crypttab
+      mode: '600'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_86367_0
+    register: file_permission_etc_etc_crypttab_result
+  - name: 'CCE-82350-0: Verify Permissions on System.map Files'
+    file:
+      path: /etc/systemmap
+      mode: '600'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_low
+    - file_security
+    - cce_82350_0
+    register: file_permission_etc_systemmap_result
+  - name: 'CCE-80132-4: Ensure All SGID Executables Are Authorized'
+    file:
+      path: /etc/unauthorized/sgid
+      mode: '0644'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_80132_4
+    register: file_permission_etc_unauthorized_sgid_result
+  - name: 'CCE-80133-2: Ensure All SUID Executables Are Authorized'
+    file:
+      path: /etc/unauthorized/suid
+      mode: '0644'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_80133_2
+    register: file_permission_etc_unauthorized_suid_result
+  - name: 'CCE-80131-6: Ensure No World-Writable Files Exist'
+    file:
+      path: /etc/unauthorized/world/writable
+      mode: '002'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_80131_6
+    register: file_permission_etc_unauthorized_world_writable_result
+  - name: 'CCE-80135-7: Ensure All Files Are Owned by a Group'
+    file:
+      path: /etc/ungroupowned
+      mode: '0644'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_80135_7
+    register: file_permission_etc_ungroupowned_result
+  - name: 'CCE-83482-0: Verify Permissions on Backup group File'
+    file:
+      path: /etc/backup/etc/group
+      mode: '644'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_83482_0
+    register: file_permission_etc_backup_etc_group_result
+  - name: 'CCE-83572-8: Verify Permissions on Backup gshadow File'
+    file:
+      path: /etc/backup/etc/gshadow
+      mode: '000'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_83572_8
+    register: file_permission_etc_backup_etc_gshadow_result
+  - name: 'CCE-83331-9: Verify Permissions on Backup passwd File'
+    file:
+      path: /etc/backup/etc/passwd
+      mode: '644'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_83331_9
+    register: file_permission_etc_backup_etc_passwd_result
+  - name: 'CCE-83416-8: Verify Permissions on Backup shadow File'
+    file:
+      path: /etc/backup/etc/shadow
+      mode: '000'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_83416_8
+    register: file_permission_etc_backup_etc_shadow_result
+  - name: 'CCE-82032-4: Verify Permissions on group File'
+    file:
+      path: /etc/etc/group
+      mode: '644'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_82032_4
+    register: file_permission_etc_etc_group_result
+  - name: 'CCE-82192-6: Verify Permissions on gshadow File'
+    file:
+      path: /etc/etc/gshadow
+      mode: '000'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_82192_6
+    register: file_permission_etc_etc_gshadow_result
+  - name: 'CCE-82029-0: Verify Permissions on passwd File'
+    file:
+      path: /etc/etc/passwd
+      mode: '644'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_82029_0
+    register: file_permission_etc_etc_passwd_result
+  - name: 'CCE-82042-3: Verify Permissions on shadow File'
+    file:
+      path: /etc/etc/shadow
+      mode: '000'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_82042_3
+    register: file_permission_etc_etc_shadow_result
+  - name: 'CCE-86626-9: Verify Permissions on /etc/shells File'
+    file:
+      path: /etc/etc/shells
+      mode: '644'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_86626_9
+    register: file_permission_etc_etc_shells_result
+  - name: Verify Permissions on /var/log Directory
+    file:
+      path: /etc/var/log
+      mode: '755'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    register: file_permission_etc_var_log_result
+  - name: Verify Permissions on /var/log/messages File
+    file:
+      path: /etc/var/log/messages
+      mode: '640'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    register: file_permission_etc_var_log_messages_result
+  - name: Verify Permissions on /var/log/syslog File
+    file:
+      path: /etc/var/log/syslog
+      mode: '640'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    register: file_permission_etc_var_log_syslog_result
+  - name: 'CCE-88909-7: Verify that audit tools Have Mode 0755 or less'
+    file:
+      path: /etc/audit/binaries
+      mode: '755'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_88909_7
+    register: file_permission_etc_audit_binaries_result
+  - name: 'CCE-82040-7: Verify that System Executables Have Restrictive Permissions'
+    file:
+      path: /etc/binary/dirs
+      mode: '022'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_82040_7
+    register: file_permission_etc_binary_dirs_result
+  - name: 'CCE-82033-2: Verify that Shared Library Files Have Restrictive Permissions'
+    file:
+      path: /etc/library/dirs
+      mode: '0755'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_82033_2
+    register: file_permission_etc_library_dirs_result
+  - name: 'CCE-86290-4: Verify Permissions On /etc/sestatus.conf File'
+    file:
+      path: /etc/etc/sestatus/conf
+      mode: '644'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_86290_4
+    register: file_permission_etc_etc_sestatus_conf_result
+  - name: 'CCE-82276-7: Verify Permissions on cron.d'
+    file:
+      path: /etc/cron.d/*
+      mode: '700'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_82276_7
+    register: file_permission_etc_cron_d_*_result
+  - name: 'CCE-82239-5: Verify Permissions on cron.daily'
+    file:
+      path: /etc/cron.daily/*
+      mode: '700'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_82239_5
+    register: file_permission_etc_cron_daily_*_result
+  - name: 'CCE-82229-6: Verify Permissions on cron.hourly'
+    file:
+      path: /etc/cron.hourly/*
+      mode: '700'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_82229_6
+    register: file_permission_etc_cron_hourly_*_result
+  - name: 'CCE-82262-7: Verify Permissions on cron.monthly'
+    file:
+      path: /etc/cron.monthly/*
+      mode: '700'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_82262_7
+    register: file_permission_etc_cron_monthly_*_result
+  - name: 'CCE-82250-2: Verify Permissions on cron.weekly'
+    file:
+      path: /etc/cron.weekly/*
+      mode: '700'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_82250_2
+    register: file_permission_etc_cron_weekly_*_result
+  - name: 'CCE-82205-6: Verify Permissions on crontab'
+    file:
+      path: /etc/crontab
+      mode: '600'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_82205_6
+    register: file_permission_etc_crontab_result
+  - name: 'CCE-86875-2: Verify Permissions on /etc/cron.allow file'
+    file:
+      path: /etc/cron/allow
+      mode: '600'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_86875_2
+    register: file_permission_etc_cron_allow_result
+  - name: 'CCE-80381-7: Set Permissions on All Configuration Files Inside /etc/httpd/conf.d/'
+    file:
+      path: /etc/httpd/server/conf/d/files
+      mode: '640'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_unknown
+    - file_security
+    - cce_80381_7
+    register: file_permission_etc_httpd_server_conf_d_files_result
+  - name: 'CCE-80324-7: Set Permissions on All Configuration Files Inside /etc/httpd/conf/'
+    file:
+      path: /etc/httpd/server/conf/files
+      mode: '640'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_unknown
+    - file_security
+    - cce_80324_7
+    register: file_permission_etc_httpd_server_conf_files_result
+  - name: 'CCE-80382-5: Set Permissions on All Configuration Files Inside /etc/httpd/conf.modules.d/'
+    file:
+      path: /etc/httpd/server/modules/files
+      mode: '640'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_unknown
+    - file_security
+    - cce_80382_5
+    register: file_permission_etc_httpd_server_modules_files_result
+  - name: 'CCE-86381-1: Verify Permissions On /etc/chrony.keys File'
+    file:
+      path: /etc/etc/chrony/keys
+      mode: '600'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_86381_1
+    register: file_permission_etc_etc_chrony_keys_result
+  - name: 'CCE-83828-4: Verify Permissions on /etc/hosts.allow'
+    file:
+      path: /etc/etc/hosts/allow
+      mode: '644'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_83828_4
+    register: file_permission_etc_etc_hosts_allow_result
+  - name: 'CCE-84035-5: Verify Permissions on /etc/hosts.deny'
+    file:
+      path: /etc/etc/hosts/deny
+      mode: '644'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_84035_5
+    register: file_permission_etc_etc_hosts_deny_result
+  - name: 'CCE-82895-4: Verify Permissions on SSH Server config file'
+    file:
+      path: /etc/ssh/sshd_config
+      mode: '600'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_82895_4
+    register: file_permission_etc_ssh_sshd_config_result
+    notify:
+    - restart sshd
+  - name: 'CCE-27485-2: Verify Permissions on SSH Server Private *_key Key Files'
+    file:
+      path: /etc/sshd/private/key
+      mode: '600'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_27485_2
+    register: file_permission_etc_sshd_private_key_result
+  - name: 'CCE-27311-0: Verify Permissions on SSH Server Public *.pub Key Files'
+    file:
+      path: /etc/sshd/pub/key
+      mode: '644'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_27311_0
+    register: file_permission_etc_sshd_pub_key_result
+  - name: 'CCE-88763-8: Audit Configuration Files Permissions are 640 or More Restrictive'
+    file:
+      path: /etc/audit/configuration
+      mode: '640'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_88763_8
+    register: file_permission_etc_audit_configuration_result
+  - name: 'CCE-27205-4: System Audit Logs Must Have Mode 0640 or Less Permissive'
+    file:
+      path: /etc/var/log/audit
+      mode: '600'
+    tags:
+    - stig
+    - security
+    - file_permissions
+    - severity_medium
+    - file_security
+    - cce_27205_4
+    register: file_permission_etc_var_log_audit_result
+  - name: === Sysctl ===
+    debug:
+      msg: Starting sysctl remediation
+    tags:
+    - sysctl
+    - info
+  - name: 'CCE-80175-3: Disable IPv6 Addressing on All IPv6 Interfaces'
+    sysctl:
+      name: net.ipv6.conf.all.disable.ipv6
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80175_3
+  - name: 'CCE-85975-1: Disable IPv6 Addressing on IPv6 Interfaces by Default'
+    sysctl:
+      name: net.ipv6.conf.default.disable.ipv6
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_85975_1
+  - name: 'CCE-80180-3: Configure Accepting Router Advertisements on All IPv6 Interfaces'
+    sysctl:
+      name: net.ipv6.conf.all.accept.ra
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80180_3
+  - name: 'CCE-84271-6: Configure Accepting Default Router in Router Advertisements on All IPv6 Interfaces'
+    sysctl:
+      name: net.ipv6.conf.all.accept.ra.defrtr
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_unknown
+    - kernel_parameters
+    - cce_84271_6
+  - name: 'CCE-84279-9: Configure Accepting Prefix Information in Router Advertisements on All IPv6 Interfaces'
+    sysctl:
+      name: net.ipv6.conf.all.accept.ra.pinfo
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_unknown
+    - kernel_parameters
+    - cce_84279_9
+  - name: 'CCE-84287-2: Configure Accepting Router Preference in Router Advertisements on All IPv6 Interfaces'
+    sysctl:
+      name: net.ipv6.conf.all.accept.ra.rtr.pref
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_unknown
+    - kernel_parameters
+    - cce_84287_2
+  - name: 'CCE-80182-9: Disable Accepting ICMP Redirects for All IPv6 Interfaces'
+    sysctl:
+      name: net.ipv6.conf.all.accept.redirects
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80182_9
+  - name: 'CCE-80179-5: Disable Kernel Parameter for Accepting Source-Routed Packets on all IPv6 Interfaces'
+    sysctl:
+      name: net.ipv6.conf.all.accept.source.route
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80179_5
+  - name: 'CCE-84265-8: Configure Auto Configuration on All IPv6 Interfaces'
+    sysctl:
+      name: net.ipv6.conf.all.autoconf
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_unknown
+    - kernel_parameters
+    - cce_84265_8
+  - name: 'CCE-80356-9: Disable Kernel Parameter for IPv6 Forwarding'
+    sysctl:
+      name: net.ipv6.conf.all.forwarding
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80356_9
+  - name: 'CCE-84258-3: Configure Maximum Number of Autoconfigured Addresses on All IPv6 Interfaces'
+    sysctl:
+      name: net.ipv6.conf.all.max.addresses
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_unknown
+    - kernel_parameters
+    - cce_84258_3
+  - name: 'CCE-84281-5: Configure Denying Router Solicitations on All IPv6 Interfaces'
+    sysctl:
+      name: net.ipv6.conf.all.router.solicitations
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_unknown
+    - kernel_parameters
+    - cce_84281_5
+  - name: 'CCE-80181-1: Disable Accepting Router Advertisements on all IPv6 Interfaces by Default'
+    sysctl:
+      name: net.ipv6.conf.default.accept.ra
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80181_1
+  - name: 'CCE-84267-4: Configure Accepting Default Router in Router Advertisements on All IPv6 Interfaces By Default'
+    sysctl:
+      name: net.ipv6.conf.default.accept.ra.defrtr
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_unknown
+    - kernel_parameters
+    - cce_84267_4
+  - name: 'CCE-84273-2: Configure Accepting Prefix Information in Router Advertisements on All IPv6 Interfaces By Default'
+    sysctl:
+      name: net.ipv6.conf.default.accept.ra.pinfo
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_unknown
+    - kernel_parameters
+    - cce_84273_2
+  - name: 'CCE-84289-8: Configure Accepting Router Preference in Router Advertisements on All IPv6 Interfaces By Default'
+    sysctl:
+      name: net.ipv6.conf.default.accept.ra.rtr.pref
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_unknown
+    - kernel_parameters
+    - cce_84289_8
+  - name: 'CCE-80183-7: Disable Kernel Parameter for Accepting ICMP Redirects by Default on IPv6 Interfaces'
+    sysctl:
+      name: net.ipv6.conf.default.accept.redirects
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80183_7
+  - name: 'CCE-80355-1: Disable Kernel Parameter for Accepting Source-Routed Packets on IPv6 Interfaces by Default'
+    sysctl:
+      name: net.ipv6.conf.default.accept.source.route
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80355_1
+  - name: 'CCE-84263-3: Configure Auto Configuration on All IPv6 Interfaces By Default'
+    sysctl:
+      name: net.ipv6.conf.default.autoconf
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_unknown
+    - kernel_parameters
+    - cce_84263_3
+  - name: 'CCE-84256-7: Configure Maximum Number of Autoconfigured Addresses on All IPv6 Interfaces By Default'
+    sysctl:
+      name: net.ipv6.conf.default.max.addresses
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_unknown
+    - kernel_parameters
+    - cce_84256_7
+  - name: 'CCE-84283-1: Configure Denying Router Solicitations on All IPv6 Interfaces By Default'
+    sysctl:
+      name: net.ipv6.conf.default.router.solicitations
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_unknown
+    - kernel_parameters
+    - cce_84283_1
+  - name: 'CCE-87789-4: Disable Accepting Packets Routed Between Local Interfaces'
+    sysctl:
+      name: net.ipv4.conf.all.accept.local
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_87789_4
+  - name: 'CCE-80158-9: Disable Accepting ICMP Redirects for All IPv4 Interfaces'
+    sysctl:
+      name: net.ipv4.conf.all.accept.redirects
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80158_9
+  - name: 'CCE-27434-0: Disable Kernel Parameter for Accepting Source-Routed Packets on all IPv4 Interfaces'
+    sysctl:
+      name: net.ipv4.conf.all.accept.source.route
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_27434_0
+  - name: 'CCE-87555-9: Configure ARP filtering for All IPv4 Interfaces'
+    sysctl:
+      name: net.ipv4.conf.all.arp.filter
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_87555_9
+  - name: 'CCE-87889-2: Configure Response Mode of ARP Requests for All IPv4 Interfaces'
+    sysctl:
+      name: net.ipv4.conf.all.arp.ignore
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_87889_2
+  - name: 'CCE-87180-6: Disable Kernel Parameter for IPv4 Forwarding on all IPv4 Interfaces'
+    sysctl:
+      name: net.ipv4.conf.all.forwarding
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_87180_6
+  - name: 'CCE-80160-5: Enable Kernel Parameter to Log Martian Packets on all IPv4 Interfaces'
+    sysctl:
+      name: net.ipv4.conf.all.log.martians
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_unknown
+    - kernel_parameters
+    - cce_80160_5
+  - name: 'CCE-87023-8: Prevent Routing External Traffic to Local Loopback on All IPv4 Interfaces'
+    sysctl:
+      name: net.ipv4.conf.all.route.localnet
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_87023_8
+  - name: 'CCE-80167-0: Enable Kernel Parameter to Use Reverse Path Filtering on all IPv4 Interfaces'
+    sysctl:
+      name: net.ipv4.conf.all.rp.filter
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80167_0
+  - name: 'CCE-80159-7: Disable Kernel Parameter for Accepting Secure ICMP Redirects on all IPv4 Interfaces'
+    sysctl:
+      name: net.ipv4.conf.all.secure.redirects
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80159_7
+  - name: 'CCE-87333-1: Configure Sending and Accepting Shared Media Redirects for All IPv4 Interfaces'
+    sysctl:
+      name: net.ipv4.conf.all.shared.media
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_87333_1
+  - name: 'CCE-80163-9: Disable Kernel Parameter for Accepting ICMP Redirects by Default on IPv4 Interfaces'
+    sysctl:
+      name: net.ipv4.conf.default.accept.redirects
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80163_9
+  - name: 'CCE-80162-1: Disable Kernel Parameter for Accepting Source-Routed Packets on IPv4 Interfaces by Default'
+    sysctl:
+      name: net.ipv4.conf.default.accept.source.route
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80162_1
+  - name: 'CCE-80161-3: Enable Kernel Paremeter to Log Martian Packets on all IPv4 Interfaces by Default'
+    sysctl:
+      name: net.ipv4.conf.default.log.martians
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_unknown
+    - kernel_parameters
+    - cce_80161_3
+  - name: 'CCE-80168-8: Enable Kernel Parameter to Use Reverse Path Filtering on all IPv4 Interfaces by Default'
+    sysctl:
+      name: net.ipv4.conf.default.rp.filter
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80168_8
+  - name: 'CCE-80164-7: Configure Kernel Parameter for Accepting Secure Redirects By Default'
+    sysctl:
+      name: net.ipv4.conf.default.secure.redirects
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80164_7
+  - name: 'CCE-87444-6: Configure Sending and Accepting Shared Media Redirects by Default'
+    sysctl:
+      name: net.ipv4.conf.default.shared.media
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_87444_6
+  - name: 'CCE-80165-4: Enable Kernel Parameter to Ignore ICMP Broadcast Echo Requests on IPv4 Interfaces'
+    sysctl:
+      name: net.ipv4.icmp.echo.ignore.broadcasts
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80165_4
+  - name: 'CCE-80166-2: Enable Kernel Parameter to Ignore Bogus ICMP Error Responses on IPv4 Interfaces'
+    sysctl:
+      name: net.ipv4.icmp.ignore.bogus.error.responses
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_unknown
+    - kernel_parameters
+    - cce_80166_2
+  - name: 'CCE-84276-5: Set Kernel Parameter to Increase Local Port Range'
+    sysctl:
+      name: net.ipv4.ip.local.port.range
+      value: '32768'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_84276_5
+  - name: 'CCE-82893-9: Configure Kernel to Rate Limit Sending of Duplicate TCP Acknowledgments'
+    sysctl:
+      name: net.ipv4.tcp.invalid.ratelimit
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_82893_9
+  - name: 'CCE-84269-0: Enable Kernel Parameter to Use TCP RFC 1337 on IPv4 Interfaces'
+    sysctl:
+      name: net.ipv4.tcp.rfc1337
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_84269_0
+  - name: 'CCE-27495-1: Enable Kernel Parameter to Use TCP Syncookies on Network Interfaces'
+    sysctl:
+      name: net.ipv4.tcp.syncookies
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_27495_1
+  - name: 'CCE-80156-3: Disable Kernel Parameter for Sending ICMP Redirects on all IPv4 Interfaces'
+    sysctl:
+      name: net.ipv4.conf.all.send.redirects
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80156_3
+  - name: 'CCE-80999-6: Disable Kernel Parameter for Sending ICMP Redirects on all IPv4 Interfaces by Default'
+    sysctl:
+      name: net.ipv4.conf.default.send.redirects
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80999_6
+  - name: 'CCE-80157-1: Disable Kernel Parameter for IP Forwarding on IPv4 Interfaces'
+    sysctl:
+      name: net.ipv4.ip.forward
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80157_1
+  - name: 'CCE-81026-7: Enable Kernel Parameter to Enforce DAC on Hardlinks'
+    sysctl:
+      name: fs.protected.hardlinks
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_81026_7
+  - name: 'CCE-81029-1: Enable Kernel Parameter to Enforce DAC on Symlinks'
+    sysctl:
+      name: fs.protected.symlinks
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_81029_1
+  - name: 'CCE-27050-4: Restrict Access to Kernel Message Buffer'
+    sysctl:
+      name: kernel.dmesg.restrict
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_low
+    - kernel_parameters
+    - cce_27050_4
+  - name: 'CCE-81056-4: Disable Kernel Image Loading'
+    sysctl:
+      name: kernel.kexec.load.disabled
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_81056_4
+  - name: 'CCE-83392-1: Disable loading and unloading of kernel modules'
+    sysctl:
+      name: kernel.modules.disabled
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_83392_1
+  - name: 'CCE-90766-7: Kernel panic on oops'
+    sysctl:
+      name: kernel.panic.on.oops
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_90766_7
+  - name: 'CCE-83369-9: Limit CPU consumption of the Perf system'
+    sysctl:
+      name: kernel.perf.cpu.time.max.percent
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_83369_9
+  - name: 'CCE-83367-3: Limit sampling frequency of the Perf system'
+    sysctl:
+      name: kernel.perf.event.max.sample.rate
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_83367_3
+  - name: 'CCE-81053-1: Disallow kernel profiling by unprivileged users'
+    sysctl:
+      name: kernel.perf.event.paranoid
+      value: '2'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_low
+    - kernel_parameters
+    - cce_81053_1
+  - name: 'CCE-83365-7: Configure maximum number of process identifiers'
+    sysctl:
+      name: kernel.pid.max
+      value: '65536'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_83365_7
+  - name: 'CCE-83353-3: Disallow magic SysRq key'
+    sysctl:
+      name: kernel.sysrq
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_83353_3
+  - name: 'CCE-81058-0: Restrict usage of ptrace to descendant processes'
+    sysctl:
+      name: kernel.yama.ptrace.scope
+      value: '1'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_81058_0
+  - name: 'CCE-83358-2: Prevent applications from mapping low portion of virtual memory'
+    sysctl:
+      name: vm.mmap.min.addr
+      value: '65536'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_83358_2
+  - name: 'CCE-26900-1: Disable Core Dumps for SUID programs'
+    sysctl:
+      name: fs.suid.dumpable
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_26900_1
+  - name: 'CCE-27211-2: Enable ExecShield via sysctl'
+    sysctl:
+      name: kernel.exec.shield
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_27211_2
+  - name: 'CCE-80659-6: Restrict Exposed Kernel Pointer Addresses Access'
+    sysctl:
+      name: kernel.kptr.restrict
+      value: '0'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_80659_6
+  - name: 'CCE-27127-0: Enable Randomized Layout of Virtual Address Space'
+    sysctl:
+      name: kernel.randomize.va.space
+      value: '2'
+      state: present
+      reload: true
+    tags:
+    - stig
+    - security
+    - sysctl
+    - severity_medium
+    - kernel_parameters
+    - cce_27127_0
+  - name: === Mounts ===
+    debug:
+      msg: Starting mounts remediation
+    tags:
+    - mounts
+    - info
+  - name: 'CCE-86889-3: Ensure tmp.mount Unit Us Enabled'
+    mount:
+      path: /tmp
+      opts: defaults
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_low
+    - cce_86889_3
+  - name: 'CCE-80122-5: Disable GNOME3 Automounting'
+    mount:
+      path: /tmp
+      opts: defaults
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_80122_5
+  - name: 'CCE-83692-4: Disable GNOME3 Automount Opening'
+    mount:
+      path: /tmp
+      opts: defaults
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_83692_4
+  - name: 'CCE-83344-2: Add noauto Option to /boot'
+    mount:
+      path: /tmp
+      opts: defaults
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_83344_2
+  - name: 'CCE-82135-5: Add nodev Option to /boot'
+    mount:
+      path: /tmp
+      opts: nodev
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_82135_5
+  - name: 'CCE-83315-2: Add noexec Option to /boot'
+    mount:
+      path: /tmp
+      opts: noexec
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_83315_2
+  - name: 'CCE-82138-9: Add nosuid Option to /boot'
+    mount:
+      path: /tmp
+      opts: nosuid
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_82138_9
+  - name: 'CCE-80152-2: Add nodev Option to /dev/shm'
+    mount:
+      path: /tmp
+      opts: nodev
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_80152_2
+  - name: 'CCE-80153-0: Add noexec Option to /dev/shm'
+    mount:
+      path: /tmp
+      opts: noexec
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_80153_0
+  - name: 'CCE-80154-8: Add nosuid Option to /dev/shm'
+    mount:
+      path: /tmp
+      opts: nosuid
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_80154_8
+  - name: 'CCE-86037-9: Add grpquota Option to /home'
+    mount:
+      path: /home
+      opts: defaults
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_86037_9
+  - name: 'CCE-81047-3: Add nodev Option to /home'
+    mount:
+      path: /home
+      opts: nodev
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_unknown
+    - cce_81047_3
+  - name: 'CCE-83327-7: Add noexec Option to /home'
+    mount:
+      path: /home
+      opts: noexec
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_83327_7
+  - name: 'CCE-81153-9: Add nosuid Option to /home'
+    mount:
+      path: /home
+      opts: nosuid
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_81153_9
+  - name: 'CCE-86034-6: Add usrquota Option to /home'
+    mount:
+      path: /home
+      opts: defaults
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_86034_6
+  - name: 'CCE-80145-6: Add nodev Option to Non-Root Local Partitions'
+    mount:
+      path: /tmp
+      opts: nodev
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_80145_6
+  - name: 'CCE-80146-4: Add nodev Option to Removable Media Partitions'
+    mount:
+      path: /tmp
+      opts: nodev
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_80146_4
+  - name: 'CCE-80147-2: Add noexec Option to Removable Media Partitions'
+    mount:
+      path: /tmp
+      opts: noexec
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_80147_2
+  - name: 'CCE-80148-0: Add nosuid Option to Removable Media Partitions'
+    mount:
+      path: /tmp
+      opts: nosuid
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_80148_0
+  - name: 'CCE-83317-8: Add nosuid Option to /opt'
+    mount:
+      path: /tmp
+      opts: nosuid
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_83317_8
+  - name: 'CCE-85881-1: Add hidepid Option to /proc'
+    mount:
+      path: /tmp
+      opts: defaults
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_low
+    - cce_85881_1
+  - name: 'CCE-83320-2: Add nosuid Option to /srv'
+    mount:
+      path: /tmp
+      opts: nosuid
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_83320_2
+  - name: 'CCE-80149-8: Add nodev Option to /tmp'
+    mount:
+      path: /tmp
+      opts: nodev
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_80149_8
+  - name: 'CCE-80150-6: Add noexec Option to /tmp'
+    mount:
+      path: /tmp
+      opts: noexec
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_80150_6
+  - name: 'CCE-80151-4: Add nosuid Option to /tmp'
+    mount:
+      path: /tmp
+      opts: nosuid
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_80151_4
+  - name: 'CCE-82079-5: Add nodev Option to /var/log/audit'
+    mount:
+      path: /var
+      opts: nodev
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_82079_5
+  - name: 'CCE-82146-2: Add noexec Option to /var/log/audit'
+    mount:
+      path: /var
+      opts: noexec
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_82146_2
+  - name: 'CCE-82148-8: Add nosuid Option to /var/log/audit'
+    mount:
+      path: /var
+      opts: nosuid
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_82148_8
+  - name: 'CCE-82076-1: Add nodev Option to /var/log'
+    mount:
+      path: /var
+      opts: nodev
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_82076_1
+  - name: 'CCE-82142-1: Add noexec Option to /var/log'
+    mount:
+      path: /var
+      opts: noexec
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_82142_1
+  - name: 'CCE-82144-7: Add nosuid Option to /var/log'
+    mount:
+      path: /var
+      opts: nosuid
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_82144_7
+  - name: 'CCE-82064-7: Add nodev Option to /var'
+    mount:
+      path: /var
+      opts: nodev
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_82064_7
+  - name: 'CCE-83329-3: Add noexec Option to /var'
+    mount:
+      path: /var
+      opts: noexec
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_83329_3
+  - name: 'CCE-83378-0: Add nosuid Option to /var'
+    mount:
+      path: /var
+      opts: nosuid
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_83378_0
+  - name: 'CCE-80155-5: Bind Mount /var/tmp To /tmp'
+    mount:
+      path: /tmp
+      opts: noexec,nosuid,nodev
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_unknown
+    - cce_80155_5
+  - name: 'CCE-81052-3: Add nodev Option to /var/tmp'
+    mount:
+      path: /tmp
+      opts: nodev
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_81052_3
+  - name: 'CCE-82150-4: Add noexec Option to /var/tmp'
+    mount:
+      path: /tmp
+      opts: noexec
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_82150_4
+  - name: 'CCE-82153-8: Add nosuid Option to /var/tmp'
+    mount:
+      path: /tmp
+      opts: nosuid
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_82153_8
+  - name: 'CCE-82304-7: Enable the mount_anyfile SELinux Boolean'
+    mount:
+      path: /tmp
+      opts: defaults
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_82304_7
+  - name: 'CCE-82339-3: Disable the xguest_mount_media SELinux Boolean'
+    mount:
+      path: /tmp
+      opts: defaults
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_82339_3
+  - name: 'CCE-80235-5: Configure mountd to use static port'
+    mount:
+      path: /tmp
+      opts: defaults
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_unknown
+    - cce_80235_5
+  - name: 'CCE-27458-9: Mount Remote Filesystems with Kerberos Security'
+    mount:
+      path: /tmp
+      opts: defaults
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_27458_9
+  - name: 'CCE-80239-7: Mount Remote Filesystems with nodev'
+    mount:
+      path: /tmp
+      opts: nodev
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_80239_7
+  - name: 'CCE-80436-9: Mount Remote Filesystems with noexec'
+    mount:
+      path: /tmp
+      opts: noexec
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_80436_9
+  - name: 'CCE-80240-5: Mount Remote Filesystems with nosuid'
+    mount:
+      path: /tmp
+      opts: nosuid
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_80240_5
+  - name: 'CCE-80281-9: Require Client SMB Packet Signing, if using mount.cifs'
+    mount:
+      path: /tmp
+      opts: defaults
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_unknown
+    - cce_80281_9
+  - name: Record Events that Modify the System's Discretionary Access Controls - umount
+    mount:
+      path: /tmp
+      opts: defaults
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+  - name: 'CCE-90777-4: Record Events that Modify the System''s Discretionary Access Controls - umount2'
+    mount:
+      path: /tmp
+      opts: defaults
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_90777_4
+  - name: 'CCE-81064-8: Ensure auditd Collects Information on the Use of Privileged Commands - mount'
+    mount:
+      path: /tmp
+      opts: defaults
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_81064_8
+  - name: 'CCE-80405-4: Ensure auditd Collects Information on the Use of Privileged Commands - umount'
+    mount:
+      path: /tmp
+      opts: defaults
+      state: mounted
+    tags:
+    - stig
+    - security
+    - mounts
+    - severity_medium
+    - cce_80405_4
+  handlers:
+  - name: restart sshd
+    systemd:
+      name: sshd
+      state: restarted
+    listen: restart sshd

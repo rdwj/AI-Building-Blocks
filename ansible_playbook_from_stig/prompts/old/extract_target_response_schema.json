@@ -1,0 +1,25 @@
+{
+    "type": "object",
+    "properties": {
+      "target_type": {
+        "type": "string",
+        "enum": [
+          "package", "service", "file", "sysctl", "user", "group", 
+          "directory", "mount", "selinux", "audit_rule", "firewall_rule",
+          "kernel_module", "cron_job", "environment_var", "repository",
+          "certificate", "pam_module", "network_interface", "log_config",
+          "file_permission", "file_ownership"
+        ],
+        "description": "The type of target being acted upon"
+      },
+      "target_name": {
+        "type": "string",
+        "description": "The specific name, path, or identifier of the target"
+      },
+      "action_context": {
+        "type": "string",
+        "description": "Additional context like permissions (0644), ownership (root:root), or configuration values"
+      }
+    },
+    "required": ["target_type", "target_name"]
+  }

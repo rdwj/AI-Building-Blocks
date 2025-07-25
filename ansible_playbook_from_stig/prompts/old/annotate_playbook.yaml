@@ -1,0 +1,39 @@
+name: "Annotate Final Playbook"
+description: "Add comprehensive documentation to the validated playbook"
+template: |
+  Add basic documentation comments to this Ansible playbook for STIG compliance.
+  
+  PLAYBOOK TO ANNOTATE:
+  $playbook_content
+  
+  STIG RULE: $rule_id ($severity)
+  PURPOSE: $title
+  
+  JSON Schema for response:
+  {
+    "type": "object",
+    "properties": {
+      "annotated_playbook": {
+        "type": "string",
+        "description": "The playbook with basic documentation comments added"
+      }
+    },
+    "required": ["annotated_playbook"]
+  }
+  
+  Add these comments to the playbook:
+  - Header comment with STIG rule ID and severity
+  - Brief task comments explaining what each task does
+  - Keep comments short and focused
+  
+  Return ONLY valid JSON with the annotated playbook string.
+
+variables:
+  - playbook_content
+  - rule_id
+  - title
+  - severity
+  - description
+  - check_text
+  - fix_text
+  - references

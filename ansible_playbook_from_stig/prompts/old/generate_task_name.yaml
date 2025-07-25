@@ -1,0 +1,30 @@
+name: "Generate Task Name"
+description: "Generate a descriptive name for the Ansible task"
+template: |
+  You are creating a descriptive name for an Ansible task.
+  
+  STIG Rule: $rule_id
+  Action: $action_type
+  Target: $target
+  Severity: $severity
+  
+  Create a clear, descriptive task name that explains what this task does for STIG compliance.
+  
+  Examples:
+  - "STIG HIGH: Remove telnet package for secure communications"
+  - "STIG MEDIUM: Disable prelink service for system integrity"
+  - "STIG LOW: Set SSH configuration for secure remote access"
+  
+  Your output should be formatted as JSON:
+  {"task_name": "<task_name>"}
+  
+  **Crucial Instructions:**
+  * ONLY respond in JSON format
+  * DO NOT include explanations, reasoning, or additional text
+  * Provide the exact task name as a string
+
+variables:
+  - rule_id
+  - action_type
+  - target
+  - severity

@@ -1,0 +1,35 @@
+# Verified Essential Document Types
+# Format: TYPE|URL|FILENAME
+# ✅ All URLs verified working from GitHub search results
+
+# === PDF DOCUMENTS ===
+# From verified GitHub repositories - all robots.txt compliant
+PDF|https://raw.githubusercontent.com/py-pdf/sample-files/main/024-annotations/annotated_pdf.pdf|py-pdf-annotated.pdf
+PDF|https://raw.githubusercontent.com/pdf-association/pdf20examples/master/pdf20-utf8-test.pdf|pdf20-utf8-test.pdf
+PDF|https://raw.githubusercontent.com/koreader/test-data/master/sample.pdf|koreader-sample.pdf
+PDF|https://raw.githubusercontent.com/ArturT/Test-PDF-Files/master/corrupted.pdf|test-corrupted.pdf
+
+# === OFFICE DOCUMENTS ===
+# From verified GitHub repositories
+DOCX|https://raw.githubusercontent.com/codewithmmak/mocha-chai-typescript/master/test-data/Sample_Test_DOCX.docx|mocha-chai-sample.docx
+DOCX|https://raw.githubusercontent.com/SheetJS/libreoffice_test-files/master/ooxml-strict/Lorem-ipsum.docx|sheetjs-lorem-ipsum.docx
+DOCX|https://raw.githubusercontent.com/workattech/workattech_sample_resume/master/Gaurav_Chandak.docx|workattech-resume.docx
+
+# === PLAIN TEXT ===
+TXT|https://raw.githubusercontent.com/torvalds/linux/master/README|linux-kernel-readme.txt
+TXT|https://raw.githubusercontent.com/git/git/master/README.md|git-readme.txt
+TXT|https://raw.githubusercontent.com/microsoft/vscode/main/README.md|vscode-readme.txt
+
+# === JSON DATA ===
+# From verified package.json files and test data
+JSON|https://raw.githubusercontent.com/evanshortiss/nodejs-testing-examples/master/package.json|nodejs-testing-package.json
+JSON|https://raw.githubusercontent.com/kentcdodds/react-testing-library-examples/main/package.json|react-testing-library-package.json
+JSON|https://raw.githubusercontent.com/json-iterator/test-data/master/large-file.json|json-iterator-large-file.json
+JSON|https://raw.githubusercontent.com/jackfranklin/test-data-bot/master/package.json|test-data-bot-package.json
+
+# === CSV DATA ===
+# From verified GitHub data repositories
+CSV|https://raw.githubusercontent.com/tokern/piicatcher/master/tests/samples/sample-data.csv|piicatcher-sample-data.csv
+CSV|https://raw.githubusercontent.com/matplotlib/sample_data/master/testdata.csv|matplotlib-testdata.csv
+CSV|https://raw.githubusercontent.com/pandas-dev/pandas/main/pandas/tests/io/data/csv/tips.csv|pandas-tips-data.csv
+CSV|https://raw.githubusercontent.com/vega/datalib/master/test/data/stocks.csv|vega-stocks-data.csv

@@ -1,0 +1,38 @@
+{
+  "run_timestamp": "20250714_120000",
+  "processing_date": "2025-07-14T11:12:11.053826",
+  "input_file": "../playbooks/20250714_120000/llm_needed/llm_needed_findings_20250714_120000.json",
+  "processing_limits": {
+    "max_findings_processed": 5,
+    "actual_findings_processed": 5,
+    "total_findings_available": 1094
+  },
+  "phase_1_classification": {
+    "attempted": 3,
+    "successful": 3,
+    "errors": 0,
+    "categories_found": [
+      "unknown"
+    ]
+  },
+  "phase_2_processing": {
+    "attempted": 3,
+    "successful": 3,
+    "partial": 0,
+    "errors": 0
+  },
+  "output_generation": {
+    "playbooks_generated": 0,
+    "human_review_items": 0
+  },
+  "output_files": {
+    "llm_targets": "../playbooks/20250714_120000/llm_processed/llm_generated_targets_20250714_120000.json",
+    "llm_playbook": "../playbooks/20250714_120000/llm_processed/llm_generated_playbook_20250714_120000.yml",
+    "human_review": null
+  },
+  "success_rates": {
+    "classification_rate": 100.0,
+    "processing_rate": 100.0,
+    "overall_success_rate": 60.0
+  }
+}

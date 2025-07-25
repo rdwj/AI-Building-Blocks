@@ -1,0 +1,52 @@
+# Specialized Formats - Archives, Images, E-books, Scientific
+# Format: TYPE|URL|FILENAME
+# ✅ All URLs from public domain sources and open repositories
+
+# === ARCHIVE FORMATS ===
+ZIP|https://github.com/python/cpython/archive/refs/heads/main.zip|cpython-source.zip
+ZIP|https://github.com/microsoft/TypeScript/archive/refs/heads/main.zip|typescript-source.zip
+TAR|https://ftp.gnu.org/gnu/hello/hello-2.12.tar.gz|gnu-hello-source.tar.gz
+
+# === IMAGE FORMATS ===
+# Public domain images
+JPEG|https://picsum.photos/800/600.jpg|picsum-sample-800x600.jpg
+PNG|https://raw.githubusercontent.com/github/github-logos/master/GitHub-Mark.png|github-mark-logo.png
+GIF|https://raw.githubusercontent.com/octocat/Hello-World/master/octocat.gif|github-octocat.gif
+WEBP|https://developers.google.com/speed/webp/gallery/1.webp|webp-sample-image.webp
+
+# === E-BOOK FORMATS ===
+# Project Gutenberg (public domain)
+EPUB|https://www.gutenberg.org/ebooks/74.epub.noimages|gutenberg-tom-sawyer.epub
+EPUB|https://www.gutenberg.org/ebooks/1342.epub.noimages|gutenberg-pride-prejudice.epub
+EPUB|https://www.gutenberg.org/ebooks/11.epub.noimages|gutenberg-alice-wonderland.epub
+
+# Standard Ebooks (public domain)
+EPUB|https://standardebooks.org/ebooks/downloads/jane-austen/pride-and-prejudice.epub|standard-ebooks-pride-prejudice.epub
+
+# === SCIENTIFIC FORMATS ===
+# NASA public data
+FITS|https://lambda.gsfc.nasa.gov/data/foregrounds/wmap_ilc_9yr_v5.fits|nasa-wmap-cosmic-background.fits
+
+# Climate data (public domain)
+NETCDF|https://www.unidata.ucar.edu/software/netcdf/examples/sresa1b_ncar_ccsm3-example.nc|ucar-climate-example.nc
+
+# === CALENDAR & CONTACTS ===
+ICS|https://raw.githubusercontent.com/mozilla-comm/ical.js/main/samples/yearly_recurring.ics|icaljs-yearly-recurring.ics
+VCF|https://raw.githubusercontent.com/nextcloud/contacts/master/tests/data/test.vcf|nextcloud-contact-test.vcf
+
+# === MEDIA METADATA TESTING ===
+# Small sample files for metadata extraction
+MP3|https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3|sample-bell-sound.mp3
+
+# === GEOGRAPHIC DATA ===
+# OpenStreetMap samples (open data)
+GPX|https://raw.githubusercontent.com/makinacorpus/Leaflet.FileLayer/master/examples/data/sample.gpx|leaflet-sample-track.gpx
+KML|https://raw.githubusercontent.com/openlayers/openlayers/main/examples/data/kml/2012-02-10.kml|openlayers-sample.kml
+
+# === FONTS ===
+# Open source fonts
+WOFF2|https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2|google-roboto-font.woff2
+
+# === BINARY FORMATS ===
+# Tiny samples for testing
+TIFF|https://download.osgeo.org/geotiff/samples/spot/chicago/UTM2GTIF.TIF|geotiff-chicago-sample.tiff

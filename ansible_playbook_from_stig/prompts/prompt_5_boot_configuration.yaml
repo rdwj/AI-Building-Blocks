@@ -1,0 +1,48 @@
+name: "Boot Configuration STIG Remediation"
+description: "Converts STIG boot and kernel configuration changes to Ansible tasks with proper sequencing and critical system warnings."
+template: |
+  You are converting STIG boot/kernel configuration to Ansible tasks.
+
+  STIG Finding:
+  <rule_id>{rule_id}</rule_id>
+  <title>{title}</title>
+  <fix_text>{fix_text}</fix_text>
+
+  This involves boot-critical changes. Convert to Ansible with proper sequencing.
+
+  Boot Sequence:
+  1. Install required packages first
+  2. Modify configuration files
+  3. Rebuild initramfs/grub as needed
+  4. Reboot required
+
+  Common Boot Tasks:
+  - GRUB_CMDLINE_LINUX modifications
+  - dracut/initramfs rebuilds  
+  - FIPS mode enablement
+  - Kernel parameter changes
+
+  Always set requires_reboot=true and include critical_warning.
+
+  **Crucial Instructions:**
+  * ONLY respond in JSON format
+  * DO NOT include explanations, reasoning, or additional text
+  * Return only valid JSON matching the schema
+
+parameters:
+  temperature: 0.2
+  max_tokens: 5000
+
+variables:
+  - name: "rule_id"
+    type: "string"
+    description: "The STIG rule identifier"
+    required: true
+  - name: "title"
+    type: "string"
+    description: "The title of the STIG finding"
+    required: true
+  - name: "fix_text"
+    type: "string"
+    description: "The boot configuration remediation instructions"
+    required: true

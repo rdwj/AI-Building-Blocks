@@ -1,0 +1,56 @@
+name: "Shell Script STIG Remediation"
+description: "Converts complex STIG shell script remediations to Ansible tasks with proper task breakdown and conditional logic."
+template: |
+  You are converting a STIG shell script remediation to Ansible tasks.
+
+  STIG Finding:
+  <rule_id>{rule_id}</rule_id>
+  <title>{title}</title>
+  <fix_text>{fix_text}</fix_text>
+
+  Analyze the shell script and convert to Ansible tasks. Break complex scripts into logical steps.
+
+  Guidelines:
+  - Use 'lineinfile' for single line changes
+  - Use 'blockinfile' for multi-line additions
+  - Use 'command' only when necessary
+  - Add 'when' conditions for conditional logic
+  - Use 'file' module for file operations
+  - Set requires_reboot=true for system-critical changes
+
+  Example shell script: if test -e /etc/config; then sed -i 's/old/new/' /etc/config; fi
+  Example output:
+  {{
+    "target_type": "shell_script_remediation", 
+    "target_name": "config_file_update",
+    "ansible_module": "lineinfile",
+    "ansible_params": {{
+      "path": "/etc/config",
+      "regexp": "old",
+      "line": "new"
+    }},
+    "requires_reboot": false
+  }}
+
+  **Crucial Instructions:**
+  * ONLY respond in JSON format
+  * DO NOT include explanations, reasoning, or additional text
+  * Return only valid JSON matching the schema
+
+parameters:
+  - temperature: 0.2
+  - max_tokens: 5000
+
+variables:
+  - name: "rule_id"
+    type: "string"
+    description: "The STIG rule identifier"
+    required: true
+  - name: "title"
+    type: "string"
+    description: "The title of the STIG finding"
+    required: true
+  - name: "fix_text"
+    type: "string"
+    description: "The shell script remediation instructions"
+    required: true

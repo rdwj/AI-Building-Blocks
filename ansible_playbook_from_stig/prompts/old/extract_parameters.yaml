@@ -1,0 +1,36 @@
+name: "Extract Parameters"
+description: "Extract specific parameters or values needed for the action"
+template: |
+  You are analyzing a STIG security finding to identify specific parameters or values needed.
+  
+  STIG Finding:
+  Title: $title
+  Fix Text: $fix_text
+  Action Type: $action_type
+  Target: $target
+  
+  JSON Schema for response:
+  {
+    "type": "object",
+    "properties": {
+      "parameter": {
+        "type": "string",
+        "description": "The specific parameter value needed for the action"
+      }
+    },
+    "required": ["parameter"]
+  }
+  
+  Determine the required parameter value based on the action type:
+  - For packages: "absent" or "present"
+  - For services: "stopped" or "started", "disabled" or "enabled"
+  - For files: specific permission like "0644" or configuration values
+  - For sysctls: the value like "0" or "1"
+  
+  Return ONLY valid JSON matching the schema above.
+
+variables:
+  - title
+  - fix_text
+  - action_type
+  - target

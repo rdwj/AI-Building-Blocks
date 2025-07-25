@@ -1,0 +1,56 @@
+name: "Extract Target Name"
+description: "Extract the specific target (package, service, file, etc.) from STIG finding"
+template: |
+  You are analyzing a STIG security finding to identify what specific target needs to be acted upon for building an Ansible playbook.
+
+  STIG Finding:
+  Title: {title}
+  Fix Text: {fix_text}
+  Action Type: {action_type}
+
+  JSON Schema for response:
+  <extract_target_response_schema>
+  {extract_target_response_schema}
+  </extract_target_response_schema>
+
+  Extract the target information from the STIG finding. Examples:
+
+  Package targets:
+  - target_type: "package", target_name: "telnet"
+  - target_type: "package", target_name: "prelink"
+
+  Service targets:
+  - target_type: "service", target_name: "telnet"
+  - target_type: "service", target_name: "rsh"
+
+  File targets:
+  - target_type: "file", target_name: "/etc/ssh/sshd_config"
+  - target_type: "file", target_name: "/etc/hosts"
+
+  File permission targets:
+  - target_type: "file_permission", target_name: "/etc/passwd", action_context: "0644"
+  - target_type: "file_ownership", target_name: "/var/log/messages", action_context: "root:root"
+
+  Sysctl targets:
+  - target_type: "sysctl", target_name: "net.ipv4.ip_forward"
+  - target_type: "sysctl", target_name: "kernel.randomize_va_space"
+
+  User/Group targets:
+  - target_type: "user", target_name: "guest"
+  - target_type: "group", target_name: "wheel"
+
+  SELinux targets:
+  - target_type: "selinux", target_name: "httpd_can_network_connect"
+
+  Audit targets:
+  - target_type: "audit_rule", target_name: "-w /etc/passwd -p wa"
+
+  Mount targets:
+  - target_type: "mount", target_name: "/tmp", action_context: "noexec,nosuid"
+
+  Return ONLY valid JSON matching the schema above.
+
+variables:
+  - title
+  - fix_text
+  - action_type

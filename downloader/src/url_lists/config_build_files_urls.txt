@@ -1,0 +1,36 @@
+# Configuration and Build Files
+# Format: TYPE|URL|FILENAME
+# ✅ All URLs from public repositories - robots.txt compliant
+
+# === DOCKER CONFIGURATION ===
+DOCKERFILE|https://raw.githubusercontent.com/docker/python-docker/main/Dockerfile|python-docker-sample.dockerfile
+DOCKERFILE|https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/containers/python-3/.devcontainer/Dockerfile|vscode-python-dev.dockerfile
+DOCKERFILE|https://raw.githubusercontent.com/nodejs/docker-node/main/18/alpine3.19/Dockerfile|nodejs-alpine.dockerfile
+
+# === PYTHON REQUIREMENTS ===
+REQUIREMENTS|https://raw.githubusercontent.com/docker/python-docker/main/requirements.txt|python-docker-requirements.txt
+REQUIREMENTS|https://raw.githubusercontent.com/pallets/flask/main/requirements/dev.in|flask-dev-requirements.txt
+REQUIREMENTS|https://raw.githubusercontent.com/django/django/main/tests/requirements/py3.txt|django-test-requirements.txt
+REQUIREMENTS|https://raw.githubusercontent.com/scikit-learn/scikit-learn/main/build_tools/azure/requirements.txt|sklearn-build-requirements.txt
+
+# === NODE.JS PACKAGE FILES ===
+PACKAGE_JSON|https://raw.githubusercontent.com/facebook/react/main/package.json|react-package.json
+PACKAGE_JSON|https://raw.githubusercontent.com/expressjs/express/master/package.json|express-package.json
+PACKAGE_JSON|https://raw.githubusercontent.com/lodash/lodash/master/package.json|lodash-package.json
+PACKAGE_JSON|https://raw.githubusercontent.com/axios/axios/v1.x/package.json|axios-package.json
+
+# === BUILD CONFIGURATION ===
+MAKEFILE|https://raw.githubusercontent.com/torvalds/linux/master/Makefile|linux-kernel-makefile
+MAKEFILE|https://raw.githubusercontent.com/git/git/master/Makefile|git-makefile
+GRADLE|https://raw.githubusercontent.com/spring-projects/spring-boot/main/build.gradle|spring-boot-build.gradle
+MAVEN_POM|https://raw.githubusercontent.com/apache/maven/master/pom.xml|maven-core-pom.xml
+
+# === CONFIGURATION FILES ===
+INI|https://raw.githubusercontent.com/git/git/master/.gitattributes|git-attributes.ini
+CONF|https://raw.githubusercontent.com/nginx/nginx/master/conf/nginx.conf|nginx-sample.conf
+ENV|https://raw.githubusercontent.com/vercel/next.js/canary/.env.example|nextjs-env-example.env
+
+# === CI/CD CONFIGURATION ===
+YAML|https://raw.githubusercontent.com/actions/starter-workflows/main/ci/python-app.yml|github-actions-python.yml
+YAML|https://raw.githubusercontent.com/actions/starter-workflows/main/ci/node.js.yml|github-actions-node.yml
+YAML|https://raw.githubusercontent.com/gitlab-org/gitlab/-/raw/master/.gitlab-ci.yml|gitlab-ci-sample.yml

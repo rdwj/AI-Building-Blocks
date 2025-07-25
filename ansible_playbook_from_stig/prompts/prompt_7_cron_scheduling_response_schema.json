@@ -1,0 +1,61 @@
+{
+  "type": "object",
+  "properties": {
+    "target_type": {
+      "type": "string",
+      "enum": ["cron_scheduling"]
+    },
+    "target_name": {
+      "type": "string",
+      "description": "Cron job name or identifier"
+    },
+    "ansible_module": {
+      "type": "string",
+      "enum": ["cron"],
+      "description": "Ansible cron module"
+    },
+    "ansible_params": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Job description"
+        },
+        "minute": {
+          "type": "string",
+          "description": "Minute field (0-59)"
+        },
+        "hour": {
+          "type": "string", 
+          "description": "Hour field (0-23)"
+        },
+        "day": {
+          "type": "string",
+          "description": "Day field (1-31)"
+        },
+        "month": {
+          "type": "string",
+          "description": "Month field (1-12)"
+        },
+        "weekday": {
+          "type": "string",
+          "description": "Weekday field (0-7)"
+        },
+        "job": {
+          "type": "string",
+          "description": "Command to run"
+        },
+        "user": {
+          "type": "string",
+          "description": "User to run the job as"
+        }
+      },
+      "required": ["name", "minute", "hour", "day", "month", "weekday", "job", "user"]
+    },
+    "notification_required": {
+      "type": "boolean",
+      "description": "Whether email notification is required"
+    }
+  },
+  "required": ["target_type", "target_name", "ansible_module", "ansible_params", "notification_required"]
+}

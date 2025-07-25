@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "properties": {
+    "target_type": {
+      "type": "string",
+      "enum": ["multi_step_process"]
+    },
+    "target_name": {
+      "type": "string",
+      "description": "Process name or identifier"
+    },
+    "ansible_module": {
+      "type": "string",
+      "description": "Ansible module to use (typically 'block' for multi-step processes)"
+    },
+    "ansible_params": {
+      "type": "object",
+      "description": "Parameters for the Ansible module including tasks array"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of step dependencies and ordering requirements"
+    }
+  },
+  "required": ["target_type", "target_name", "ansible_module", "ansible_params", "dependencies"]
+}
